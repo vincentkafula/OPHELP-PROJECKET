@@ -15,16 +15,17 @@ if (!connectionString) {
   )
 }
 
-export const pool = new Pool({
-  connectionString,
-  ssl: connectionString?.includes('railway')
-    ? { rejectUnauthorized: false }
-    : process.env.PGSSLMODE === 'disable'
-      ? false
-      : connectionString
-        ? { rejectUnauthorized: false }
-        : undefined,
-})
+// SSL: off by default. Railway's private network (both the official
+// Postgres plugin and a plain postgres:latest image, which don't run a
+// TLS listener internally) rejects SSL handshakes outright, so guessing
+// "railway in the hostname => use SSL" is wrong. Managed external
+// providers that *do* require SSL (Neon, Supabase, RDS, etc.) are opted
+// into explicitly with PGSSLMODE=require.
+const ssl = process.env.PGSSLMODE === 'require'
+  ? { rejectUnauthorized: false }
+  : false
+
+export const pool = new Pool({ connectionString, ssl })
 
 pool.on('error', (err) => {
   console.error('[db] Unexpected error on idle client', err)

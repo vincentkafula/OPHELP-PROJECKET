@@ -12,6 +12,13 @@ import { makeCrudRouter } from './routes/generic.js'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const app = express()
 
+// Express 4 doesn't catch rejected promises thrown inside async route
+// handlers — an unhandled one would otherwise crash the whole process.
+// Log it and keep serving instead.
+process.on('unhandledRejection', (err) => {
+  console.error('[server] Unhandled promise rejection:', err)
+})
+
 app.use(cors())
 app.use(express.json({ limit: '2mb' }))
 
