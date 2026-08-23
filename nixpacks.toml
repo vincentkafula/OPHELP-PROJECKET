@@ -1,5 +1,8 @@
-# Pins the Node version Railway's Nixpacks builder uses. Build and start
-# commands are driven by railway.json (buildCommand/startCommand), which in
-# turn call the scripts in the root package.json.
+# Pins the Node version Railway's Nixpacks builder uses. Vite 8 requires
+# Node >=20.19 or >=22.12; nixpkgs' "nodejs_20" channel resolved to an
+# older 20.18.x patch that broke resolution of rolldown's native binding,
+# so we pin nodejs_22 instead. Build/start commands are driven by
+# railway.json (buildCommand/startCommand), which call the scripts in the
+# root package.json.
 [phases.setup]
-nixPkgs = ["nodejs_20"]
+nixPkgs = ["nodejs_22"]
