@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>OPHELP Jobsheet</title>
+<style>
+  :root{
+    --navy:#173B73;
+    --navy-dark:#102a54;
+    --green:#3E7D3E;
+    --green-dark:#2F6B37;
+    --blue-light:#E4EEF7;
+    --blue-mid:#5B95BE;
+    --orange:#E07B39;
+    --orange-light:#FDF3E3;
+    --purple:#6B4A7A;
+    --purple-light:#EFE3F2;
+    --teal:#3F8F6F;
+    --teal-light:#E4F3ED;
+    --line:#B9C7DA;
+    --paper:#FFFFFF;
+    --ink:#16233F;
+    --muted:#6B7686;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#EDF1F6;
+    font-family:'Segoe UI', Arial, sans-serif;
+    color:var(--ink);
+    padding:24px 12px 60px;
+  }
+  .sheet{
+    max-width:1080px;
+    margin:0 auto;
+    background:var(--paper);
+    border:3px solid var(--navy);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  input, textarea{
+    font-family:inherit;
+    font-size:12.5px;
+    color:var(--ink);
+    border:none;
+    background:transparent;
+    width:100%;
+    outline:none;
+    padding:4px 5px;
+  }
+  input:focus, textarea:focus{ background:#FFF7D6; }
+  input::placeholder, textarea::placeholder{ color:#B7BFCC; font-style:italic; }
+  textarea{ resize:none; font-family:inherit; }
+
+  /* ===== Header ===== */
+  .header{ text-align:center; padding:18px 22px 14px; border-bottom:2px solid var(--navy); }
+  .header h1{ margin:0; font-size:40px; font-weight:900; color:var(--navy); letter-spacing:1px; }
+  .header .ver{ font-size:12px; color:var(--muted); margin-top:2px; }
+  .dc-box{
+    margin:12px auto 0; max-width:520px; border:3px double var(--navy); border-radius:3px;
+    padding:6px 10px; font-weight:800; font-size:17px; color:var(--green-dark);
+  }
+  .header .job{ font-size:20px; font-weight:900; color:var(--navy); margin-top:12px; letter-spacing:1px; }
+  .header .sub{ font-size:13px; font-weight:700; margin-top:4px; color:var(--ink); }
+
+  /* ===== Meta row with ref boxes ===== */
+  .meta-top{ display:flex; align-items:stretch; border-bottom:2px solid var(--navy); }
+  .refboxes{ display:flex; }
+  .refboxes input{
+    width:34px; height:34px; text-align:center; border-right:1.5px solid var(--navy);
+    font-weight:700; color:var(--navy);
+  }
+  .refboxes input:last-child{ border-right:none; }
+  .refboxes.left{ border-right:2px solid var(--navy); }
+  .refboxes.right{ border-left:2px solid var(--navy); }
+  .meta-field{
+    flex:1; display:flex; align-items:center; gap:8px; padding:8px 14px; border-right:2px solid var(--navy);
+  }
+  .meta-field:last-of-type{ }
+  .meta-field label{ font-weight:700; font-size:13px; color:var(--navy); white-space:nowrap; }
+  .meta-field input{ font-weight:700; }
+
+  .meta-row2{ display:flex; border-bottom:3px solid var(--navy); }
+  .meta-row2 .cell{ flex:1; display:flex; align-items:center; gap:8px; padding:9px 14px; border-right:2px solid var(--navy); }
+  .meta-row2 .cell:last-child{ border-right:none; }
+  .meta-row2 label{ font-weight:700; font-size:13px; color:var(--navy); white-space:nowrap; }
+
+  /* ===== Main table ===== */
+  table.main{ width:100%; border-collapse:collapse; table-layout:fixed; }
+  table.main th, table.main td{ border:1px solid var(--line); padding:0; vertical-align:middle; }
+  table.main thead th, tr.subhead th{
+    font-size:11.5px; font-weight:800; padding:7px 5px; text-align:center; color:#fff;
+  }
+  .col-details{ width:19%; } .col-adv{ width:10%; } .col-ret{ width:10%; }
+  .col-num{ width:12%; } .col-paid{ width:10%; } .col-sign{ width:19.5%; }
+
+  th.hd-details{ background:var(--navy); }
+  th.hd-adv, th.hd-ret{ background:var(--blue-mid); }
+  th.hd-num{ background:var(--navy); }
+  th.hd-paid{ background:var(--green); }
+  th.hd-signed{ background:var(--blue-mid); }
+  th.hd-signed-sub{ background:var(--blue-light); color:var(--navy); }
+
+  th.hd-shift{ background:var(--teal); text-align:left; padding-left:10px !important; }
+  th.hd-shift .legend{ font-weight:600; font-size:10.5px; display:block; margin-top:3px; }
+
+  tr.row-label td.label-cell{ font-weight:800; font-size:14px; padding:9px 10px; }
+  tr.row-label.taxi td.label-cell{ color:var(--orange); }
+  tr.row-label.other td.label-cell{ color:var(--purple); }
+  tr.row-label.taonga td.label-cell{ color:var(--green-dark); }
+  table.main td input{ text-align:center; padding:8px 5px; }
+  table.main td.label-cell input{ text-align:left; font-weight:700; }
+
+  tr.detailsofother td{ padding:8px 10px; }
+  .doo-label{ font-weight:700; font-size:12.5px; color:var(--purple); margin-bottom:4px; }
+  tr.detailsofother textarea{ height:44px; }
+
+  .eft-cell{ display:flex; flex-direction:column; align-items:center; padding:5px; }
+  .eft-cell .eft-tag{ font-size:10.5px; font-weight:800; color:var(--green-dark); }
+  .eft-cell input{ text-align:center; font-weight:800; }
+
+  .row-controls{ padding:8px 14px; background:#F2F5F9; border-bottom:2px solid var(--navy); }
+  button.add{
+    border:1.5px dashed var(--navy); background:#fff; color:var(--navy); font-weight:700;
+    font-size:12px; padding:6px 12px; border-radius:5px; cursor:pointer;
+  }
+  button.add:hover{ background:var(--blue-light); }
+
+  /* Cash / Electronic rows */
+  table.cash{ width:100%; border-collapse:collapse; }
+  table.cash td{ border:1px solid var(--line); padding:9px 12px; }
+  table.cash tr.cash-r td.lbl{ font-weight:800; font-size:14px; color:var(--navy); width:38%; }
+  table.cash tr.elec-r td.lbl{ font-weight:800; font-size:14px; color:var(--green-dark); width:38%; }
+  table.cash .val-cell{ width:12%; font-weight:800; display:flex; align-items:center; gap:4px; }
+  table.cash .val-cell input{ font-weight:800; }
+  table.cash .by-cell{ width:50%; display:flex; align-items:center; gap:6px; }
+  table.cash .by-cell .namelbl{ font-size:10px; color:var(--muted); margin-left:auto; }
+  table.cash tr.elec-r{ border-bottom:3px solid var(--navy); }
+
+  /* ===== Account tables ===== */
+  table.acc{ width:100%; border-collapse:collapse; }
+  table.acc td, table.acc th{ border:1px solid var(--line); text-align:center; vertical-align:middle; }
+  .acc-row-1{ background:var(--blue-light); }
+  .acc-row-2{ background:var(--teal-light); }
+  table.acc td.total-lbl{ font-weight:800; font-size:13.5px; padding:8px; text-align:left; color:var(--navy); width:15%; }
+  .acc-row-2 td.total-lbl{ color:var(--green-dark); }
+  table.acc td.acc-name{ font-weight:700; font-size:12.5px; padding:6px; width:14%; color:var(--ink); }
+  table.acc th{ font-size:11px; font-weight:700; color:var(--muted); padding:5px 3px; background:#F5F7FA; width:6%; }
+  table.acc td.acc-input{ padding:2px; }
+  table.acc td.acc-input input{ text-align:center; font-weight:700; }
+  table.acc tr:last-child td, table.acc tr:last-child th{ border-bottom:3px solid var(--navy); }
+
+  /* ===== Area/Task + Subtotal/Invoice ===== */
+  .at-block{ display:flex; border-bottom:1px solid var(--line); }
+  .at-left{ flex:1; background:var(--orange-light); padding:10px 16px; }
+  .at-left .line{ display:flex; align-items:center; gap:8px; margin-bottom:14px; font-weight:700; font-size:13.5px; color:#8A4E15; }
+  .at-left .line:last-child{ margin-bottom:0; }
+  .at-left input{ border-bottom:1.5px solid #D9A56A; flex:1; }
+  .at-right{ width:44%; display:flex; flex-direction:column; }
+  .at-right .ce-row{ display:flex; flex:1; }
+  .at-right .ce-cell{ width:34px; border-left:1px solid var(--line); display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--muted); }
+  .at-right .money-cell{ flex:1; border-left:1px solid var(--line); padding:6px 10px; background:var(--purple-light); }
+  .at-right .money-cell .mlbl{ font-size:11.5px; font-weight:700; color:var(--purple); }
+  .at-right .money-cell .mval{ display:flex; align-items:center; gap:4px; font-weight:800; }
+  .invoices-row{
+    background:var(--purple); color:#fff; text-align:center; font-weight:800; font-size:14px;
+    padding:8px; letter-spacing:0.3px; border-top:1px solid var(--line);
+  }
+
+  /* ===== Bags / Glove ===== */
+  table.consume{ width:100%; border-collapse:collapse; }
+  table.consume td, table.consume th{ border:1px solid var(--line); padding:7px 8px; text-align:center; font-size:12px; }
+  table.consume th{ background:#F7E3C4; color:#8A4E15; font-weight:700; }
+  table.consume td.tag{ background:var(--orange-light); font-weight:800; color:#8A4E15; text-align:left; width:9%; }
+  table.consume td.field{ width:12%; }
+  table.consume td.field .fl{ font-size:10.5px; color:var(--muted); display:block; margin-bottom:2px; }
+  table.consume td.total{ width:11%; background:var(--teal-light); font-weight:800; color:var(--green-dark); }
+  table.consume td.total .tlbl{ font-size:10.5px; display:block; color:var(--green-dark); }
+  table.consume td.client{ background:var(--purple-light); font-weight:700; color:var(--purple); }
+  table.consume td.client .clbl{ font-size:10.5px; display:block; margin-bottom:2px; color:var(--purple); font-weight:600;}
+  table.consume tr:last-child td{ border-bottom:3px solid var(--navy); }
+
+  .footer-actions{ display:flex; justify-content:flex-end; gap:10px; padding:16px 4px 0; max-width:1080px; margin:0 auto; }
+  .footer-actions button{ border:none; border-radius:6px; padding:10px 18px; font-weight:700; font-size:13px; cursor:pointer; }
+  .btn-export{ background:var(--navy); color:#fff; }
+  .btn-print{ background:#fff; color:var(--navy); border:2px solid var(--navy) !important; }
+  .btn-reset{ background:#fff; color:#B23A3A; border:2px solid #B23A3A !important; }
+
+  @media print{
+    body{ background:#fff; padding:0; }
+    .footer-actions, .row-controls{ display:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>OPHELP</h1>
+    <div class="ver">Version 200725</div>
+    <div class="dc-box">OPHELP Data Capturer</div>
+    <div class="job">JOBSHEET</div>
+    <div class="sub">PAID OUT FROM WHAT WAS RECEIVED AS DONATIONS</div>
+  </div>
+
+  <!-- Ref boxes + Day/Date -->
+  <div class="meta-top">
+    <div class="refboxes left">
+      <input maxlength="2" /><input maxlength="2" /><input maxlength="2" />
+    </div>
+    <div class="meta-field">
+      <label>Day:</label>
+      <input type="text" id="f-day" placeholder="e.g. Monday" />
+    </div>
+    <div class="meta-field" style="border-right:none;">
+      <label>Date:</label>
+      <input type="date" id="f-date" />
+    </div>
+    <div class="refboxes right">
+      <input maxlength="2" /><input maxlength="2" /><input maxlength="2" /><input maxlength="2" /><input maxlength="2" /><input maxlength="2" />
+    </div>
+  </div>
+
+  <!-- Time Slot / Details / Partner -->
+  <div class="meta-row2">
+    <div class="cell">
+      <label>Time Slot</label>
+      <input type="text" id="f-timeslot" placeholder="e.g. 08:00-12:00" />
+    </div>
+    <div class="cell">
+      <label>Details</label>
+      <input type="text" id="f-details" placeholder="Advanced / Returned notes" />
+    </div>
+    <div class="cell">
+      <label>Partner</label>
+      <input type="text" id="f-partner" value="OPHELP" />
+    </div>
+  </div>
+
+  <!-- Main table -->
+  <table class="main">
+    <thead>
+      <tr>
+        <th class="hd-details col-details">Details</th>
+        <th class="hd-adv col-adv">Advanced</th>
+        <th class="hd-ret col-ret">Returned</th>
+        <th class="hd-num col-num">Number of<br/>persons / items</th>
+        <th class="hd-paid col-paid" rowspan="2">Paid<br/>out</th>
+        <th class="hd-signed" colspan="2">Signed</th>
+      </tr>
+      <tr>
+        <th class="hd-details" style="background:var(--navy);"></th>
+        <th class="hd-adv" style="background:var(--blue-mid);"></th>
+        <th class="hd-ret" style="background:var(--blue-mid);"></th>
+        <th class="hd-num" style="background:var(--navy);"></th>
+        <th class="hd-signed-sub col-sign">Foreman</th>
+        <th class="hd-signed-sub col-sign">Paymaster</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="row-label taxi">
+        <td class="label-cell"><input value="TAXI Fare" /></td>
+        <td><input data-fixed="taxi-adv" /></td>
+        <td><input data-fixed="taxi-ret" /></td>
+        <td><input data-fixed="taxi-num" /></td>
+        <td><input data-fixed="taxi-paid" /></td>
+        <td><input data-fixed="taxi-foreman" /></td>
+        <td><input data-fixed="taxi-paymaster" /></td>
+      </tr>
+      <tr class="row-label other">
+        <td class="label-cell"><input value="Other" /></td>
+        <td><input data-fixed="other-adv" /></td>
+        <td><input data-fixed="other-ret" /></td>
+        <td><input data-fixed="other-num" /></td>
+        <td><input data-fixed="other-paid" /></td>
+        <td><input data-fixed="other-foreman" /></td>
+        <td><input data-fixed="other-paymaster" /></td>
+      </tr>
+      <tr class="detailsofother">
+        <td colspan="7">
+          <div class="doo-label">Details of other</div>
+          <textarea id="f-detailsofother" placeholder="Write details here..."></textarea>
+        </td>
+      </tr>
+
+      <!-- Sub-header: Shift members / Leader-Participant -->
+      <tr class="subhead">
+        <th class="hd-shift col-details" rowspan="2">Shift members
+          <span class="legend"><b>F.</b>=Foreman &nbsp;<b>W.</b>=Worker &nbsp;<b>R.</b>=Recruit</span>
+        </th>
+        <th class="hd-adv col-adv" rowspan="2">Advanced</th>
+        <th class="hd-ret col-ret" rowspan="2">Returned</th>
+        <th class="hd-num col-num" rowspan="2">Leader/Participant<br/>Team No.</th>
+        <th class="hd-paid col-paid" rowspan="2">Paid<br/>out</th>
+        <th class="hd-signed" colspan="2">Signed</th>
+      </tr>
+      <tr class="subhead">
+        <th class="hd-signed-sub col-sign">Foreman</th>
+        <th class="hd-signed-sub col-sign">Worker/Paymaster</th>
+      </tr>
+
+      <tr class="row-label taonga">
+        <td class="label-cell"><input value="Taonga Kusure" /></td>
+        <td><input data-fixed="taonga-adv" /></td>
+        <td><input data-fixed="taonga-ret" /></td>
+        <td><input data-fixed="taonga-team" /></td>
+        <td>
+          <div class="eft-cell">
+            <span class="eft-tag">EFT</span>
+            <input data-fixed="taonga-paid" value="110" />
+          </div>
+        </td>
+        <td><input data-fixed="taonga-foreman" /></td>
+        <td><input data-fixed="taonga-worker" /></td>
+      </tr>
+    </tbody>
+    <tbody id="participant-body"></tbody>
+  </table>
+  <div class="row-controls">
+    <button class="add" onclick="addParticipantRow()">+ Add participant row</button>
+  </div>
+
+  <!-- Cash / Electronic -->
+  <table class="cash">
+    <tr class="cash-r">
+      <td class="lbl">Cash paid out:</td>
+      <td class="val-cell"><span>R</span><input id="f-cashpaid" placeholder="nil" /></td>
+      <td class="by-cell">by: <input id="f-cashby" placeholder="Name" /> <span class="namelbl">Name</span></td>
+    </tr>
+    <tr class="elec-r">
+      <td class="lbl">Electronic via EFT</td>
+      <td class="val-cell" colspan="2"><span>R</span><input id="f-eft" placeholder="0.00" /></td>
+    </tr>
+  </table>
+
+  <!-- Account 1 -->
+  <table class="acc">
+    <tr class="acc-row-1">
+      <td class="total-lbl">TOTAL for Account 1</td>
+      <td class="acc-name">Account 1<br/><b>OPHELP Salaries</b></td>
+      <th>C</th><th>E</th><th>Xtra</th><th>6xrewrd</th><th>Transport</th><th>Material</th><th>Other</th><th>Adminfee</th>
+    </tr>
+    <tr class="acc-row-1">
+      <td class="acc-input"><input data-acc="a1-total" /></td>
+      <td class="acc-input"></td>
+      <td class="acc-input"><input data-acc="a1-c" /></td>
+      <td class="acc-input"><input data-acc="a1-e" /></td>
+      <td class="acc-input"><input data-acc="a1-xtra" /></td>
+      <td class="acc-input"><input data-acc="a1-rewrd" /></td>
+      <td class="acc-input"><input data-acc="a1-transport" /></td>
+      <td class="acc-input"><input data-acc="a1-material" /></td>
+      <td class="acc-input"><input data-acc="a1-other" /></td>
+      <td class="acc-input"><input data-acc="a1-adminfee" /></td>
+    </tr>
+  </table>
+
+  <!-- Account 2 -->
+  <table class="acc">
+    <tr class="acc-row-2">
+      <td class="total-lbl">TOTAL for Account 2</td>
+      <td class="acc-name">Account 2</td>
+      <th>C</th><th>E</th><th>Xtra</th><th>6xrewrd</th><th>Transport</th><th>Material</th><th>Other</th><th>Adminfee</th>
+    </tr>
+    <tr class="acc-row-2">
+      <td class="acc-input"><input data-acc="a2-total" /></td>
+      <td class="acc-input"></td>
+      <td class="acc-input"><input data-acc="a2-c" /></td>
+      <td class="acc-input"><input data-acc="a2-e" /></td>
+      <td class="acc-input"><input data-acc="a2-xtra" /></td>
+      <td class="acc-input"><input data-acc="a2-rewrd" /></td>
+      <td class="acc-input"><input data-acc="a2-transport" /></td>
+      <td class="acc-input"><input data-acc="a2-material" /></td>
+      <td class="acc-input"><input data-acc="a2-other" /></td>
+      <td class="acc-input"><input data-acc="a2-adminfee" /></td>
+    </tr>
+  </table>
+
+  <!-- Area / Task + C E Subtotal / Invoice Total -->
+  <div class="at-block">
+    <div class="at-left">
+      <div class="line"><label>Area:</label><input id="f-area" /></div>
+      <div class="line"><label>Task:</label><input id="f-task" /></div>
+    </div>
+    <div class="at-right">
+      <div class="ce-row">
+        <div class="ce-cell">C</div>
+        <div class="ce-cell">E</div>
+        <div class="money-cell">
+          <div class="mlbl">Subtotal</div>
+          <div class="mval">R <input data-p="ce-subtotal" /></div>
+        </div>
+        <div class="money-cell">
+          <div class="mlbl">Invoice Total</div>
+          <div class="mval">R <input data-p="invoice-total" /></div>
+        </div>
+      </div>
+      <div class="invoices-row">
+        Invoice(s) <input data-p="invoices" style="color:#fff; text-align:center; font-weight:800; display:inline; width:60%;" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Bags -->
+  <table class="consume">
+    <tr>
+      <td class="tag">Bags:</td>
+      <td class="field"><span class="fl">Issued:</span><input data-b="bag-issued" /></td>
+      <td class="field"><span class="fl">Returned:</span><input data-b="bag-returned" /></td>
+      <td class="field"><span class="fl">Used:</span><input data-b="bag-used" /></td>
+      <td class="field"><span class="fl">Others:</span><input data-b="bag-others" /></td>
+      <td class="total"><span class="tlbl">Total 1</span>R <input data-b="bag-total" /></td>
+      <td class="client"><span class="clbl">Client 1</span><b>OPHELP Salaries</b></td>
+    </tr>
+    <tr>
+      <td class="tag">Glove:</td>
+      <td class="field"><span class="fl">Issued:</span><input data-b="glove-issued" /></td>
+      <td class="field"><span class="fl">Returned:</span><input data-b="glove-returned" /></td>
+      <td class="field"><span class="fl">Used:</span><input data-b="glove-used" /></td>
+      <td class="field"></td>
+      <td class="total"><span class="tlbl">Total 2</span>R <input data-b="glove-total" /></td>
+      <td class="client"><span class="clbl">Client 2</span><input data-b="client2" placeholder="Client name" /></td>
+    </tr>
+  </table>
+
+</div>
+
+<div class="footer-actions">
+  <button class="btn-reset" onclick="resetForm()">Clear form</button>
+  <button class="btn-print" onclick="window.print()">Print</button>
+  <button class="btn-export" onclick="exportData()">Export JSON</button>
+</div>
+
+<script>
+  function participantRowHTML(){
+    return `<tr class="row-label">
+      <td class="label-cell"><input data-part="name" placeholder="Participant / item" /></td>
+      <td><input data-part="adv" /></td>
+      <td><input data-part="ret" /></td>
+      <td><input data-part="team" /></td>
+      <td><input data-part="paid" /></td>
+      <td><input data-part="foreman" /></td>
+      <td><input data-part="worker" /></td>
+    </tr>`;
+  }
+  function addParticipantRow(){
+    document.getElementById('participant-body').insertAdjacentHTML('beforeend', participantRowHTML());
+  }
+  for(let i=0;i<4;i++) addParticipantRow();
+
+  function exportData(){
+    const data = { meta:{}, fixedRows:{}, participantRows:[], accounts:{}, bottom:{}, payments:{} };
+
+    document.querySelectorAll('[id^="f-"]').forEach(el => data.meta[el.id.replace('f-','')] = el.value);
+    document.querySelectorAll('[data-fixed]').forEach(inp => data.fixedRows[inp.dataset.fixed] = inp.value);
+
+    document.querySelectorAll('#participant-body tr').forEach(tr => {
+      const row = {};
+      tr.querySelectorAll('input').forEach(inp => row[inp.dataset.part] = inp.value);
+      data.participantRows.push(row);
+    });
+
+    document.querySelectorAll('[data-acc]').forEach(inp => data.accounts[inp.dataset.acc] = inp.value);
+    document.querySelectorAll('[data-b]').forEach(inp => data.bottom[inp.dataset.b] = inp.value);
+    document.querySelectorAll('[data-p]').forEach(inp => data.payments[inp.dataset.p] = inp.value);
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `jobsheet-${data.meta.date || 'export'}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function resetForm(){
+    if(!confirm('Clear all entered data on this jobsheet?')) return;
+    document.querySelectorAll('input').forEach(inp => { if(inp.id !== 'f-partner') inp.value=''; });
+    document.getElementById('f-partner').value = 'OPHELP';
+    document.querySelectorAll('textarea').forEach(t => t.value='');
+    document.getElementById('participant-body').innerHTML = '';
+    for(let i=0;i<4;i++) addParticipantRow();
+  }
+</script>
+
+</body>
+</html>

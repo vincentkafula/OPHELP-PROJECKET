@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OPRUIM SERVICES — Leave Days Register</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Leaflet (real OpenStreetMap tiles) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+<!-- PDF export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- Excel export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<style>
+  :root{
+    --ink:#14201E;
+    --ink-2:#1D2E2A;
+    --paper:#F4F0E4;
+    --paper-2:#EAE4D4;
+    --amber:#E8A33D;
+    --amber-d:#7A5015;
+    --teal:#1F6F6B;
+    --teal-d:#0E3532;
+    --coral:#D65B3C;
+    --coral-d:#6E2C1B;
+    --slate:#6B7370;
+    --line: rgba(20,32,30,0.16);
+    --line-strong: rgba(20,32,30,0.32);
+    --font-display:'Oswald', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap{
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 28px 20px 70px;
+  }
+
+  /* ---------- Brand header ---------- */
+  .top-tag{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand-mark{
+    width:38px; height:38px;
+    border-radius:50%;
+    background: var(--teal);
+    border: 2px solid var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-display);
+    font-weight:700;
+    font-size:13px;
+    color: var(--paper);
+    flex-shrink:0;
+  }
+  .brand-text{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--slate);
+  }
+  .serial{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--slate);
+    text-align:right;
+  }
+
+  .panel{
+    position:relative;
+    background: var(--paper-2);
+    border: 1.5px solid var(--ink);
+    border-radius: 4px;
+    padding: 26px;
+    margin-bottom: 22px;
+  }
+  .panel::before{
+    content:"";
+    position:absolute;
+    left:-1px; right:-1px; top:0;
+    height: 12px;
+    background-image: radial-gradient(circle at 10px 0, transparent 5px, var(--paper) 5.5px);
+    background-size: 20px 12px;
+    background-repeat: repeat-x;
+    transform: translateY(-6px);
+  }
+
+  .v-head{ text-align:center; margin-bottom: 20px; }
+  .v-head h1{
+    font-family: var(--font-display);
+    font-weight:700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: 24px;
+    margin: 0 0 3px;
+  }
+  .v-head .v-sub{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--slate);
+  }
+
+  .section-label{
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--teal-d);
+    font-weight:600;
+    margin: 0 0 12px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .section-label::after{ content:""; flex:1; height:1px; background: var(--line-strong); }
+
+  /* ---------- Stat tiles ---------- */
+  .tiles{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .tile{
+    border: 1px solid var(--line-strong);
+    background: var(--paper);
+    border-radius: 3px;
+    padding: 12px 12px 10px;
+  }
+  .tile .t-label{
+    font-family: var(--font-mono);
+    font-size: 9px;
+    text-transform:uppercase;
+    letter-spacing: 0.06em;
+    color: var(--slate);
+    margin-bottom: 6px;
+  }
+  .tile .t-value{
+    font-family: var(--font-display);
+    font-weight:700;
+    font-size: 26px;
+    color: var(--teal-d);
+  }
+  .tile .t-value.warn{ color: var(--coral-d); }
+
+  /* ---------- Balance table ---------- */
+  .bal-table{
+    width:100%;
+    border-collapse: collapse;
+    border: 1px solid var(--line-strong);
+    font-size: 12.5px;
+  }
+  .bal-table th, .bal-table td{
+    border: 1px solid var(--line-strong);
+    padding: 6px 8px;
+    text-align:center;
+  }
+  .bal-table th{
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-weight:600;
+    text-transform:uppercase;
+    font-size: 9.5px;
+    letter-spacing: 0.03em;
+  }
+  .bal-table td.name{
+    text-align:left;
+    font-weight:600;
+    cursor:pointer;
+    color: var(--teal-d);
+  }
+  .bal-table td.name:hover{ text-decoration: underline; }
+  .bal-table tr:nth-child(even) td{ background: rgba(20,32,30,0.03); }
+  .bal-table td.neg{ color: var(--coral-d); font-weight:600; }
+  .bal-table tr.active td{ background: rgba(31,111,107,0.14); }
+  .grp-holiday{ border-left: 2px solid var(--amber-d) !important; }
+  .grp-family{ border-left: 2px solid var(--teal-d) !important; }
+  .grp-sick{ border-left: 2px solid var(--coral-d) !important; }
+
+  /* ---------- Employee detail ---------- */
+  #detailPanel{ display:none; }
+  #detailPanel.open{ display:block; }
+  .detail-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .detail-head h2{
+    font-family: var(--font-display);
+    font-size: 18px;
+    text-transform:uppercase;
+    letter-spacing: 0.02em;
+    margin:0;
+  }
+  .close-detail{
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform:uppercase;
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    padding: 5px 10px;
+    cursor:pointer;
+    color: var(--ink);
+  }
+  .entitlement-row{
+    display:flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .entitlement-row .field{ display:flex; flex-direction:column; gap:4px; }
+  .entitlement-row label{
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    text-transform:uppercase;
+    color: var(--slate);
+  }
+  .entitlement-row input{
+    width: 90px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 5px 7px;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    background: var(--paper);
+  }
+
+  .records-table{
+    width:100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    margin-bottom: 12px;
+  }
+  .records-table th, .records-table td{
+    border-bottom: 1px solid var(--line);
+    padding: 6px 8px;
+    text-align:left;
+  }
+  .records-table th{
+    font-family: var(--font-mono);
+    text-transform:uppercase;
+    font-size: 9.5px;
+    color: var(--slate);
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .tag{
+    display:inline-block;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    text-transform:uppercase;
+    padding: 2px 7px;
+    border-radius: 10px;
+    color: var(--paper);
+  }
+  .tag.Holiday{ background: var(--amber-d); }
+  .tag.Family{ background: var(--teal-d); }
+  .tag.Sick{ background: var(--coral-d); }
+  .rm-btn{
+    background: transparent;
+    border: none;
+    color: var(--coral-d);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  .add-record-row{
+    display:flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items:center;
+  }
+  .add-record-row input, .add-record-row select{
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    padding: 6px 8px;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    background: var(--paper);
+  }
+  .add-record-row input[name="period"]{ flex: 1; min-width: 160px; }
+  .add-record-row input[name="days"]{ width: 80px; }
+  .add-record-row button{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    background: var(--teal-d);
+    color: var(--paper);
+    border: none;
+    border-radius: 3px;
+    padding: 7px 14px;
+    cursor:pointer;
+  }
+  .add-record-row button:hover{ background: var(--teal); }
+
+  /* ---------- Depot / site map ---------- */
+  .site-row{ display:flex; gap: 10px; margin-bottom: 10px; }
+  .site-row input[type="text"]{
+    flex:1;
+    font-family: var(--font-body);
+    font-size: 13px;
+    padding: 8px 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    background: var(--paper);
+    outline: none;
+  }
+  .site-row input[type="text"]:focus{ border-color: var(--teal); }
+  .site-row button{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: var(--teal-d);
+    color: var(--paper);
+    border: none;
+    border-radius: 3px;
+    padding: 0 14px;
+    cursor: pointer;
+    flex-shrink:0;
+  }
+  .site-row button:hover{ background: var(--teal); }
+  #depotMap{
+    width: 100%;
+    height: 240px;
+    border: 1.5px solid var(--ink);
+    border-radius: 3px;
+    background: var(--paper);
+  }
+  .site-coords{
+    display:flex;
+    gap:18px;
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--slate);
+  }
+  .site-status{
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--slate);
+    margin-top: 6px;
+    min-height: 12px;
+  }
+
+  .foot-note{
+    text-align:center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--slate);
+    margin-top: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .action-bar{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content:flex-end;
+    gap:8px;
+    margin-top: 16px;
+  }
+  .action-bar button{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 3px;
+    padding: 8px 16px;
+    cursor:pointer;
+  }
+  .action-bar button:hover{ background: var(--ink-2); }
+  .action-bar button.ghost{ background: transparent; color: var(--ink); border: 1px solid var(--line-strong); }
+  .action-bar button.accent{ background: var(--coral-d); }
+  .action-bar button.accent:hover{ background: var(--coral); }
+  .action-bar button.teal{ background: var(--teal-d); }
+  .action-bar button.teal:hover{ background: var(--teal); }
+  .action-bar button:disabled{ opacity:0.55; cursor: progress; }
+
+  @media print{
+    .action-bar, .site-row, .add-record-row, #closeDetailBtn{ display:none; }
+    body{ background: white; }
+  }
+
+  @media (max-width: 700px){
+    .tiles{ grid-template-columns: repeat(2, 1fr); }
+    .bal-table{ font-size: 10.5px; }
+    .bal-table th, .bal-table td{ padding: 4px 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top-tag">
+    <div class="brand">
+      <div class="brand-mark">OS</div>
+      <div class="brand-text">OPRUIM SERVICES — Operational Files</div>
+    </div>
+    <div class="serial">Ref. <span id="refNo">______</span></div>
+  </div>
+
+  <!-- everything inside #captureArea is what gets rendered into the PDF -->
+  <div id="captureArea">
+
+    <div class="panel">
+      <div class="v-head">
+        <h1>Leave days register</h1>
+        <div class="v-sub">Financial year · July 2025 – June 2026</div>
+      </div>
+
+      <div class="tiles" id="statTiles"></div>
+
+      <div class="section-label">Employee leave balances</div>
+      <table class="bal-table" id="balTable">
+        <thead>
+          <tr>
+            <th rowspan="2" style="text-align:left;">Name &amp; surname</th>
+            <th colspan="3" class="grp-holiday">Holiday</th>
+            <th colspan="3" class="grp-family">Family</th>
+            <th colspan="3" class="grp-sick">Sick</th>
+          </tr>
+          <tr>
+            <th class="grp-holiday">Used</th><th>Avail.</th><th>Left</th>
+            <th class="grp-family">Used</th><th>Avail.</th><th>Left</th>
+            <th class="grp-sick">Used</th><th>Avail.</th><th>Left</th>
+          </tr>
+        </thead>
+        <tbody id="balTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="panel" id="detailPanel">
+      <div class="detail-head">
+        <h2 id="detailName">—</h2>
+        <button class="close-detail" id="closeDetailBtn">Close</button>
+      </div>
+
+      <div class="entitlement-row">
+        <div class="field"><label>Holiday entitlement</label><input type="number" step="0.01" id="entHoliday"></div>
+        <div class="field"><label>Family entitlement</label><input type="number" step="0.01" id="entFamily"></div>
+        <div class="field"><label>Sick entitlement</label><input type="number" step="0.01" id="entSick"></div>
+      </div>
+
+      <div class="section-label">Leave taken this financial year</div>
+      <table class="records-table" id="recordsTable">
+        <thead><tr><th>Day &amp; date off</th><th>Days</th><th>Type</th><th></th></tr></thead>
+        <tbody id="recordsBody"></tbody>
+      </table>
+
+      <div class="add-record-row">
+        <input type="text" name="period" placeholder="e.g. 14 – 16 Sep 2026">
+        <input type="number" name="days" step="0.01" placeholder="Days">
+        <select name="type">
+          <option>Holiday</option>
+          <option>Family</option>
+          <option>Sick</option>
+        </select>
+        <button id="addRecordBtn" type="button">Add entry</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="section-label">Depot / site location</div>
+      <div class="site-row">
+        <input type="text" id="siteAddress" placeholder="Type a depot or site address, then Locate">
+        <button id="locateBtn" type="button">Locate</button>
+      </div>
+      <div id="depotMap"></div>
+      <div class="site-coords">
+        <span>Lat: <span id="siteLat">—</span></span>
+        <span>Lng: <span id="siteLng">—</span></span>
+      </div>
+      <div class="site-status" id="siteStatus"></div>
+    </div>
+
+  </div>
+
+  <div class="foot-note">OPRUIM SERVICES · Leave Days Register · Seeded from the uploaded FY2025/26 workbook — figures are editable</div>
+
+  <div class="action-bar">
+    <button class="ghost" id="resetBtn">Reset to seed data</button>
+    <button class="teal" id="excelBtn">Export Excel</button>
+    <button class="accent" id="pdfBtn">Export PDF</button>
+    <button id="printBtn">Print</button>
+  </div>
+
+</div>
+
+<script>
+/* =====================================================================
+   DATA MODEL
+   Seeded from OPRUIM_SERVICES_Leave_days_for_July_2025_-_June_2026.xlsx
+   "Leave Days Available" row -> entitlement; date-off cells -> records.
+   Everything below is editable in the UI and recalculates live.
+   ===================================================================== */
+const SEED_EMPLOYEES = [
+  { id:'patience', name:'Patience Takavadiyi',
+    entitlement:{ holiday:15, family:3, sick:7 },
+    records:[ {period:'13 Apr – 05 May 2026', days:15, type:'Holiday'} ] },
+
+  { id:'keagan', name:'Keagan Rudolph',
+    entitlement:{ holiday:15, family:3, sick:12 },
+    records:[
+      {period:'01 Aug 2025', days:1, type:'Sick'},
+      {period:'30 Mar – 07 Apr 2026', days:4, type:'Holiday'},
+      {period:'29 Jun 2026', days:1, type:'Holiday'}
+    ]},
+
+  { id:'vincent', name:'Vincent Kafula',
+    entitlement:{ holiday:16, family:3, sick:26 },
+    records:[
+      {period:'04–05 Aug 2025', days:2, type:'Holiday'},
+      {period:'13 Oct 2025', days:1, type:'Sick'},
+      {period:'15 Oct 2025', days:1, type:'Family'},
+      {period:'20 Oct 2025', days:1, type:'Family'},
+      {period:'27 Oct 2025', days:1, type:'Family'},
+      {period:'29 Oct 2025', days:1, type:'Family'},
+      {period:'30 Oct 2025', days:1, type:'Family'},
+      {period:'03 Nov 2025', days:1, type:'Family'},
+      {period:'05 Nov 2025', days:1, type:'Family'},
+      {period:'07–14 Nov 2025', days:6, type:'Holiday'},
+      {period:'18 Mar 2026', days:1, type:'Family'},
+      {period:'04 May 2026', days:1, type:'Holiday'}
+    ]},
+
+  { id:'taonga', name:'Taonga Kusure',
+    entitlement:{ holiday:15, family:3, sick:30 },
+    records:[
+      {period:'13 Apr – 03 May 2026', days:13, type:'Holiday'},
+      {period:'23 Jun 2026', days:1, type:'Holiday'}
+    ]},
+
+  { id:'larry', name:'Larry Seef',
+    entitlement:{ holiday:1.2, family:3, sick:13.18 },
+    records:[
+      {period:'Paid out', days:1.2, type:'Holiday'},
+      {period:'17 Jul 2025', days:1, type:'Sick'}
+    ]},
+
+  { id:'melanie', name:'Melanie de Bruyn',
+    entitlement:{ holiday:7.53, family:3, sick:12.01 },
+    records:[
+      {period:'18–20 Jul 2025', days:3, type:'Sick'},
+      {period:'27 Oct 2025', days:1, type:'Holiday'},
+      {period:'30 Oct 2025', days:1, type:'Holiday'}
+    ]},
+
+  { id:'charles', name:'Charles Kudzinesa',
+    entitlement:{ holiday:30.65, family:3, sick:20.38 },
+    records:[
+      {period:'04–24 Jul 2024', days:15, type:'Holiday'},
+      {period:'04–06 May 2026', days:3, type:'Holiday'}
+    ]},
+
+  { id:'collin', name:'Collin Pitzer',
+    entitlement:{ holiday:33.13, family:3, sick:12.67 },
+    records:[
+      {period:'28 Jul – 02 Aug 2025', days:6, type:'Holiday'},
+      {period:'04–08 Aug 2025', days:5, type:'Holiday'},
+      {period:'29 Oct 2025', days:1, type:'Holiday'},
+      {period:'12 Dec 2025', days:10, type:'Holiday'},
+      {period:'23 Dec 2025', days:1, type:'Holiday'}
+    ]},
+
+  { id:'charlotte', name:'Charlotte Januarie',
+    entitlement:{ holiday:12.08, family:8, sick:30 },
+    records:[
+      {period:'01–07 Jul 2025', days:5, type:'Sick'},
+      {period:'09–13 Jul 2025', days:3, type:'Sick'},
+      {period:'23–25 Jul 2025', days:3, type:'Sick'},
+      {period:'28–30 Jul 2025', days:3, type:'Sick'},
+      {period:'04 Aug 2025', days:1, type:'Sick'},
+      {period:'25 Aug 2025', days:1, type:'Sick'},
+      {period:'24 Sep 2025', days:1, type:'Sick'},
+      {period:'08 Oct 2025', days:1, type:'Sick'},
+      {period:'16 Oct 2025', days:1, type:'Sick'},
+      {period:'12–13 May 2026', days:2, type:'Sick'},
+      {period:'10–11 Jun 2026', days:2, type:'Sick'},
+      {period:'18 Jun 2026', days:1, type:'Sick'}
+    ]},
+
+  { id:'dawn', name:'Dawn Le Fleur',
+    entitlement:{ holiday:12.7, family:3, sick:15.43 },
+    records:[
+      {period:'05 Sep 2025', days:1, type:'Holiday'},
+      {period:'15–18 Nov 2025', days:4, type:'Holiday'},
+      {period:'25–26 Dec 2025', days:2, type:'Holiday'},
+      {period:'03–07 Apr 2026', days:4, type:'Holiday'},
+      {period:'08–09 Jun 2026', days:2, type:'Sick'},
+      {period:'26–30 Dec 2025', days:3, type:'Family'},
+      {period:'09 Jan 2026', days:1, type:'Family'},
+      {period:'21 Jan 2026', days:1, type:'Sick'},
+      {period:'29 Jan 2026', days:1, type:'Sick'},
+      {period:'10 Feb 2026', days:1, type:'Family'},
+      {period:'19 Feb 2026', days:2, type:'Sick'},
+      {period:'16 Apr 2026', days:1, type:'Family'},
+      {period:'20–21 Apr 2026', days:2, type:'Sick'},
+      {period:'22 Apr 2026', days:1, type:'Family'},
+      {period:'19–20 May 2026', days:2, type:'Sick'},
+      {period:'15–16 Jun 2026', days:2, type:'Family'}
+    ]}
+];
+
+let employees = structuredClone(SEED_EMPLOYEES);
+let activeId = null;
+
+function usedFor(emp, type){
+  return emp.records.filter(r=>r.type===type).reduce((s,r)=>s+(parseFloat(r.days)||0), 0);
+}
+function remainingFor(emp, type){
+  return (emp.entitlement[type.toLowerCase()] || 0) - usedFor(emp, type);
+}
+function fmt(n){
+  const v = Math.round(n*100)/100;
+  return (v % 1 === 0) ? String(v) : v.toFixed(2);
+}
+
+/* ---------------- Stat tiles ---------------- */
+function renderTiles(){
+  const totalHoliday = employees.reduce((s,e)=>s+remainingFor(e,'Holiday'),0);
+  const totalFamily  = employees.reduce((s,e)=>s+remainingFor(e,'Family'),0);
+  const totalSick    = employees.reduce((s,e)=>s+remainingFor(e,'Sick'),0);
+  const tiles = [
+    { label:'Employees', value: employees.length, warn:false },
+    { label:'Holiday days left (all staff)', value: fmt(totalHoliday), warn: totalHoliday<0 },
+    { label:'Family days left (all staff)', value: fmt(totalFamily), warn: totalFamily<0 },
+    { label:'Sick days left (all staff)', value: fmt(totalSick), warn: totalSick<0 },
+  ];
+  document.getElementById('statTiles').innerHTML = tiles.map(t=>`
+    <div class="tile">
+      <div class="t-label">${t.label}</div>
+      <div class="t-value ${t.warn?'warn':''}">${t.value}</div>
+    </div>`).join('');
+}
+
+/* ---------------- Balance table ---------------- */
+function renderBalanceTable(){
+  const body = document.getElementById('balTableBody');
+  body.innerHTML = employees.map(e=>{
+    const hU=usedFor(e,'Holiday'), hA=e.entitlement.holiday, hR=remainingFor(e,'Holiday');
+    const fU=usedFor(e,'Family'),  fA=e.entitlement.family,  fR=remainingFor(e,'Family');
+    const sU=usedFor(e,'Sick'),    sA=e.entitlement.sick,    sR=remainingFor(e,'Sick');
+    const cls = e.id===activeId ? 'active' : '';
+    const neg = v => v<0 ? 'neg' : '';
+    return `<tr class="${cls}" data-id="${e.id}">
+      <td class="name">${e.name}</td>
+      <td class="grp-holiday">${fmt(hU)}</td><td>${fmt(hA)}</td><td class="${neg(hR)}">${fmt(hR)}</td>
+      <td class="grp-family">${fmt(fU)}</td><td>${fmt(fA)}</td><td class="${neg(fR)}">${fmt(fR)}</td>
+      <td class="grp-sick">${fmt(sU)}</td><td>${fmt(sA)}</td><td class="${neg(sR)}">${fmt(sR)}</td>
+    </tr>`;
+  }).join('');
+
+  body.querySelectorAll('td.name').forEach(td=>{
+    td.addEventListener('click', ()=> openDetail(td.parentElement.dataset.id));
+  });
+}
+
+/* ---------------- Employee detail panel ---------------- */
+function openDetail(id){
+  activeId = id;
+  const emp = employees.find(e=>e.id===id);
+  if(!emp) return;
+  document.getElementById('detailPanel').classList.add('open');
+  document.getElementById('detailName').textContent = emp.name;
+  document.getElementById('entHoliday').value = emp.entitlement.holiday;
+  document.getElementById('entFamily').value = emp.entitlement.family;
+  document.getElementById('entSick').value = emp.entitlement.sick;
+  renderRecords(emp);
+  renderBalanceTable();
+  document.getElementById('detailPanel').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function renderRecords(emp){
+  const body = document.getElementById('recordsBody');
+  body.innerHTML = emp.records.map((r,i)=>`
+    <tr>
+      <td>${r.period}</td>
+      <td>${fmt(r.days)}</td>
+      <td><span class="tag ${r.type}">${r.type}</span></td>
+      <td><button class="rm-btn" data-i="${i}">Remove</button></td>
+    </tr>`).join('') || `<tr><td colspan="4" style="color:var(--slate);">No leave recorded yet.</td></tr>`;
+
+  body.querySelectorAll('.rm-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      emp.records.splice(parseInt(btn.dataset.i,10), 1);
+      renderRecords(emp);
+      renderBalanceTable();
+      renderTiles();
+    });
+  });
+}
+
+['entHoliday','entFamily','entSick'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', ()=>{
+    const emp = employees.find(e=>e.id===activeId);
+    if(!emp) return;
+    emp.entitlement.holiday = parseFloat(document.getElementById('entHoliday').value) || 0;
+    emp.entitlement.family  = parseFloat(document.getElementById('entFamily').value) || 0;
+    emp.entitlement.sick    = parseFloat(document.getElementById('entSick').value) || 0;
+    renderBalanceTable();
+    renderTiles();
+  });
+});
+
+document.getElementById('addRecordBtn').addEventListener('click', ()=>{
+  const emp = employees.find(e=>e.id===activeId);
+  if(!emp) return;
+  const form = document.querySelector('.add-record-row');
+  const period = form.querySelector('[name="period"]').value.trim();
+  const days = parseFloat(form.querySelector('[name="days"]').value);
+  const type = form.querySelector('[name="type"]').value;
+  if(!period || !days){ return; }
+  emp.records.push({ period, days, type });
+  form.querySelector('[name="period"]').value = '';
+  form.querySelector('[name="days"]').value = '';
+  renderRecords(emp);
+  renderBalanceTable();
+  renderTiles();
+});
+
+document.getElementById('closeDetailBtn').addEventListener('click', ()=>{
+  activeId = null;
+  document.getElementById('detailPanel').classList.remove('open');
+  renderBalanceTable();
+});
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  employees = structuredClone(SEED_EMPLOYEES);
+  activeId = null;
+  document.getElementById('detailPanel').classList.remove('open');
+  renderTiles();
+  renderBalanceTable();
+});
+
+document.getElementById('refNo').textContent =
+  'LV-' + new Date().getFullYear() + '-' + Math.floor(1000 + Math.random()*9000);
+
+renderTiles();
+renderBalanceTable();
+
+/* ---------------- Real map: Leaflet + OpenStreetMap tiles ---------------- */
+let map, marker;
+const DEFAULT_CENTER = [-33.9249, 18.4241]; // Cape Town, sensible fallback centre
+
+function initMap(){
+  map = L.map('depotMap', { attributionControl: true }).setView(DEFAULT_CENTER, 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+  map.on('click', (e)=> placeMarker(e.latlng.lat, e.latlng.lng, true));
+}
+
+function placeMarker(lat, lng, fromClick){
+  if(marker) marker.remove();
+  marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+  marker.on('dragend', ()=>{ const p = marker.getLatLng(); updateCoords(p.lat, p.lng); });
+  map.setView([lat, lng], 15);
+  updateCoords(lat, lng);
+  if(fromClick) setStatus('Pin dropped. Drag it to fine-tune, or type an address above.');
+}
+
+function updateCoords(lat, lng){
+  document.getElementById('siteLat').textContent = lat.toFixed(6);
+  document.getElementById('siteLng').textContent = lng.toFixed(6);
+}
+
+function setStatus(msg, isError){
+  const el = document.getElementById('siteStatus');
+  el.textContent = msg || '';
+  el.style.color = isError ? 'var(--coral-d)' : 'var(--slate)';
+}
+
+/* Free geocoding via OpenStreetMap's Nominatim (no API key). Fine for
+   occasional lookups; swap for a hosted Nominatim instance or a commercial
+   geocoder if this runs at volume. */
+async function handleGeocode(){
+  const query = document.getElementById('siteAddress').value.trim();
+  if(!query){ setStatus('Type an address first.', true); return; }
+  const btn = document.getElementById('locateBtn');
+  btn.disabled = true;
+  setStatus('Looking up address…');
+  try{
+    const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(query);
+    const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if(!res.ok) throw new Error('Lookup failed');
+    const data = await res.json();
+    if(!data.length){ setStatus('No match found — try adding a suburb or city.', true); return; }
+    const { lat, lon, display_name } = data[0];
+    placeMarker(parseFloat(lat), parseFloat(lon), false);
+    setStatus('Located: ' + display_name);
+  }catch(err){
+    setStatus('Could not reach the map service. Check your connection or drop a pin manually.', true);
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+document.getElementById('locateBtn').addEventListener('click', handleGeocode);
+document.getElementById('siteAddress').addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter'){ e.preventDefault(); handleGeocode(); }
+});
+
+window.addEventListener('DOMContentLoaded', initMap);
+
+/* ---------------- Print ---------------- */
+document.getElementById('printBtn').addEventListener('click', ()=>window.print());
+
+/* ---------------- Excel export (SheetJS) ---------------- */
+document.getElementById('excelBtn').addEventListener('click', ()=>{
+  const wb = XLSX.utils.book_new();
+
+  const balanceSheet = [
+    ['Name & surname','Holiday used','Holiday available','Holiday left',
+     'Family used','Family available','Family left',
+     'Sick used','Sick available','Sick left']
+  ];
+  employees.forEach(e=>{
+    balanceSheet.push([
+      e.name,
+      usedFor(e,'Holiday'), e.entitlement.holiday, remainingFor(e,'Holiday'),
+      usedFor(e,'Family'), e.entitlement.family, remainingFor(e,'Family'),
+      usedFor(e,'Sick'), e.entitlement.sick, remainingFor(e,'Sick'),
+    ]);
+  });
+  const ws1 = XLSX.utils.aoa_to_sheet(balanceSheet);
+  ws1['!cols'] = [{wch:22},{wch:12},{wch:14},{wch:10},{wch:12},{wch:14},{wch:10},{wch:10},{wch:14},{wch:10}];
+
+  const recordsSheet = [['Name & surname','Day & date off','Days','Type']];
+  employees.forEach(e=> e.records.forEach(r=> recordsSheet.push([e.name, r.period, r.days, r.type])));
+  const ws2 = XLSX.utils.aoa_to_sheet(recordsSheet);
+  ws2['!cols'] = [{wch:22},{wch:26},{wch:8},{wch:10}];
+
+  const depotSheet = [
+    ['Field','Value'],
+    ['Address', document.getElementById('siteAddress').value],
+    ['Latitude', document.getElementById('siteLat').textContent],
+    ['Longitude', document.getElementById('siteLng').textContent],
+  ];
+  const ws3 = XLSX.utils.aoa_to_sheet(depotSheet);
+  ws3['!cols'] = [{wch:14},{wch:34}];
+
+  XLSX.utils.book_append_sheet(wb, ws1, 'Leave Balances');
+  XLSX.utils.book_append_sheet(wb, ws2, 'Leave Records');
+  XLSX.utils.book_append_sheet(wb, ws3, 'Depot Location');
+
+  XLSX.writeFile(wb, 'opruim-leave-register-' + document.getElementById('refNo').textContent + '.xlsx');
+});
+
+/* ---------------- PDF export (html2canvas + jsPDF) ---------------- */
+document.getElementById('pdfBtn').addEventListener('click', async ()=>{
+  const btn = document.getElementById('pdfBtn');
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Rendering…';
+
+  try{
+    const target = document.getElementById('captureArea');
+    const canvas = await html2canvas(target, {
+      backgroundColor: '#F4F0E4',
+      scale: Math.min(2, window.devicePixelRatio || 1.5),
+      useCORS: true
+    });
+    const imgData = canvas.toDataURL('image/png');
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 24;
+    const usableWidth = pageWidth - margin * 2;
+    const imgRatio = canvas.height / canvas.width;
+    let imgWidth = usableWidth;
+    let imgHeight = imgWidth * imgRatio;
+
+    if(imgHeight <= pageHeight - margin * 2){
+      pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
+    } else {
+      let heightLeft = canvas.height;
+      let position = 0;
+      const pageCanvasHeight = ((pageHeight - margin * 2) / imgWidth) * canvas.width;
+
+      while(heightLeft > 0){
+        const sliceCanvas = document.createElement('canvas');
+        sliceCanvas.width = canvas.width;
+        sliceCanvas.height = Math.min(pageCanvasHeight, heightLeft);
+        const ctx = sliceCanvas.getContext('2d');
+        ctx.drawImage(canvas, 0, position, canvas.width, sliceCanvas.height, 0, 0, canvas.width, sliceCanvas.height);
+        const sliceData = sliceCanvas.toDataURL('image/png');
+        const sliceHeightPt = (sliceCanvas.height / canvas.width) * imgWidth;
+
+        if(position > 0) pdf.addPage();
+        pdf.addImage(sliceData, 'PNG', margin, margin, imgWidth, sliceHeightPt);
+
+        heightLeft -= sliceCanvas.height;
+        position += sliceCanvas.height;
+      }
+    }
+
+    pdf.save('opruim-leave-register-' + document.getElementById('refNo').textContent + '.pdf');
+  }catch(err){
+    alert('Could not generate the PDF: ' + err.message);
+  }finally{
+    btn.disabled = false;
+    btn.textContent = original;
+  }
+});
+</script>
+</body>
+</html>

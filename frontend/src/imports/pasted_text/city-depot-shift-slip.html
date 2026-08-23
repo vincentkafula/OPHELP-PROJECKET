@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>City Depot Shift Slip</title>
+<style>
+  :root{
+    --navy:#173B73;
+    --navy-dark:#102a54;
+    --green:#3E7D3E;
+    --green-light:#E7F0E4;
+    --blue-light:#E4EEF7;
+    --blue-mid:#5B95BE;
+    --orange:#E07B39;
+    --orange-light:#FDF3E3;
+    --purple:#6B4A7A;
+    --purple-light:#EFE3F2;
+    --teal:#3F8F6F;
+    --teal-light:#E4F3ED;
+    --line:#B9C7DA;
+    --paper:#FFFFFF;
+    --ink:#16233F;
+    --muted:#6B7686;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#EDF1F6;
+    font-family:'Segoe UI', Arial, sans-serif;
+    color:var(--ink);
+    padding:24px 12px 60px;
+  }
+  .sheet{
+    max-width:840px;
+    margin:0 auto;
+    background:var(--paper);
+    border:3px solid var(--navy);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  input, textarea{
+    font-family:inherit;
+    font-size:13px;
+    color:var(--ink);
+    border:none;
+    background:transparent;
+    width:100%;
+    outline:none;
+    padding:5px 6px;
+  }
+  input:focus, textarea:focus{ background:#FFF7D6; }
+  input::placeholder{ color:#B7BFCC; font-style:italic; }
+
+  /* ===== Header ===== */
+  .title{
+    text-align:center; padding:16px 10px 10px; border-bottom:2px solid var(--navy);
+    font-size:24px; font-weight:800; color:var(--navy); text-decoration:underline;
+    letter-spacing:0.3px;
+  }
+
+  .meta-row{ display:flex; border-bottom:2px solid var(--navy); }
+  .meta-cell{ flex:1; display:flex; align-items:center; gap:8px; padding:10px 16px; border-right:2px solid var(--navy); }
+  .meta-cell:last-child{ border-right:none; }
+  .meta-cell label{ font-weight:800; font-size:14px; color:var(--navy); white-space:nowrap; }
+  .meta-cell input{ font-weight:700; border-bottom:1px solid var(--line); }
+
+  .field-block{ padding:12px 16px; border-bottom:3px solid var(--navy); }
+  .field-line{ display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .field-line:last-child{ margin-bottom:0; }
+  .field-line label{ font-weight:800; font-size:14px; color:var(--navy); min-width:88px; }
+  .field-line input{ font-weight:700; }
+  .field-line.foreman input{
+    border:1.5px solid var(--line); border-radius:3px; padding:8px 10px; background:var(--blue-light);
+  }
+  .field-line.area input, .field-line.workers input{ border-bottom:1.5px solid var(--line); }
+
+  /* ===== Equipment table ===== */
+  table.equip{ width:100%; border-collapse:collapse; table-layout:fixed; }
+  table.equip th, table.equip td{ border:1px solid var(--line); padding:0; vertical-align:middle; }
+  th.col-equip{
+    background:var(--navy); color:#fff; text-align:left; font-size:16px; font-weight:800;
+    padding:12px 10px; width:32%;
+  }
+  th.col-equip .arrow{ font-weight:400; font-size:15px; margin-left:6px; }
+  th.rot{
+    writing-mode:vertical-rl; text-align:center;
+    font-size:10.5px; font-weight:700; padding:8px 2px; color:#fff; width:11.3%;
+  }
+  th.rot.request{ background:var(--green); }
+  th.rot.supplied{ background:var(--green); }
+  th.rot.signed1{ background:var(--blue-mid); }
+  th.rot.returned{ background:var(--orange); }
+  th.rot.signed2{ background:var(--blue-mid); }
+  th.rot.consumption{ background:var(--purple); }
+
+  td.equip-cell input{ padding:8px 12px; font-size:13.5px; }
+  table.equip td input{ text-align:center; }
+  table.equip tbody tr:nth-child(even){ background:#F8FAFC; }
+
+  tr.consumables-row td.equip-cell{
+    background:var(--purple-light); font-weight:800; color:var(--purple); font-size:16px;
+  }
+  tr.consumables-row td.equip-cell .arrow{ font-weight:400; font-size:14px; margin-left:6px; }
+  tr.consumables-row{ border-top:3px solid var(--navy); }
+
+  .row-controls{ padding:10px 16px; background:#F2F5F9; display:flex; gap:10px; }
+  button.add{
+    border:1.5px dashed var(--navy); background:#fff; color:var(--navy); font-weight:700;
+    font-size:12px; padding:6px 12px; border-radius:5px; cursor:pointer;
+  }
+  button.add:hover{ background:var(--blue-light); }
+
+  .footer-actions{ display:flex; justify-content:flex-end; gap:10px; padding:16px 4px 0; max-width:840px; margin:0 auto; }
+  .footer-actions button{ border:none; border-radius:6px; padding:10px 18px; font-weight:700; font-size:13px; cursor:pointer; }
+  .btn-export{ background:var(--navy); color:#fff; }
+  .btn-print{ background:#fff; color:var(--navy); border:2px solid var(--navy) !important; }
+  .btn-reset{ background:#fff; color:#B23A3A; border:2px solid #B23A3A !important; }
+
+  @media print{
+    body{ background:#fff; padding:0; }
+    .footer-actions, .row-controls{ display:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <div class="title">CITY DEPOT: Shift Slip</div>
+
+  <div class="meta-row">
+    <div class="meta-cell"><label>Day:</label><input id="f-day" placeholder="e.g. Monday" /></div>
+    <div class="meta-cell"><label>Date:</label><input type="date" id="f-date" /></div>
+    <div class="meta-cell" style="border-right:none;"><label>Time:</label><input id="f-time" placeholder="e.g. 08:00-12:00" /></div>
+  </div>
+
+  <div class="field-block">
+    <div class="field-line foreman">
+      <label>Foreman:</label>
+      <input id="f-foreman" placeholder="Foreman name" />
+    </div>
+    <div class="field-line area">
+      <label>Area:</label>
+      <input id="f-area" placeholder="Deployment area" />
+    </div>
+    <div class="field-line workers">
+      <label>Workers:</label>
+      <input id="f-workers" placeholder="Worker names" />
+    </div>
+  </div>
+
+  <table class="equip">
+    <thead>
+      <tr>
+        <th class="col-equip">Equipment <span class="arrow">&#8595;</span></th>
+        <th class="rot request">Request</th>
+        <th class="rot supplied">Supplied</th>
+        <th class="rot signed1">Signed</th>
+        <th class="rot returned">Returned</th>
+        <th class="rot signed2">Signed</th>
+        <th class="rot consumption">Consumption</th>
+      </tr>
+    </thead>
+    <tbody id="equip-body">
+      <tr>
+        <td class="equip-cell"><input value="Bibs (Foreman)" /></td>
+        <td><input /></td><td><input /></td><td><input /></td><td><input /></td><td><input /></td><td><input /></td>
+      </tr>
+      <tr>
+        <td class="equip-cell"><input value="Bibs (1st Team)" /></td>
+        <td><input /></td><td><input /></td><td><input /></td><td><input /></td><td><input /></td><td><input /></td>
+      </tr>
+      <tr>
+        <td class="equip-cell"><input value="Bibs (Workers)" /></td>
+        <td><input /></td><td><input /></td><td><input /></td><td><input /></td><td><input /></td><td><input /></td>
+      </tr>
+    </tbody>
+    <tbody id="blank-body"></tbody>
+    <tbody>
+      <tr class="consumables-row">
+        <td class="equip-cell"><span>Consumables</span> <span class="arrow">&#8593;</span></td>
+        <td><input /></td><td><input /></td><td><input /></td><td><input /></td><td><input /></td><td><input /></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="row-controls">
+    <button class="add" onclick="addBlankRow()">+ Add equipment row</button>
+  </div>
+
+</div>
+
+<div class="footer-actions">
+  <button class="btn-reset" onclick="resetForm()">Clear form</button>
+  <button class="btn-print" onclick="window.print()">Print</button>
+  <button class="btn-export" onclick="exportData()">Export JSON</button>
+</div>
+
+<script>
+  function blankRowHTML(){
+    return `<tr>
+      <td class="equip-cell"><input placeholder="Item" /></td>
+      <td><input /></td><td><input /></td><td><input /></td><td><input /></td><td><input /></td><td><input /></td>
+    </tr>`;
+  }
+  function addBlankRow(){
+    document.getElementById('blank-body').insertAdjacentHTML('beforeend', blankRowHTML());
+  }
+  for(let i=0;i<14;i++) addBlankRow();
+
+  function rowData(tr){
+    const inputs = tr.querySelectorAll('input');
+    return {
+      item: inputs[0].value,
+      request: inputs[1].value,
+      supplied: inputs[2].value,
+      signed1: inputs[3].value,
+      returned: inputs[4].value,
+      signed2: inputs[5].value,
+      consumption: inputs[6].value
+    };
+  }
+
+  function exportData(){
+    const data = { meta:{}, equipmentRows:[], consumables:null };
+
+    document.querySelectorAll('[id^="f-"]').forEach(el => data.meta[el.id.replace('f-','')] = el.value);
+
+    document.querySelectorAll('#equip-body tr, #blank-body tr').forEach(tr => {
+      data.equipmentRows.push(rowData(tr));
+    });
+    const consRow = document.querySelector('tr.consumables-row');
+    if(consRow) data.consumables = rowData(consRow);
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `shift-slip-${data.meta.date || 'export'}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function resetForm(){
+    if(!confirm('Clear all entered data on this shift slip?')) return;
+    document.querySelectorAll('input').forEach(inp => inp.value = '');
+    document.getElementById('equip-body').querySelectorAll('input').forEach((inp,i)=>{
+      if(i===0) inp.value='Bibs (Foreman)';
+      if(i===7) inp.value='Bibs (1st Team)';
+      if(i===14) inp.value='Bibs (Workers)';
+    });
+    document.getElementById('blank-body').innerHTML = '';
+    for(let i=0;i<14;i++) addBlankRow();
+  }
+</script>
+
+</body>
+</html>

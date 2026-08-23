@@ -1,0 +1,5 @@
+# Pins the Node version Railway's Nixpacks builder uses. Build and start
+# commands are driven by railway.json (buildCommand/startCommand), which in
+# turn call the scripts in the root package.json.
+[phases.setup]
+nixPkgs = ["nodejs_20"]

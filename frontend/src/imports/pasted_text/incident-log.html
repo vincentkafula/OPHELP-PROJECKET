@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day Admin — Incident Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F3EC;
+    --paper-dim:#EFEBDF;
+    --card:#FFFFFF;
+    --ink:#1B211F;
+    --ink-soft:#4A5250;
+    --slate:#767F7C;
+    --line:#DDD6C4;
+    --teal:#1F4A43;
+    --teal-deep:#122E29;
+    --teal-mid:#2B5F56;
+    --amber:#E2A33B;
+    --amber-deep:#B67B1E;
+    --brick:#A8452F;
+    --moss:#3F7856;
+    --radius:10px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans', sans-serif; font-size:14px; line-height:1.55; }
+  h1,h2,h3, .display{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:pointer; border:none; background:none; }
+
+  .shell{ display:grid; grid-template-columns:232px 1fr; min-height:100vh; }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar{ background:var(--teal-deep); color:#EDEBE2; padding:24px 18px; display:flex; flex-direction:column; gap:28px; }
+  .brand{ display:flex; align-items:center; gap:10px; padding:0 4px; }
+  .brand-mark{ width:34px; height:34px; border-radius:8px; background:var(--amber); display:flex; align-items:center; justify-content:center; color:var(--teal-deep); font-weight:700; font-family:'Space Grotesk',sans-serif; font-size:15px; flex-shrink:0; }
+  .brand-text{ line-height:1.2; }
+  .brand-text .b1{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14.5px; color:#fff; }
+  .brand-text .b2{ font-size:10.5px; color:#9DB0AB; text-transform:uppercase; letter-spacing:.08em; }
+  .nav-group{ display:flex; flex-direction:column; gap:2px; }
+  .nav-label{ font-size:10.5px; text-transform:uppercase; letter-spacing:.1em; color:#7C9691; padding:0 10px 8px; }
+  .nav-item{ display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:7px; font-size:13.5px; color:#C9D6D1; transition:background .15s ease, color .15s ease; }
+  .nav-item:hover{ background:rgba(255,255,255,.05); color:#fff; }
+  .nav-item.active{ background:var(--teal-mid); color:#fff; font-weight:500; }
+  .nav-dot{ width:6px; height:6px; border-radius:50%; background:currentColor; opacity:.6; flex-shrink:0; }
+  .sidebar-foot{ margin-top:auto; border-top:1px solid rgba(255,255,255,.08); padding-top:16px; font-size:12px; color:#7C9691; }
+  .admin-card{ display:flex; align-items:center; gap:10px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:9px; padding:10px; }
+  .avatar{ width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, var(--amber), var(--amber-deep)); display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:12.5px; color:var(--teal-deep); flex-shrink:0; }
+  .admin-name{ color:#fff; font-size:12.5px; font-weight:500; }
+  .admin-role{ color:#8FA6A0; font-size:11px; }
+
+  /* ===== MAIN ===== */
+  .main{ padding:26px 34px 60px; max-width:1180px; }
+
+  .topbar{ display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; gap:20px; flex-wrap:wrap; }
+  .topbar h1{ font-size:24px; font-weight:600; }
+  .topbar .sub{ color:var(--slate); font-size:13px; margin-top:4px; }
+  .topbar-actions{ display:flex; gap:10px; align-items:center; }
+  .pill{ display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border-radius:999px; font-size:12px; font-weight:500; border:1px solid var(--line); background:var(--card); color:var(--ink-soft); }
+  .pill.batch{ background:var(--teal); color:#fff; border-color:var(--teal); }
+  .pill .dot{ width:6px; height:6px; border-radius:50%; background:var(--amber); }
+  .btn-primary{ padding:9px 16px; border-radius:8px; background:var(--ink); color:#fff; font-size:13px; font-weight:500; }
+
+  /* ===== STAT CARDS ===== */
+  .stat-grid{ display:grid; grid-template-columns:repeat(5, 1fr); gap:14px; margin-bottom:22px; }
+  .stat-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:16px 16px 14px; position:relative; overflow:hidden; }
+  .stat-card .label{ font-size:11px; color:var(--slate); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; }
+  .stat-card .value{ font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:600; }
+  .stat-card .delta{ font-size:11.5px; margin-top:6px; color:var(--slate); }
+  .stat-card.warn{ border-color:var(--brick); }
+  .stat-card.warn::after{ content:""; position:absolute; top:0; left:0; right:0; height:3px; background:var(--brick); }
+
+  /* ===== DAY SELECTOR ===== */
+  .selector-row{ display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:16px; flex-wrap:wrap; }
+  .week-strip{ display:flex; gap:6px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:5px; overflow-x:auto; }
+  .day-btn{ display:flex; flex-direction:column; align-items:center; gap:2px; padding:8px 14px; border-radius:8px; min-width:66px; flex-shrink:0; }
+  .day-btn .d{ font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--slate); font-weight:600; }
+  .day-btn .n{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink); }
+  .day-btn .cnt{ font-size:10px; color:var(--slate); margin-top:1px; }
+  .day-btn.active{ background:var(--teal); }
+  .day-btn.active .d{ color:#BFD4CE; }
+  .day-btn.active .n{ color:#fff; }
+  .day-btn.active .cnt{ color:var(--amber); }
+  .day-btn:hover:not(.active){ background:var(--paper-dim); }
+
+  /* ===== CATEGORY FILTER ===== */
+  .filter-row{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+  .chip{ padding:6px 13px; border-radius:999px; border:1px solid var(--line); background:var(--card); font-size:12px; font-weight:500; color:var(--ink-soft); }
+  .chip.active{ background:var(--ink); color:#fff; border-color:var(--ink); }
+
+  /* ===== DAY HEADER ===== */
+  .day-header{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:14px 18px; margin-bottom:18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+  .day-header .title{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; }
+  .day-header .roles{ display:flex; gap:8px; flex-wrap:wrap; }
+  .role-tag{ font-size:11.5px; padding:4px 10px; border-radius:999px; background:var(--paper-dim); color:var(--ink-soft); }
+  .role-tag b{ color:var(--teal); }
+
+  /* ===== NO-SHOW STRIP ===== */
+  .noshow-strip{ margin-bottom:18px; }
+  .noshow-strip .lbl{ font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--slate); margin-bottom:8px; }
+  .noshow-table{ width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .noshow-table th{ text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--slate); font-weight:600; padding:9px 14px; background:var(--paper-dim); border-bottom:1px solid var(--line); }
+  .noshow-table td{ padding:9px 14px; font-size:13px; border-bottom:1px solid var(--line); }
+  .noshow-table tr:last-child td{ border-bottom:none; }
+  .check{ color:var(--moss); font-weight:700; }
+  .noshow-empty{ padding:16px 18px; font-size:12.5px; color:var(--slate); background:var(--card); border:1px dashed var(--line); border-radius:var(--radius); }
+
+  /* ===== INCIDENT CARDS ===== */
+  .incident-list{ display:flex; flex-direction:column; gap:12px; }
+  .incident-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; border-left:4px solid var(--line); }
+  .incident-card.cat-shift{ border-left-color:var(--slate); }
+  .incident-card.cat-debt{ border-left-color:var(--brick); }
+  .incident-card.cat-reward{ border-left-color:var(--moss); }
+  .incident-card.cat-safety{ border-left-color:var(--brick); background:#FBF3F1; }
+  .incident-card.cat-maintenance{ border-left-color:var(--teal-mid); }
+  .incident-card.cat-admin{ border-left-color:var(--amber); }
+  .incident-card.cat-meeting{ border-left-color:var(--teal); }
+  .incident-card.cat-donation{ border-left-color:var(--moss); }
+  .incident-card.cat-loss{ border-left-color:var(--brick); }
+
+  .incident-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:8px; }
+  .incident-title-wrap{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .incident-serial{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--slate); }
+  .incident-title{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; }
+  .cat-badge{ font-size:10.5px; font-weight:600; padding:3px 9px; border-radius:999px; white-space:nowrap; text-transform:uppercase; letter-spacing:.03em; }
+  .cat-badge.cat-shift{ background:rgba(118,127,124,.12); color:var(--slate); }
+  .cat-badge.cat-debt{ background:rgba(168,69,47,.1); color:var(--brick); }
+  .cat-badge.cat-reward{ background:rgba(63,120,86,.1); color:var(--moss); }
+  .cat-badge.cat-safety{ background:rgba(168,69,47,.15); color:var(--brick); }
+  .cat-badge.cat-maintenance{ background:rgba(43,95,86,.1); color:var(--teal-mid); }
+  .cat-badge.cat-admin{ background:rgba(226,163,59,.15); color:var(--amber-deep); }
+  .cat-badge.cat-meeting{ background:rgba(31,74,67,.1); color:var(--teal); }
+  .cat-badge.cat-donation{ background:rgba(63,120,86,.1); color:var(--moss); }
+  .cat-badge.cat-loss{ background:rgba(168,69,47,.1); color:var(--brick); }
+
+  .incident-detail{ font-size:13px; color:var(--ink-soft); margin-bottom:10px; }
+  .incident-meta-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .resolution-box{ background:var(--paper-dim); border-radius:8px; padding:10px 12px; font-size:12.5px; margin-top:8px; }
+  .resolution-box .lbl{ font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--slate); font-weight:600; margin-bottom:3px; }
+  .reported-by{ font-size:11.5px; color:var(--slate); }
+  .reported-by b{ color:var(--ink-soft); }
+
+  .empty-day{ background:var(--card); border:1px dashed var(--line); border-radius:var(--radius); padding:40px 20px; text-align:center; color:var(--slate); }
+  .empty-day .big{ font-family:'Space Grotesk',sans-serif; font-size:14.5px; color:var(--ink-soft); font-weight:600; margin-bottom:4px; }
+
+  @media (max-width: 980px){
+    .shell{ grid-template-columns:1fr; }
+    .sidebar{ display:none; }
+    .stat-grid{ grid-template-columns:repeat(2,1fr); }
+    .main{ padding:20px; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">CD</div>
+      <div class="brand-text"><div class="b1">City Depot</div><div class="b2">Day Ops Ledger</div></div>
+    </div>
+    <nav class="nav-group">
+      <div class="nav-label">Operations</div>
+      <a class="nav-item"><span class="nav-dot"></span> Daily Summary</a>
+      <a class="nav-item"><span class="nav-dot"></span> Shift Ledger</a>
+      <a class="nav-item"><span class="nav-dot"></span> Petty Cash</a>
+      <a class="nav-item"><span class="nav-dot"></span> Debt Register</a>
+      <a class="nav-item active"><span class="nav-dot"></span> Incident Log</a>
+    </nav>
+    <nav class="nav-group">
+      <div class="nav-label">Records</div>
+      <a class="nav-item"><span class="nav-dot"></span> City Shifts</a>
+      <a class="nav-item"><span class="nav-dot"></span> Foreman Roster</a>
+      <a class="nav-item"><span class="nav-dot"></span> Archive</a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="admin-card">
+        <div class="avatar" id="sidebarAvatar">—</div>
+        <div>
+          <div class="admin-name" id="sidebarName">—</div>
+          <div class="admin-role">Day Administrator</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="topbar">
+      <div>
+        <h1>City Depot Incident Log</h1>
+        <div class="sub">01 – 07 August 2026 · Weekly operations record</div>
+      </div>
+      <div class="topbar-actions">
+        <span class="pill batch"><span class="dot"></span> 7-day log</span>
+        <button class="btn-primary">Export Weekly Log</button>
+      </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="stat-grid" id="statGrid"></div>
+
+    <!-- DAY SELECTOR -->
+    <div class="selector-row">
+      <div class="week-strip" id="weekStrip"></div>
+    </div>
+
+    <!-- CATEGORY FILTER -->
+    <div class="filter-row" id="filterRow"></div>
+
+    <!-- DAY HEADER -->
+    <div class="day-header" id="dayHeader"></div>
+
+    <!-- NO-SHOW STRIP -->
+    <div class="noshow-strip">
+      <div class="lbl">Failed to turn up for booked shift</div>
+      <div id="noshowContent"></div>
+    </div>
+
+    <!-- INCIDENT LIST -->
+    <div class="incident-list" id="incidentList"></div>
+
+  </main>
+</div>
+
+<script>
+/* ===== DATA MODEL =====
+   Transcribed from City_Depot_Incident_Log_from_01_August_to_07_August_2026.docx.
+   The Tuesday School Management Meeting minutes (very long in the source) are
+   condensed to its key resolutions here rather than reproduced in full. */
+
+const categories = {
+  shift:       { label:'Staffing Gap' },
+  debt:        { label:'Bill of Debt' },
+  loss:        { label:'Lost / Missing Item' },
+  reward:      { label:'Reward Claim' },
+  safety:      { label:'Safety Incident' },
+  maintenance: { label:'Maintenance' },
+  admin:       { label:'Admin Note' },
+  meeting:     { label:'Meeting Minutes' },
+  donation:    { label:'Donation' },
+};
+
+const week = [
+  { key:'sat', d:'Sat', date:'01 Aug', admin:'Taonga', ops:'—' },
+  { key:'sun', d:'Sun', date:'02 Aug', admin:'—', ops:'—' },
+  { key:'mon', d:'Mon', date:'03 Aug', admin:'Fanelo', ops:'Collin, Charles, Petrus' },
+  { key:'tue', d:'Tue', date:'04 Aug', admin:'Bernard', ops:'Petrus, Collin, Charles' },
+  { key:'wed', d:'Wed', date:'05 Aug', admin:'Fanelo', ops:'Charles, Petrus, Collin' },
+  { key:'thu', d:'Thu', date:'06 Aug', admin:'Bernard', ops:'Coolin, Petrus, Dawn le Fleur' },
+  { key:'fri', d:'Fri', date:'07 Aug', admin:'Fanelo', ops:'Collin, Petrus, Dawn' },
+];
+
+const noShows = {
+  sat: [{ name:'Rene Petzer', role:'Worker', session:'Morning', booked:true }],
+  sun: [{ name:'Ashton Bosch', role:'Foreman', session:'Afternoon', booked:true }],
+  mon: [{ name:'Meleney', role:'Worker', session:'Morning', booked:true }],
+  tue: [{ name:'Vukile', role:'Worker', session:'Morning', booked:true }],
+  wed: [],
+  thu: [],
+  fri: [],
+};
+
+const incidents = {
+  sat: [
+    { serial:'4717', cat:'debt', title:'Outstanding bills of debt updated', detail:'Two debtors on the register: Mama Mafia owes R60 of R90 (missing item slip, no. 145) — saving from ready cash, R30 saved so far. Ryan Thomas owes R25.22 of R25.22 (Incident 4695 / MIS 162) — disqualified from participating until settled.', resolution:'Register total outstanding: R85.22 of R115.22 issued.', by:'Day Admin' },
+    { serial:'4717', cat:'admin', title:'Admin computer stopped working', detail:'The Day Admin office computer failed. Taonga was advised to reboot; this did not resolve it. Failure was traced to a delayed software update.', resolution:'Computer shut down pending inspection by the IT Team. Taonga to use a laptop in the meantime.', by:'Taonga / Vincent' },
+  ],
+  sun: [
+    { serial:'4719', cat:'admin', title:'Disputed extra hour — OBSID Sunday shift', detail:'Demien Miller and Yasim Buye, booked for a scheduled 4-hour OBSID shift, said they were asked to work five hours and requested extra pay. Admin confirmed William was not aware of any extra-hour arrangement; he agreed to follow up with OBSID on Monday.', resolution:'Team paid for the scheduled 4-hour shift in the interim. Yasin Buye and Damien Miller were each paid R35 for the extra half-shift hour, pending OBSID confirmation.', by:'Vincent' },
+  ],
+  mon: [
+    { serial:'4721', cat:'reward', title:'Pre-school 6x6 claim — Jonathan de Bruin', detail:'Jonathan de Bruin submitted a 6x6 reward claim.', resolution:'Instructed to claim it the following day per project rules.', by:'Fanelo' },
+    { serial:'4722', cat:'reward', title:'Pre-school 6x6 claim — Lizelle Cook', detail:'Lizelle Cook submitted a 6x6 reward claim.', resolution:'Instructed to claim it the following day per project rules.', by:'Fanelo' },
+    { serial:'4723', cat:'admin', title:'Day administrator delayed — transport breakdown', detail:'Fanelo was delayed by a transport breakdown, arriving on site at 06:45 instead of the stipulated 06:30.', resolution:'Fanelo was coached on timekeeping.', by:'Fanelo' },
+  ],
+  tue: [
+    { serial:'4725', cat:'reward', title:'6x6 claims paid — Lizelle Cook & Jonathan de Bruin', detail:'Both participants\' claims, submitted the previous day (Monday 3 August), were processed.', resolution:'Claims paid out.', by:'Bernard' },
+    { serial:'4726', cat:'meeting', title:'School Management Meeting minutes (31 July 2026)', detail:'Chaired by Hannes van der Merwe. Key items: coaching plan agreed for recurring incidents involving one participant; clarified roll-call procedure for filling open shift slots (team queue first, general pool only if unfilled); food-sharing pilot continuing well, two-person distribution team retained; Administration to take over Health & Safety Committee oversight; trolley wheel sourcing ongoing; Leaders Training Programme announced with 6 months\' secured funding; Team 13, Team Coaching and Team 24 scored zero for the week over missing supporting documentation; depot gatekeeping practice flagged for a formal workshop.', resolution:'Minutes prepared by Vincent Kafula; next meeting Friday 7 August, afternoon.', by:'Vincent Kafula' },
+  ],
+  wed: [
+    { serial:'4728', cat:'donation', title:'Good Samaritan donation received', detail:'An anonymous donor gave: 5 female tracksuit tops, 6 female trousers, 6 long-sleeved T-shirts, 4 ladies\' church jackets, 2 ladies\' dresses, 1 pair of shoes/boots, and assorted underwear and bras. Received by Charlotte.', resolution:'Logged by Lungile, Chilli, Charlotte and Fanelo Ngwenya.', by:'Fanelo' },
+    { serial:'4729', cat:'loss', title:'Food-sharing container lost', detail:'At 11:45, Patrick Curtis found that Dumisani Fana\'s team had not returned their food-sharing container. John Luiz (Dumisani\'s teammate) said he heard Dumisani say he was taking the container with him.', resolution:'Jody coached Patrick on vigilance during food sharing. Hannes confirmed OPHELP will carry the cost of the loss.', by:'Jody' },
+    { serial:'4730', cat:'reward', title:'Team coaching 6x reward claim — R180', detail:'Team coaching submitted a six-times reward claim for R180.', resolution:'Split as: R40 to the protégé, R40 to the team fund, R100 to Jody Solomon, per team agreement.', by:'Fanelo' },
+    { serial:'4731', cat:'maintenance', title:'City of Cape Town maintenance on site', detail:'CoCT maintenance staff fitted 2 shower heads in the bathhouse and fixed the door handle to the stores next to the deployment area.', resolution:'Work completed.', by:'Fanelo' },
+  ],
+  thu: [
+    { serial:'4733', cat:'debt', title:'Bill of Debt register — no new entries', detail:'No new debtors added to the register on this shift; prior balances (Mama Mafia, Ryan Thomas) remain outstanding.', resolution:'—', by:'Day Admin' },
+    { serial:'4734', cat:'loss', title:'Fernando Timane lost gloves on shift', detail:'Dawn patrol (P1 & P4) — Fernando Timane (shift leader), Michael Pony, Zwelake Zama (workers). Fernando reported to stores on return to depot that he had lost his green gloves; he could not recall where.', resolution:'A missing item slip and a bill of debt slip were issued to Fernando Timane.', by:'Bernard' },
+    { serial:'4735', cat:'shift', title:'Team 24 failed to provide gatekeeper, 06:30–11:00', detail:'Vusumsi Mpokeli, scheduled by Team 24, did not arrive. Konstantine Erkert was informed.', resolution:'Vincent Seegreen and Rene Pitzer stood in to keep the gate from 07:00–11:00. Konstantin Erkert paid R70, shared between them.', by:'Bernard' },
+    { serial:'4736', cat:'maintenance', title:'City of Cape Town maintenance on site', detail:'Three CoCT maintenance staff arrived ~10:52 and fitted 3 shower heads, fixed 2 taps on pipes to the boiler room, and repaired the bathhouse office and storeroom door handles.', resolution:'5 shower rooms still without heads — staff may return to continue the work.', by:'Bernard' },
+  ],
+  fri: [
+    { serial:'4738', cat:'reward', title:'6x6 claim submitted — Muzi Babi', detail:'Muzi Babi submitted a 6x6 claim.', resolution:'Coached to collect it the following day.', by:'Fanelo' },
+    { serial:'4739', cat:'shift', title:'Team failed to report for practice session (MPRPA)', detail:'Konstantin Eckert, Gerald Mzamo, Dawn Le Fleur, Collin Pitzer — Team 24 had no members present for the morning deployment. Collin called Dawn to confirm final deployments.', resolution:'Shift rescheduled to the afternoon session; Konstantin coached on preparation. Cause: the slot moved from afternoon to morning, communicated to the team on Wed 5 Aug.', by:'Collin' },
+    { serial:'4740', cat:'safety', title:'Intoxicated worker — Desmond Hendricks', detail:'At 13:15, Fanelo flagged that Desmond Hendricks appeared to be under the influence of alcohol. Jody attempted to breathalyse him; Desmond refused.', resolution:'Desmond was replaced on shift by Vincent Seagreen (via Foreman Meshack). Incident report submitted at Fanelo\'s request.', by:'Jody' },
+  ],
+};
+
+/* ===== STATE ===== */
+let activeDay = 'sat';
+let activeFilter = 'all';
+
+function buildStats(){
+  const all = Object.values(incidents).flat();
+  const counts = {};
+  Object.keys(categories).forEach(c => counts[c] = all.filter(i => i.cat === c).length);
+  const totalNoShows = Object.values(noShows).flat().length;
+  const stats = [
+    { label:'Total Incidents', value: all.length, delta:'01–07 Aug 2026', warn:false },
+    { label:'Staffing Gaps', value: counts.shift + totalNoShows, delta:'No-shows + uncovered posts', warn:false },
+    { label:'Bills of Debt', value: counts.debt + counts.loss, delta:'Issued or updated this week', warn:false },
+    { label:'Reward Claims', value: counts.reward, delta:'6x6 / 6x claims logged', warn:false },
+    { label:'Safety Incidents', value: counts.safety, delta:'Requiring immediate action', warn: counts.safety > 0 },
+  ];
+  const grid = document.getElementById('statGrid');
+  grid.innerHTML = stats.map(s => `
+    <div class="stat-card ${s.warn ? 'warn' : ''}">
+      <div class="label">${s.label}</div>
+      <div class="value">${s.value}</div>
+      <div class="delta">${s.delta}</div>
+    </div>`).join('');
+}
+
+function buildWeekStrip(){
+  const strip = document.getElementById('weekStrip');
+  strip.innerHTML = week.map(w => `
+    <button class="day-btn ${w.key===activeDay?'active':''}" data-day="${w.key}">
+      <span class="d">${w.d}</span><span class="n">${w.date}</span>
+      <span class="cnt">${incidents[w.key].length} log${incidents[w.key].length===1?'':'s'}</span>
+    </button>`).join('');
+  strip.querySelectorAll('.day-btn').forEach(btn => {
+    btn.addEventListener('click', () => { activeDay = btn.dataset.day; render(); });
+  });
+}
+
+function buildFilters(){
+  const row = document.getElementById('filterRow');
+  const chips = [{key:'all', label:'All categories'}, ...Object.entries(categories).map(([k,v]) => ({key:k, label:v.label}))];
+  row.innerHTML = chips.map(c => `<button class="chip ${c.key===activeFilter?'active':''}" data-cat="${c.key}">${c.label}</button>`).join('');
+  row.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => { activeFilter = chip.dataset.cat; render(); });
+  });
+}
+
+function render(){
+  buildWeekStrip();
+  buildFilters();
+
+  const w = week.find(x => x.key === activeDay);
+  document.getElementById('sidebarName').textContent = w.admin !== '—' ? w.admin : 'Unassigned';
+  document.getElementById('sidebarAvatar').textContent = w.admin !== '—'
+    ? w.admin.split(' ').map(s=>s[0]).join('').slice(0,2).toUpperCase() : '—';
+
+  document.getElementById('dayHeader').innerHTML = `
+    <div class="title">${w.d === 'Sat' ? 'Saturday' : w.d === 'Sun' ? 'Sunday' : w.d === 'Mon' ? 'Monday' : w.d === 'Tue' ? 'Tuesday' : w.d === 'Wed' ? 'Wednesday' : w.d === 'Thu' ? 'Thursday' : 'Friday'} ${w.date} 2026</div>
+    <div class="roles">
+      <span class="role-tag">Admin: <b>${w.admin}</b></span>
+      <span class="role-tag">Ops: <b>${w.ops}</b></span>
+    </div>`;
+
+  const ns = noShows[activeDay];
+  const nsContent = document.getElementById('noshowContent');
+  if(ns.length === 0){
+    nsContent.innerHTML = `<div class="noshow-empty">No new no-shows reported for this shift.</div>`;
+  } else {
+    nsContent.innerHTML = `
+      <table class="noshow-table">
+        <thead><tr><th>Name</th><th>Designation</th><th>Session</th><th>Booked</th><th>Pirated</th></tr></thead>
+        <tbody>${ns.map(n => `<tr><td>${n.name}</td><td>${n.role}</td><td>${n.session}</td><td>${n.booked ? '<span class="check">✓</span>' : ''}</td><td></td></tr>`).join('')}</tbody>
+      </table>`;
+  }
+
+  const list = document.getElementById('incidentList');
+  const dayIncidents = incidents[activeDay].filter(i => activeFilter === 'all' || i.cat === activeFilter);
+  if(dayIncidents.length === 0){
+    list.innerHTML = `<div class="empty-day"><div class="big">No incidents in this category</div><div>Try a different filter or day.</div></div>`;
+  } else {
+    list.innerHTML = dayIncidents.map(i => `
+      <div class="incident-card cat-${i.cat}">
+        <div class="incident-top">
+          <div class="incident-title-wrap">
+            <span class="incident-serial">#${i.serial}</span>
+            <span class="incident-title">${i.title}</span>
+          </div>
+          <span class="cat-badge cat-${i.cat}">${categories[i.cat].label}</span>
+        </div>
+        <div class="incident-detail">${i.detail}</div>
+        ${i.resolution && i.resolution !== '—' ? `<div class="resolution-box"><div class="lbl">Resolution / Management Comment</div>${i.resolution}</div>` : ''}
+        <div class="incident-meta-row" style="margin-top:8px;">
+          <span class="reported-by">Reported by <b>${i.by}</b></span>
+        </div>
+      </div>`).join('');
+  }
+}
+
+buildStats();
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day Admin — Field Operations Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F3EC;
+    --paper-dim:#EFEBDF;
+    --card:#FFFFFF;
+    --ink:#1B211F;
+    --ink-soft:#4A5250;
+    --slate:#767F7C;
+    --line:#DDD6C4;
+    --teal:#1F4A43;
+    --teal-deep:#122E29;
+    --teal-mid:#2B5F56;
+    --amber:#E2A33B;
+    --amber-deep:#B67B1E;
+    --brick:#A8452F;
+    --moss:#3F7856;
+    --radius:10px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14px;
+    line-height:1.5;
+  }
+  h1,h2,h3, .display{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:pointer; border:none; background:none; }
+
+  .shell{ display:grid; grid-template-columns:232px 1fr; min-height:100vh; }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar{ background:var(--teal-deep); color:#EDEBE2; padding:24px 18px; display:flex; flex-direction:column; gap:28px; }
+  .brand{ display:flex; align-items:center; gap:10px; padding:0 4px; }
+  .brand-mark{ width:34px; height:34px; border-radius:8px; background:var(--amber); display:flex; align-items:center; justify-content:center; color:var(--teal-deep); font-weight:700; font-family:'Space Grotesk',sans-serif; font-size:15px; flex-shrink:0; }
+  .brand-text{ line-height:1.2; }
+  .brand-text .b1{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14.5px; color:#fff; }
+  .brand-text .b2{ font-size:10.5px; color:#9DB0AB; text-transform:uppercase; letter-spacing:.08em; }
+  .nav-group{ display:flex; flex-direction:column; gap:2px; }
+  .nav-label{ font-size:10.5px; text-transform:uppercase; letter-spacing:.1em; color:#7C9691; padding:0 10px 8px; }
+  .nav-item{ display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:7px; font-size:13.5px; color:#C9D6D1; transition:background .15s ease, color .15s ease; }
+  .nav-item:hover{ background:rgba(255,255,255,.05); color:#fff; }
+  .nav-item.active{ background:var(--teal-mid); color:#fff; font-weight:500; }
+  .nav-dot{ width:6px; height:6px; border-radius:50%; background:currentColor; opacity:.6; flex-shrink:0; }
+  .sidebar-foot{ margin-top:auto; border-top:1px solid rgba(255,255,255,.08); padding-top:16px; font-size:12px; color:#7C9691; }
+  .admin-card{ display:flex; align-items:center; gap:10px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:9px; padding:10px; }
+  .avatar{ width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, var(--amber), var(--amber-deep)); display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:12.5px; color:var(--teal-deep); flex-shrink:0; }
+  .admin-name{ color:#fff; font-size:12.5px; font-weight:500; }
+  .admin-role{ color:#8FA6A0; font-size:11px; }
+
+  /* ===== MAIN ===== */
+  .main{ padding:26px 34px 60px; max-width:1180px; }
+
+  .topbar{ display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; gap:20px; flex-wrap:wrap; }
+  .topbar h1{ font-size:24px; font-weight:600; }
+  .topbar .sub{ color:var(--slate); font-size:13px; margin-top:4px; }
+  .topbar-actions{ display:flex; gap:10px; align-items:center; }
+  .pill{ display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border-radius:999px; font-size:12px; font-weight:500; border:1px solid var(--line); background:var(--card); color:var(--ink-soft); }
+  .pill.batch{ background:var(--teal); color:#fff; border-color:var(--teal); }
+  .pill .dot{ width:6px; height:6px; border-radius:50%; background:var(--amber); }
+  .btn-primary{ padding:9px 16px; border-radius:8px; background:var(--ink); color:#fff; font-size:13px; font-weight:500; }
+
+  /* ===== WEEK / SHIFT SELECTOR ===== */
+  .selector-row{ display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:22px; flex-wrap:wrap; }
+  .week-strip{ display:flex; gap:6px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:5px; }
+  .day-btn{ display:flex; flex-direction:column; align-items:center; gap:2px; padding:8px 13px; border-radius:8px; min-width:56px; }
+  .day-btn .d{ font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--slate); font-weight:600; }
+  .day-btn .n{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink); }
+  .day-btn .flag{ width:4px; height:4px; border-radius:50%; margin-top:2px; background:transparent; }
+  .day-btn.has-data .flag{ background:var(--moss); }
+  .day-btn.active{ background:var(--teal); }
+  .day-btn.active .d{ color:#BFD4CE; }
+  .day-btn.active .n{ color:#fff; }
+  .day-btn.active .flag{ background:var(--amber); }
+  .day-btn:hover:not(.active){ background:var(--paper-dim); }
+
+  .shift-toggle{ display:flex; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:5px; gap:4px; }
+  .shift-btn{ padding:9px 20px; border-radius:8px; font-size:13px; font-weight:600; color:var(--slate); letter-spacing:.02em; }
+  .shift-btn.active{ background:var(--amber); color:var(--teal-deep); }
+
+  /* ===== STAT CARDS ===== */
+  .stat-grid{ display:grid; grid-template-columns:repeat(5, 1fr); gap:14px; margin-bottom:22px; }
+  .stat-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:16px 16px 14px; position:relative; overflow:hidden; }
+  .stat-card .label{ font-size:11px; color:var(--slate); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; }
+  .stat-card .value{ font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:600; }
+  .stat-card .value sup{ font-size:12px; font-weight:500; color:var(--slate); margin-right:2px; }
+  .stat-card .delta{ font-size:11.5px; margin-top:6px; color:var(--slate); }
+  .stat-card.accent{ border-color:var(--amber); }
+  .stat-card.accent::after{ content:""; position:absolute; top:0; left:0; right:0; height:3px; background:var(--amber); }
+
+  /* ===== RECONCILIATION TAPE ===== */
+  .tape-wrap{ margin-bottom:26px; }
+  .tape-title{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .tape-title h2{ font-size:15px; font-weight:600; }
+  .tape-title .note{ font-size:11.5px; color:var(--slate); }
+  .tape{ display:flex; align-items:stretch; background:var(--card); border:1px solid var(--line); border-radius:var(--radius); position:relative; overflow:hidden; }
+  .tape-seg{ flex:1; padding:16px 18px; position:relative; display:flex; flex-direction:column; gap:4px; }
+  .tape-seg + .tape-seg{ border-left:1px dashed var(--line); }
+  .tape-seg .k{ font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--slate); }
+  .tape-seg .v{ font-family:'IBM Plex Mono',monospace; font-size:19px; font-weight:600; }
+  .tape-seg .op{ position:absolute; right:-11px; top:50%; transform:translateY(-50%); width:22px; height:22px; border-radius:50%; background:var(--paper); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--slate); z-index:2; }
+  .tape-seg.provided .v{ color:var(--teal); }
+  .tape-seg.paidout .v{ color:var(--brick); }
+  .tape-seg.pettycash .v{ color:var(--brick); }
+  .tape-seg.balance{ background:var(--teal); }
+  .tape-seg.balance .k{ color:#BFD4CE; }
+  .tape-seg.balance .v{ color:#fff; }
+  .tape-seg.balance .status{ margin-top:2px; font-size:10.5px; color:var(--amber); font-weight:500; display:flex; align-items:center; gap:5px; }
+  .tape-seg.balance .status::before{ content:"●"; font-size:8px; }
+
+  /* ===== TABS ===== */
+  .tabs{ display:flex; gap:4px; border-bottom:1px solid var(--line); margin-bottom:16px; }
+  .tab{ padding:10px 4px; margin-right:22px; font-size:13.5px; font-weight:500; color:var(--slate); border-bottom:2px solid transparent; position:relative; top:1px; }
+  .tab.active{ color:var(--ink); border-bottom-color:var(--amber); }
+  .tab .count{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--slate); background:var(--paper-dim); border-radius:999px; padding:1px 6px; margin-left:6px; }
+
+  .panel{ display:none; }
+  .panel.active{ display:block; }
+  .panel-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+  .panel-head h3{ font-size:14.5px; font-weight:600; }
+  .panel-head .meta{ font-size:12px; color:var(--slate); }
+
+  /* ===== TABLE ===== */
+  .ledger{ width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .ledger th{ text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--slate); font-weight:600; padding:10px 14px; background:var(--paper-dim); border-bottom:1px solid var(--line); white-space:nowrap; }
+  .ledger td{ padding:11px 14px; border-bottom:1px solid var(--line); font-size:13px; vertical-align:top; }
+  .ledger tbody tr:last-child td{ border-bottom:none; }
+  .ledger tbody tr:hover{ background:#FBFAF6; }
+  .ledger .num{ font-family:'IBM Plex Mono',monospace; text-align:right; }
+  .ledger .serial{ font-family:'IBM Plex Mono',monospace; color:var(--slate); font-size:12px; }
+  .ledger .task{ font-weight:500; }
+  .ledger .comment{ color:var(--slate); font-size:12px; }
+  .ledger tfoot td{ padding:12px 14px; font-weight:600; background:var(--paper-dim); border-top:1px solid var(--line); border-bottom:none; }
+  .ledger tfoot .num{ font-family:'IBM Plex Mono',monospace; }
+  .badge-paid{ display:inline-flex; align-items:center; gap:5px; padding:2px 8px; border-radius:999px; background:rgba(63,120,86,.1); color:var(--moss); font-size:11px; font-weight:500; }
+  .badge-owing{ display:inline-flex; align-items:center; gap:5px; padding:2px 8px; border-radius:999px; background:rgba(168,69,47,.1); color:var(--brick); font-size:11px; font-weight:500; }
+
+  .panel-footnote{ margin-top:10px; font-size:11.5px; color:var(--slate); }
+
+  .empty-state{ background:var(--card); border:1px dashed var(--line); border-radius:var(--radius); padding:40px 20px; text-align:center; color:var(--slate); }
+  .empty-state .big{ font-family:'Space Grotesk',sans-serif; font-size:14.5px; color:var(--ink-soft); font-weight:600; margin-bottom:4px; }
+  .empty-state .small{ font-size:12.5px; }
+
+  @media (max-width: 980px){
+    .shell{ grid-template-columns:1fr; }
+    .sidebar{ display:none; }
+    .stat-grid{ grid-template-columns:repeat(2,1fr); }
+    .tape{ flex-direction:column; }
+    .tape-seg + .tape-seg{ border-left:none; border-top:1px dashed var(--line); }
+    .tape-seg .op{ display:none; }
+    .main{ padding:20px; }
+    .selector-row{ flex-direction:column; align-items:stretch; }
+    .week-strip{ overflow-x:auto; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">CD</div>
+      <div class="brand-text">
+        <div class="b1">City Depot</div>
+        <div class="b2">Day Ops Ledger</div>
+      </div>
+    </div>
+    <nav class="nav-group">
+      <div class="nav-label">Operations</div>
+      <a class="nav-item active"><span class="nav-dot"></span> Daily Summary</a>
+      <a class="nav-item"><span class="nav-dot"></span> Shift Ledger</a>
+      <a class="nav-item"><span class="nav-dot"></span> Petty Cash</a>
+      <a class="nav-item"><span class="nav-dot"></span> Debt Register</a>
+    </nav>
+    <nav class="nav-group">
+      <div class="nav-label">Records</div>
+      <a class="nav-item"><span class="nav-dot"></span> City Shifts</a>
+      <a class="nav-item"><span class="nav-dot"></span> Foreman Roster</a>
+      <a class="nav-item"><span class="nav-dot"></span> Archive</a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="admin-card">
+        <div class="avatar" id="sidebarAvatar">BA</div>
+        <div>
+          <div class="admin-name" id="sidebarName">Bernard Adome</div>
+          <div class="admin-role" id="sidebarRole">Day Administrator · PM</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="topbar">
+      <div>
+        <h1 id="pageTitle">Thursday PM Daily Summary</h1>
+        <div class="sub" id="pageSub">City Depot Shift · 06 August 2026 · Submitted by Bernard Adome</div>
+      </div>
+      <div class="topbar-actions">
+        <span class="pill batch" id="batchPill"><span class="dot"></span> PM Batch</span>
+        <span class="pill" id="taskCountPill">7 tasks logged</span>
+        <button class="btn-primary">Submit to Day Supervisor</button>
+      </div>
+    </div>
+
+    <!-- WEEK + SHIFT SELECTOR -->
+    <div class="selector-row">
+      <div class="week-strip" id="weekStrip"></div>
+      <div class="shift-toggle">
+        <button class="shift-btn" data-shift="AM">AM</button>
+        <button class="shift-btn" data-shift="PM">PM</button>
+      </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="label">Day Cash Provided</div>
+        <div class="value" id="statProvided"><sup>R</sup>0</div>
+        <div class="delta" id="statProvidedNote">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Shift Paid Out</div>
+        <div class="value" id="statShift"><sup>R</sup>0</div>
+        <div class="delta" id="statShiftNote">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Petty Cash Spent</div>
+        <div class="value" id="statPetty"><sup>R</sup>0</div>
+        <div class="delta" id="statPettyNote">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Total Paid Out</div>
+        <div class="value" id="statTotal"><sup>R</sup>0</div>
+        <div class="delta">Shift + petty cash</div>
+      </div>
+      <div class="stat-card accent">
+        <div class="label">Outstanding Debt</div>
+        <div class="value"><sup>R</sup>725</div>
+        <div class="delta">3 open accounts · runs across the week</div>
+      </div>
+    </div>
+
+    <!-- RECONCILIATION TAPE -->
+    <div class="tape-wrap">
+      <div class="tape-title">
+        <h2>Cash Reconciliation</h2>
+        <span class="note" id="tapeNote">Receipt total R0 not yet reconciled against subtotal</span>
+      </div>
+      <div class="tape">
+        <div class="tape-seg provided">
+          <span class="k">Provided</span>
+          <span class="v mono" id="tapeProvided">R 0</span>
+          <span class="op">→</span>
+        </div>
+        <div class="tape-seg paidout">
+          <span class="k">Shift Payout</span>
+          <span class="v mono" id="tapeShift">− R 0</span>
+          <span class="op">→</span>
+        </div>
+        <div class="tape-seg pettycash">
+          <span class="k">Petty Cash</span>
+          <span class="v mono" id="tapePetty">− R 0</span>
+          <span class="op">=</span>
+        </div>
+        <div class="tape-seg balance">
+          <span class="k">Balance Left Over</span>
+          <span class="v mono" id="tapeBalance">R 0</span>
+          <span class="status" id="tapeStatus">No shift submitted</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab active" data-tab="shift">Shift Ledger <span class="count" id="countShift">0</span></div>
+      <div class="tab" data-tab="petty">Petty Cash <span class="count" id="countPetty">0</span></div>
+      <div class="tab" data-tab="debt">Debt Register <span class="count">3</span></div>
+    </div>
+
+    <!-- SHIFT LEDGER -->
+    <section class="panel active" id="panel-shift">
+      <div class="panel-head">
+        <h3 id="shiftHead">PM Batch — City Shifts</h3>
+        <span class="meta" id="shiftMeta"></span>
+      </div>
+      <div id="shiftContent"></div>
+    </section>
+
+    <!-- PETTY CASH -->
+    <section class="panel" id="panel-petty">
+      <div class="panel-head">
+        <h3 id="pettyHead">Petty Cash Expenses</h3>
+        <span class="meta" id="pettyMeta"></span>
+      </div>
+      <div id="pettyContent"></div>
+    </section>
+
+    <!-- DEBT REGISTER (global, not per-shift) -->
+    <section class="panel" id="panel-debt">
+      <div class="panel-head">
+        <h3>Bill of Debt List</h3>
+        <span class="meta">3 open accounts · carried across the week</span>
+      </div>
+      <table class="ledger">
+        <thead>
+          <tr>
+            <th>Name</th><th>Debt Source</th><th>Source Document</th><th>Serial No.</th>
+            <th class="num">Bill Value</th><th class="num">Outstanding</th><th>Status / Comments</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="task">Loyiso Makade</td><td>Stolen Money</td><td class="comment">Incident serial 4398</td><td class="serial">84</td>
+            <td class="num">80</td><td class="num">80</td>
+            <td><span class="badge-owing">Suspended · unsettled</span><div class="comment" style="margin-top:4px;">Disqualified from participating until debt is settled — 11/07/25, Stuart</div></td>
+          </tr>
+          <tr>
+            <td class="task">Heather King</td><td>Lost Gloves</td><td class="comment">Bill of debt</td><td class="serial">83</td>
+            <td class="num">10</td><td class="num">10</td>
+            <td><span class="badge-owing">Open</span></td>
+          </tr>
+          <tr>
+            <td class="task">Amanda Bangeni</td><td>Replacement of City Depot keys</td><td class="comment">Bill of debt</td><td class="serial">69</td>
+            <td class="num">925</td><td class="num">715</td>
+            <td><span class="badge-paid">R210 recovered</span><div class="comment" style="margin-top:4px;">Failed to keep to repayment agreement — to be addressed on return, 04/07/2025</div></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr><td colspan="4">Total</td><td class="num">R 935</td><td class="num">R 725</td><td></td></tr>
+        </tfoot>
+      </table>
+    </section>
+
+  </main>
+</div>
+
+<script>
+/* ===== DATA MODEL =====
+   One real record: Thursday PM, 06 Aug 2026, sourced from the uploaded sheet.
+   All other 13 AM/PM slots are scaffolded empty — same shape, ready to fill in
+   as each day's paperwork comes in, matching the sheet's own "Nil" convention. */
+
+const emptyDay = () => ({
+  admin: null,
+  provided: 0,
+  shifts: [],
+  pettyCash: []
+});
+
+const week = [
+  { key:'mon', d:'Mon', date:'03 Aug' },
+  { key:'tue', d:'Tue', date:'04 Aug' },
+  { key:'wed', d:'Wed', date:'05 Aug' },
+  { key:'thu', d:'Thu', date:'06 Aug' },
+  { key:'fri', d:'Fri', date:'07 Aug' },
+  { key:'sat', d:'Sat', date:'08 Aug' },
+  { key:'sun', d:'Sun', date:'09 Aug' },
+];
+
+const data = {};
+week.forEach(w => { data[w.key] = { AM: emptyDay(), PM: emptyDay() }; });
+
+data.thu.PM = {
+  admin: 'Bernard Adome',
+  provided: 2000,
+  shifts: [
+    { serial:'26080617', task:'OPHELP Jesus Saves Daily', paid:140, workers:140 },
+    { serial:'26080618', task:'Mouille Point Regular Cleaning', paid:96, workers:96 },
+    { serial:'26080619', task:'Cigarette Butt Picking PM', paid:210, workers:210 },
+    { serial:'26080620', task:'Special Response Team 2', paid:140, workers:140 },
+    { serial:'26080621', task:'Graffiti Removal', paid:140, workers:140 },
+    { serial:'26080622', task:'Labour for A-Team Projects', paid:140, workers:140 },
+    { serial:'26080623', task:'Pre-school Operations Supervisor', paid:80, workers:80 },
+  ],
+  pettyCash: [
+    { serial:'01060826', supplier:'Ophelp', desc:'Airtime subsidy: Bernard Adome', paid:15 },
+    { serial:'02060826', supplier:'Taxi', desc:'Taxi fare to and from Sea Point Operations', paid:32 },
+    { serial:'03060826', supplier:'Fastnet Business Center', desc:'Lamination of maps', paid:30 },
+    { serial:'04060826', supplier:'Waltons', desc:'Book cover for clipboards', paid:193 },
+  ]
+};
+
+/* ===== STATE ===== */
+let activeDay = 'thu';
+let activeShift = 'PM';
+
+/* ===== RENDER ===== */
+function fmt(n){ return 'R ' + n.toLocaleString('en-ZA'); }
+
+function hasData(dayKey, shiftKey){
+  const d = data[dayKey][shiftKey];
+  return d.shifts.length > 0 || d.pettyCash.length > 0;
+}
+
+function buildWeekStrip(){
+  const strip = document.getElementById('weekStrip');
+  strip.innerHTML = '';
+  week.forEach(w => {
+    const flagged = hasData(w.key,'AM') || hasData(w.key,'PM');
+    const btn = document.createElement('button');
+    btn.className = 'day-btn' + (w.key === activeDay ? ' active' : '') + (flagged ? ' has-data' : '');
+    btn.innerHTML = `<span class="d">${w.d}</span><span class="n">${w.date}</span><span class="flag"></span>`;
+    btn.addEventListener('click', () => { activeDay = w.key; render(); });
+    strip.appendChild(btn);
+  });
+}
+
+function buildShiftToggle(){
+  document.querySelectorAll('.shift-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.shift === activeShift);
+    btn.onclick = () => { activeShift = btn.dataset.shift; render(); };
+  });
+}
+
+function render(){
+  buildWeekStrip();
+  buildShiftToggle();
+
+  const wInfo = week.find(w => w.key === activeDay);
+  const dayNames = {mon:'Monday',tue:'Tuesday',wed:'Wednesday',thu:'Thursday',fri:'Friday',sat:'Saturday',sun:'Sunday'};
+  const d = data[activeDay][activeShift];
+
+  document.getElementById('pageTitle').textContent = `${dayNames[activeDay]} ${activeShift} Daily Summary`;
+  document.getElementById('pageSub').textContent = d.admin
+    ? `City Depot Shift · ${wInfo.date} 2026 · Submitted by ${d.admin}`
+    : `City Depot Shift · ${wInfo.date} 2026 · No submission yet`;
+  document.getElementById('batchPill').innerHTML = `<span class="dot"></span> ${activeShift} Batch`;
+  document.getElementById('taskCountPill').textContent = `${d.shifts.length} task${d.shifts.length===1?'':'s'} logged`;
+
+  document.getElementById('sidebarName').textContent = d.admin || 'Unassigned';
+  document.getElementById('sidebarAvatar').textContent = d.admin
+    ? d.admin.split(' ').map(s=>s[0]).join('').slice(0,2).toUpperCase()
+    : '—';
+  document.getElementById('sidebarRole').textContent = `Day Administrator · ${activeShift}`;
+
+  const shiftTotal = d.shifts.reduce((s,r) => s + r.paid, 0);
+  const pettyTotal = d.pettyCash.reduce((s,r) => s + r.paid, 0);
+  const totalPaid = shiftTotal + pettyTotal;
+  const balance = d.provided - totalPaid;
+
+  document.getElementById('statProvided').innerHTML = `<sup>R</sup>${d.provided.toLocaleString('en-ZA')}`;
+  document.getElementById('statProvidedNote').textContent = d.provided ? 'No additional funds issued' : 'Not yet issued';
+  document.getElementById('statShift').innerHTML = `<sup>R</sup>${shiftTotal.toLocaleString('en-ZA')}`;
+  document.getElementById('statShiftNote').textContent = `${d.shifts.length} tasks logged`;
+  document.getElementById('statPetty').innerHTML = `<sup>R</sup>${pettyTotal.toLocaleString('en-ZA')}`;
+  document.getElementById('statPettyNote').textContent = `${d.pettyCash.length} receipts logged`;
+  document.getElementById('statTotal').innerHTML = `<sup>R</sup>${totalPaid.toLocaleString('en-ZA')}`;
+
+  document.getElementById('tapeProvided').textContent = fmt(d.provided);
+  document.getElementById('tapeShift').textContent = '− ' + fmt(shiftTotal);
+  document.getElementById('tapePetty').textContent = '− ' + fmt(pettyTotal);
+  document.getElementById('tapeBalance').textContent = fmt(balance);
+  document.getElementById('tapeStatus').textContent = d.provided ? 'Pending supervisor sign-off' : 'No shift submitted';
+  document.getElementById('tapeNote').textContent = d.provided
+    ? 'Receipt total R0 not yet reconciled against subtotal'
+    : 'Awaiting float issue and shift entries';
+
+  document.getElementById('countShift').textContent = d.shifts.length;
+  document.getElementById('countPetty').textContent = d.pettyCash.length;
+
+  document.getElementById('shiftHead').textContent = `${activeShift} Batch — City Shifts, ${wInfo.date} 2026`;
+  document.getElementById('pettyHead').textContent = `Petty Cash Expenses ${activeShift} — City Depot Shift, ${wInfo.date} 2026`;
+
+  const shiftContent = document.getElementById('shiftContent');
+  if(d.shifts.length === 0){
+    document.getElementById('shiftMeta').textContent = '';
+    shiftContent.innerHTML = `<div class="empty-state"><div class="big">No entries logged for this shift</div><div class="small">Slots recorded as Nil, matching the source ledger's convention for unused allocations.</div></div>`;
+  } else {
+    document.getElementById('shiftMeta').textContent = `${d.shifts.length} entries`;
+    let rows = d.shifts.map(r => `
+      <tr>
+        <td class="serial">${r.serial}</td>
+        <td class="task">${r.task}</td>
+        <td class="num">${r.paid}</td>
+        <td>—</td>
+        <td class="num">${r.workers}</td>
+        <td>—</td>
+        <td class="comment">—</td>
+      </tr>`).join('');
+    shiftContent.innerHTML = `
+      <table class="ledger">
+        <thead><tr><th>№</th><th>Particulars</th><th class="num">Paid Out</th><th>Foreman Name</th><th class="num">Workers</th><th>Transport</th><th>Comments</th></tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr><td colspan="2">Subtotal</td><td class="num">${fmt(shiftTotal)}</td><td colspan="4"></td></tr></tfoot>
+      </table>`;
+  }
+
+  const pettyContent = document.getElementById('pettyContent');
+  if(d.pettyCash.length === 0){
+    document.getElementById('pettyMeta').textContent = '';
+    pettyContent.innerHTML = `<div class="empty-state"><div class="big">No petty cash receipts for this shift</div><div class="small">Log receipts as they come in throughout the shift.</div></div>`;
+  } else {
+    document.getElementById('pettyMeta').textContent = `${d.pettyCash.length} of 13 allocated slots used`;
+    let rows = d.pettyCash.map(r => `
+      <tr>
+        <td class="serial">${r.serial}</td>
+        <td class="task">${r.supplier}</td>
+        <td class="comment">${r.desc}</td>
+        <td class="num">${r.paid}</td>
+      </tr>`).join('');
+    pettyContent.innerHTML = `
+      <table class="ledger">
+        <thead><tr><th>Receipt #</th><th>Supplier</th><th>Description</th><th class="num">Paid Out</th></tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr><td colspan="3">Total Petty Cash</td><td class="num">${fmt(pettyTotal)}</td></tr></tfoot>
+      </table>`;
+  }
+}
+
+/* Tabs */
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+render();
+</script>
+</body>
+</html>

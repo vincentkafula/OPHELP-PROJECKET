@@ -1,0 +1,170 @@
+# OPHELP Platform
+
+Straatwerk's OPHELP voucher & field-operations system — a React marketing
+site with an authenticated operations dashboard (participants, shifts,
+OPHELP Cards, payments, partner shops, ATM network, projects, equipment,
+incidents, and more), now backed by a real Node.js/Express API and
+PostgreSQL database instead of the original browser-localStorage demo data.
+
+```
+ophelp-platform/
+├── frontend/          React + Vite + TypeScript app (the original UI, unchanged in behaviour)
+├── backend/           Express + PostgreSQL API
+├── railway.json        Railway build/start/healthcheck config
+├── nixpacks.toml        Pins the Node version for Railway's builder
+├── Procfile             Fallback for platforms that read Procfile instead
+└── package.json          Root orchestrator: builds frontend, starts backend
+```
+
+## How the frontend talks to the backend
+
+The original app kept all of its data in `localStorage` via a
+`Collection<T>` class with `all() / where() / insert() / update() / delete()`
+methods, and every component reads through that via `lib/api.ts` and
+`context/AppContext.tsx`.
+
+Rather than rewrite every component, `frontend/src/lib/db.ts` now implements
+the **same `Collection<T>` interface** on top of an in-memory cache that is:
+
+1. **Hydrated once** at app start from `GET /api/bootstrap`, which returns
+   every entity in one call (see `frontend/src/App.tsx` — it calls
+   `bootstrap()` before rendering, showing a brief loading screen).
+2. **Written through** on every mutation: `insert/update/delete` update the
+   local cache immediately (so the UI feels instant, exactly like before)
+   and fire the matching `POST/PUT/DELETE /api/<entity>` request to the
+   backend in the background.
+
+This means `lib/api.ts` (all the shift-approval, card-issuing,
+payment-processing business logic) and every dashboard component work
+**unchanged** — only `lib/db.ts` and `lib/auth.ts` needed to be swapped out.
+
+Login (`lib/auth.ts`) is the one fully-async path: it calls
+`POST /api/auth/login`, which checks the password with bcrypt and returns a
+JWT. The token + safe user object are cached in `sessionStorage`, so
+`AuthService.currentUser()` stays synchronous for existing call sites, and a
+refresh restores the session automatically until the 8-hour token expires.
+
+## Backend architecture
+
+Every entity (users, participants, shifts, cards, payments, transactions,
+partner shops, ATM locations, projects, equipment, inventory, incidents,
+notifications, messages, audit logs, teams, skills) is stored as a JSONB
+document in one Postgres table (`backend/schema.sql`):
+
+```sql
+CREATE TABLE store (
+  entity     VARCHAR(64) NOT NULL,
+  id         VARCHAR(64) NOT NULL,
+  data       JSONB NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  PRIMARY KEY (entity, id)
+);
+```
+
+This mirrors the flexible, loosely-typed shape the frontend already used,
+so the API is a thin, mostly-generic CRUD layer (`backend/routes/generic.js`)
+instead of nineteen hand-written tables. `backend/routes/auth.js` and
+`backend/routes/bootstrap.js` are the two bespoke routes; everything else
+is `GET/POST/PUT/DELETE /api/<entity>[/:id]`.
+
+## Local development
+
+You'll need Node 20+ and a PostgreSQL database (a free one on
+[Railway](https://railway.app) or [Neon](https://neon.tech) works fine for
+local dev too — you don't need Postgres installed locally).
+
+```bash
+# 1. Install everything
+npm run install:all
+
+# 2. Configure the backend
+cp backend/.env.example backend/.env
+# edit backend/.env — set DATABASE_URL to your Postgres connection string
+# and JWT_SECRET to a long random string
+
+# 3. Create the schema, then seed demo data (users, sites, shifts, ...)
+npm run migrate
+npm run seed
+
+# 4. Run frontend and backend separately (two terminals)
+npm run dev:backend    # http://localhost:4000
+npm run dev:frontend   # http://localhost:5173 (proxies API calls per VITE_API_URL)
+```
+
+Copy `frontend/.env.example` to `frontend/.env` and set
+`VITE_API_URL=http://localhost:4000/api` so the dev server (a different
+origin than the backend) knows where to send API calls.
+
+**Demo logins** (created by `npm run seed`):
+
+| Role | Email | Password |
+|---|---|---|
+| System Administrator | admin@ophelp.org | Admin@123 |
+| Site Foreman | foreman@ophelp.org | Foreman@123 |
+| Day Administrator | dayadmin@ophelp.org | DayAdmin@123 |
+| Operation Office | opoffice@ophelp.org | OpOffice@123 |
+| Operation Management | opmanage@ophelp.org | OpManage@123 |
+| OPHELP Store Manager | store@ophelp.org | Store@123 |
+| Project Manager | projman@ophelp.org | ProjMan@123 |
+| Head Office Executive | headoffice@ophelp.org | HeadOffice@123 |
+| Partner Shop Owner | partner@ophelp.org | Partner@123 |
+| Team Member | team@ophelp.org | Team@123 |
+
+## Deploying to Railway
+
+1. **Push this repo to GitHub** (see below), then in Railway: **New
+   Project → Deploy from GitHub repo** and pick it.
+2. **Add a PostgreSQL plugin** to the project (Railway auto-injects
+   `DATABASE_URL` into your service — you don't set it by hand).
+3. **Set one environment variable** on the service: `JWT_SECRET` — generate
+   one with:
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+   ```
+4. Railway will detect `railway.json` and:
+   - **Build**: `npm run build` — installs both `frontend/` and `backend/`
+     dependencies, then builds the Vite frontend into `frontend/dist`.
+   - **Start**: `npm start` — runs the Express backend, which serves the
+     built frontend as static files and handles `/api/*` itself. One
+     service, one URL, no CORS to worry about in production.
+   - **Health check**: `GET /api/health`.
+5. **Run the migration once** after the first successful deploy (via the
+   Railway CLI, from your machine, pointed at the deployed service):
+   ```bash
+   railway link          # link this repo to the Railway project
+   railway run npm run migrate --prefix backend
+   railway run npm run seed --prefix backend
+   ```
+   (`seed` is idempotent — it checks for existing users and skips if the
+   database already has data, so it's safe to leave in a deploy script if
+   you'd rather not run it manually.)
+
+You mentioned you'll provide the GitHub token separately — once you do,
+push with:
+
+```bash
+git remote add origin <your-repo-url>
+git branch -M main
+git push -u origin main
+```
+
+## Known limitations / follow-ups
+
+- The admin **"Add User"** screen in the dashboard (`Dashboard.tsx`) still
+  passes the raw password straight into `passwordHash` without hashing
+  client-side (a pre-existing quirk from the original app, not something
+  introduced here). The login route on the backend detects this (a
+  non-bcrypt hash) and falls back to a direct comparison, then upgrades the
+  stored value to a real bcrypt hash on that user's first successful login
+  — so it works end-to-end, but the cleanest fix going forward is to change
+  that form to call `POST /api/users` with a `password` field and let the
+  server hash it.
+- Because writes are optimistic (cache updates immediately, network call
+  happens in the background), a failed write is currently just logged to
+  the browser console rather than surfaced in the UI or rolled back. Fine
+  for a first real-backend pass; worth adding a toast/retry layer later if
+  the network proves unreliable in the field.
+- CORS is wide open (`cors()` with no options) since frontend and backend
+  ship as one Railway service. If you ever split them into two services,
+  lock this down to the frontend's origin.

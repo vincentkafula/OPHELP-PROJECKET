@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Grand Parade Task Sheet</title>
+<style>
+  :root{
+    --navy:#173B73;
+    --navy-dark:#102a54;
+    --green:#3E7D3E;
+    --green-dark:#2F6B37;
+    --green-light:#E7F0E4;
+    --blue-light:#E4EEF7;
+    --blue-mid:#5B95BE;
+    --orange:#E07B39;
+    --orange-light:#FDF3E3;
+    --purple:#6B4A7A;
+    --purple-light:#EFE3F2;
+    --teal:#3F8F6F;
+    --teal-light:#E4F3ED;
+    --line:#B9C7DA;
+    --paper:#FFFFFF;
+    --ink:#16233F;
+    --muted:#6B7686;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#EDF1F6;
+    font-family:'Segoe UI', Arial, sans-serif;
+    color:var(--ink);
+    padding:24px 12px 60px;
+  }
+  .sheet{
+    max-width:1120px;
+    margin:0 auto;
+    background:var(--paper);
+    border:3px solid var(--navy);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  input, textarea{
+    font-family:inherit;
+    font-size:12.5px;
+    color:var(--ink);
+    border:none;
+    background:transparent;
+    width:100%;
+    outline:none;
+    padding:4px 5px;
+  }
+  input:focus, textarea:focus{ background:#FFF7D6; }
+  input::placeholder, textarea::placeholder{ color:#B7BFCC; font-style:italic; }
+  textarea{ resize:none; font-family:inherit; line-height:1.4; }
+
+  /* ===== Header ===== */
+  .header{ padding:16px 22px; border-bottom:2px solid var(--navy); }
+  .header-top{ display:flex; align-items:baseline; justify-content:space-between; }
+  .header-line{ display:flex; align-items:baseline; gap:10px; margin-bottom:6px; }
+  .header-line label{ font-weight:800; color:var(--navy); font-size:14px; white-space:nowrap; }
+  .header-line .val{ font-weight:800; font-style:italic; font-size:17px; color:var(--ink); border-bottom:1px solid var(--line); padding:2px 6px; min-width:220px; }
+  .header-line input.plain{ font-weight:700; font-style:normal; font-size:13.5px; border-bottom:1px solid var(--line); min-width:320px; flex:1; }
+  .version{ font-size:13px; font-weight:700; color:var(--green-dark); white-space:nowrap; }
+
+  /* ===== Meta row ===== */
+  .meta-row{ display:flex; flex-wrap:wrap; gap:0; border-bottom:2px solid var(--navy); }
+  .meta-cell{ display:flex; align-items:center; gap:6px; padding:9px 14px; border-right:2px solid var(--navy); flex:1; min-width:170px; }
+  .meta-cell:last-child{ border-right:none; }
+  .meta-cell label{ font-weight:700; font-size:13px; color:var(--navy); white-space:nowrap; }
+  .meta-cell input{ border-bottom:1px solid var(--line); font-weight:700; }
+
+  /* ===== Objectives / Instructions box ===== */
+  .obj-box{ border-bottom:3px solid var(--navy); padding:14px 18px; }
+  .obj-box h3{
+    margin:14px 0 6px; font-size:14px; text-decoration:underline; color:var(--green-dark); font-weight:800;
+  }
+  .obj-box h3:first-child{ margin-top:0; }
+  .obj-box h3.instr{ color:var(--teal); }
+  .obj-box ol{ margin:0 0 4px; padding-left:22px; }
+  .obj-box li{ font-weight:700; font-size:13.5px; margin-bottom:3px; line-height:1.35; }
+  .obj-box .instr-list li{ font-weight:700; }
+  .obj-box u.term{ text-decoration:underline; font-style:italic; }
+
+  /* ===== Task table ===== */
+  table.tasks{ width:100%; border-collapse:collapse; table-layout:fixed; }
+  table.tasks th, table.tasks td{ border:1px solid var(--line); padding:0; vertical-align:top; }
+  table.tasks thead th{ font-size:11.5px; font-weight:800; padding:8px 5px; text-align:center; color:#fff; }
+  th.col-task{ background:var(--navy); width:34%; }
+  th.col-rate{ background:var(--orange); width:7%; }
+  th.col-comment{ background:var(--purple); width:26%; }
+  th.col-bags{ background:var(--teal); width:11%; }
+  th.col-min{ background:var(--blue-mid); width:11%; }
+
+  td.task-label{ padding:9px 10px; font-size:13px; font-weight:600; line-height:1.35; }
+  td.task-label .n{ font-weight:800; color:var(--navy); margin-right:4px; }
+  td.task-label b{ color:var(--ink); }
+  td.task-label i{ font-style:italic; }
+  td.task-label u{ text-decoration:underline; }
+
+  td.rate-cell{ text-align:center; vertical-align:middle; padding:10px 0; }
+  td.rate-cell input[type="checkbox"]{ width:18px; height:18px; cursor:pointer; accent-color:var(--orange); }
+  td.comment-cell textarea{ height:56px; padding:6px; }
+  td.num-cell input{ text-align:center; font-weight:700; padding:14px 5px; }
+
+  tr.wide-row td{ padding:8px 10px; font-size:13px; font-weight:600; line-height:1.35; }
+  tr.wide-row td .n{ font-weight:800; color:var(--navy); margin-right:4px; }
+  tr.suggestions td{ padding:8px 10px 4px; }
+  tr.suggestions textarea{ height:70px; margin-top:4px; }
+
+  /* ===== Materials section ===== */
+  table.materials{ width:100%; border-collapse:collapse; }
+  table.materials td{ border:1px solid var(--line); padding:7px 10px; font-size:12.5px; vertical-align:middle; }
+  .mat-label{ font-weight:800; color:var(--navy); }
+  .mat-sub{ font-size:11px; color:var(--muted); }
+  tr.mat-report td{ background:var(--green-light); }
+  tr.mat-qty td{ background:var(--blue-light); }
+  .mat-field-label{ text-align:right; font-weight:700; color:var(--ink); font-size:12px; width:22%; }
+  .mat-input-cell{ width:6%; }
+  .mat-input-cell input{ text-align:center; font-weight:800; }
+  .mat-input-cell.locked{ background:#DADFE6; }
+  .mat-input-cell.locked input{ color:var(--muted); }
+
+  /* ===== Usual materials / Special instructions ===== */
+  .bottom-block{ display:flex; }
+  .bottom-left{ flex:1; background:var(--orange-light); padding:12px 16px; border-right:2px solid var(--navy); }
+  .bottom-left .lbl{ font-weight:800; color:#8A4E15; font-size:13px; margin-bottom:8px; }
+  .bottom-left ul{ margin:0; padding-left:18px; }
+  .bottom-left li{ font-weight:700; font-size:13px; margin-bottom:4px; color:var(--ink); }
+  .bottom-right{ flex:1; background:var(--purple-light); padding:12px 16px; }
+  .bottom-right .lbl{ font-weight:800; color:var(--purple); font-size:13px; margin-bottom:8px; }
+  .bottom-right textarea{ height:110px; background:#fff; border:1px solid #D9C4E0; border-radius:4px; padding:8px; }
+
+  .footer-actions{ display:flex; justify-content:flex-end; gap:10px; padding:16px 4px 0; max-width:1120px; margin:0 auto; }
+  .footer-actions button{ border:none; border-radius:6px; padding:10px 18px; font-weight:700; font-size:13px; cursor:pointer; }
+  .btn-export{ background:var(--navy); color:#fff; }
+  .btn-print{ background:#fff; color:var(--navy); border:2px solid var(--navy) !important; }
+  .btn-reset{ background:#fff; color:#B23A3A; border:2px solid #B23A3A !important; }
+
+  @media print{
+    body{ background:#fff; padding:0; }
+    .footer-actions{ display:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="header-line">
+          <label>Shift Title:</label>
+          <span class="val">GRAND PARADE</span>
+        </div>
+        <div class="header-line">
+          <label>Shift Time:</label>
+          <input class="plain" id="f-shifttime" value="AM up to roll call of PM shifts." />
+        </div>
+      </div>
+      <div class="version">Version 260806</div>
+    </div>
+  </div>
+
+  <!-- Meta row -->
+  <div class="meta-row">
+    <div class="meta-cell"><label>Day:</label><input id="f-day" placeholder="e.g. Monday" /></div>
+    <div class="meta-cell"><label>Date:</label><input type="date" id="f-date" /></div>
+    <div class="meta-cell"><label>Senior Leader:</label><input id="f-senior" placeholder="Name" /></div>
+    <div class="meta-cell"><label>Junior Leader:</label><input id="f-junior" placeholder="Name" /></div>
+  </div>
+
+  <!-- Objectives / Instructions -->
+  <div class="obj-box">
+    <h3>OBJECTIVES of the Shift</h3>
+    <ol>
+      <li>Training in leading a team on a mission</li>
+      <li>Keeping the OPHELP Deployment area (as defined by the map of this area around Grand PARADE) clean</li>
+      <li>Keeping the OPHELP Deployment area safe and everyone in the area acting orderly</li>
+      <li>Training in proper reporting and training in taking leadership initiative</li>
+    </ol>
+    <h3 class="instr">GENERAL INSTRUCTIONS for the shift</h3>
+    <ol class="instr-list">
+      <li>Prepare for the shift, the day before.</li>
+      <li>Report as leader for the shift at the Shift Leader roll-call at the Depot and get all the equipment for the shift, using the required <u class="term">Shift Slip</u></li>
+      <li>Perform the specific Tasks listed here below until the roll call of PM shifts and report on these tasks as requested on this <u class="term">Task Sheet</u></li>
+    </ol>
+  </div>
+
+  <!-- Task table -->
+  <table class="tasks">
+    <thead>
+      <tr>
+        <th class="col-task">Specific Tasks</th>
+        <th class="col-rate">Slight</th>
+        <th class="col-rate">Dirty</th>
+        <th class="col-rate">Very<br/>dirty</th>
+        <th class="col-comment">Comment</th>
+        <th class="col-bags">Number<br/>Of bags<br/>used</th>
+        <th class="col-min">Minutes<br/>on the<br/>job</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="task-label"><span class="n">1.</span>Assist Preschool Administration in administrating <i><u>TeamQ</u>s</i> and in organising the area cleaning duty of the teams in rotation, keeping record of the teams' next turn</td>
+        <td class="rate-cell"><input type="checkbox" /></td>
+        <td class="rate-cell"><input type="checkbox" /></td>
+        <td class="rate-cell"><input type="checkbox" /></td>
+        <td class="comment-cell"><textarea placeholder="Comment..."></textarea></td>
+        <td class="num-cell"><input /></td>
+        <td class="num-cell"><input /></td>
+      </tr>
+      <tr>
+        <td class="task-label"><span class="n">2.</span>Be roll called for this <b>Grand Parade shift</b>, receive your workers, do the <i><u>Team Talk</u></i>, and then keep the OPHELP deployment area clean untill the end of the shift.</td>
+        <td class="rate-cell"><input type="checkbox" /></td>
+        <td class="rate-cell"><input type="checkbox" /></td>
+        <td class="rate-cell"><input type="checkbox" /></td>
+        <td class="comment-cell"><textarea placeholder="Comment..."></textarea></td>
+        <td class="num-cell"><input /></td>
+        <td class="num-cell"><input /></td>
+      </tr>
+      <tr>
+        <td class="task-label"><span class="n">3.</span>Using the OPHELP skills of <i>Co-operation</i>, <i>Focus</i>, and <i>Overcoming Obstacles</i>, and <i>God's design for how to get it right</i>, to get everyone in the area to act orderly.</td>
+        <td class="rate-cell"><input type="checkbox" /></td>
+        <td class="rate-cell"><input type="checkbox" /></td>
+        <td class="rate-cell"><input type="checkbox" /></td>
+        <td class="comment-cell"><textarea placeholder="Comment..."></textarea></td>
+        <td class="num-cell"><input /></td>
+        <td class="num-cell"><input /></td>
+      </tr>
+      <tr>
+        <td class="task-label"><span class="n">4.</span>Assist Preschool Administration and the helpers to distribute food and to clean up afterwards</td>
+        <td class="rate-cell"><input type="checkbox" /></td>
+        <td class="rate-cell"><input type="checkbox" /></td>
+        <td class="rate-cell"><input type="checkbox" /></td>
+        <td class="comment-cell"><textarea placeholder="Comment..."></textarea></td>
+        <td class="num-cell"><input /></td>
+        <td class="num-cell"><input /></td>
+      </tr>
+      <tr class="wide-row">
+        <td colspan="7"><span class="n">5.</span>End the shift at PM deployment (12:30), with the Preschool Administrator manageing the report-back. Return to the Depot for rewards and materials return.</td>
+      </tr>
+      <tr class="wide-row">
+        <td colspan="7"><span class="n">6.</span><b>Report all interruptions that occured on the shift</b> &ndash; including possible toilet visits &ndash; in the comment column, noting the exact time the interruption occured, by what it was caused, and by what time the interruption ended</td>
+      </tr>
+      <tr class="wide-row suggestions">
+        <td colspan="7">
+          <span class="n">7.</span>Write down some suggestions about how to improvie our performance to achieve the <u><b>OBJECTIVES of the shift</b></u> (above)?
+          <textarea placeholder="Write suggestions here..."></textarea>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Materials -->
+  <table class="materials">
+    <tr class="mat-report">
+      <td class="mat-label" style="width:22%;">Materials Report:</td>
+      <td class="mat-field-label">Total Number of<br/><b>Gloves</b> used</td>
+      <td class="mat-input-cell"><input id="f-gloves-used" /></td>
+      <td class="mat-field-label" style="width:26%;">Total number of <b>bags</b> used</td>
+      <td class="mat-input-cell"><input id="f-bags-used" /></td>
+      <td class="mat-input-cell locked"><input id="f-locked1" placeholder="auto" disabled /></td>
+    </tr>
+    <tr class="mat-qty">
+      <td><span class="mat-label">Materials</span> used (specify type)<br/><input id="f-materials-type" placeholder="Type of material..." /></td>
+      <td class="mat-field-label">Quantity</td>
+      <td class="mat-input-cell"><input id="f-materials-qty" /></td>
+      <td class="mat-field-label">Total of <b>minutes</b> on the job</td>
+      <td class="mat-input-cell" colspan="2"><input id="f-minutes-total" /></td>
+    </tr>
+  </table>
+
+  <!-- Usual materials / Special instructions -->
+  <div class="bottom-block">
+    <div class="bottom-left">
+      <div class="lbl">Usual set of Materials for this shift:</div>
+      <ul>
+        <li>4 x Gloves</li>
+        <li>2 x Foremen Bibs</li>
+        <li>2 x Worker Bibs + 2 bibs for recruits</li>
+        <li>10 x COCT blue Bags</li>
+        <li>1 x Scoop &amp; 1 x Broom</li>
+      </ul>
+    </div>
+    <div class="bottom-right">
+      <div class="lbl">Special Instructions for the shift (including a written report on them here):</div>
+      <textarea id="f-special-instructions" placeholder="Write special instructions or report here..."></textarea>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-actions">
+  <button class="btn-reset" onclick="resetForm()">Clear form</button>
+  <button class="btn-print" onclick="window.print()">Print</button>
+  <button class="btn-export" onclick="exportData()">Export JSON</button>
+</div>
+
+<script>
+  function exportData(){
+    const data = { meta:{}, tasks:[], materials:{}, specialInstructions:'' };
+
+    document.querySelectorAll('[id^="f-"]').forEach(el => {
+      const key = el.id.replace('f-','');
+      if(['shifttime','day','date','senior','junior'].includes(key)) data.meta[key] = el.value;
+      else if(key === 'special-instructions') data.specialInstructions = el.value;
+      else data.materials[key] = el.value;
+    });
+
+    document.querySelectorAll('table.tasks tbody tr').forEach((tr, idx) => {
+      if(tr.classList.contains('wide-row')){
+        const ta = tr.querySelector('textarea');
+        if(ta) data.tasks.push({ row: idx+1, suggestions: ta.value });
+        return;
+      }
+      const checks = tr.querySelectorAll('input[type="checkbox"]');
+      const comment = tr.querySelector('textarea');
+      const nums = tr.querySelectorAll('td.num-cell input');
+      data.tasks.push({
+        row: idx+1,
+        slight: checks[0] ? checks[0].checked : undefined,
+        dirty: checks[1] ? checks[1].checked : undefined,
+        veryDirty: checks[2] ? checks[2].checked : undefined,
+        comment: comment ? comment.value : undefined,
+        bagsUsed: nums[0] ? nums[0].value : undefined,
+        minutes: nums[1] ? nums[1].value : undefined
+      });
+    });
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `grand-parade-task-sheet-${data.meta.date || 'export'}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function resetForm(){
+    if(!confirm('Clear all entered data on this task sheet?')) return;
+    document.querySelectorAll('input:not([disabled])').forEach(inp => {
+      if(inp.type === 'checkbox') inp.checked = false;
+      else if(inp.id !== 'f-shifttime') inp.value = '';
+    });
+    document.querySelectorAll('textarea').forEach(t => t.value = '');
+  }
+</script>
+
+</body>
+</html>

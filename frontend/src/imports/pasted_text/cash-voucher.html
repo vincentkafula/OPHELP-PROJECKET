@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OPHELP — Cash Voucher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14201E;
+    --ink-2:#1D2E2A;
+    --paper:#F4F0E4;
+    --paper-2:#EAE4D4;
+    --amber:#E8A33D;
+    --amber-d:#7A5015;
+    --teal:#1F6F6B;
+    --teal-d:#0E3532;
+    --coral:#D65B3C;
+    --coral-d:#6E2C1B;
+    --slate:#6B7370;
+    --line: rgba(20,32,30,0.16);
+    --line-strong: rgba(20,32,30,0.32);
+    --font-display:'Oswald', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap{
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+  }
+
+  .top-tag{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom: 14px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:12px;
+  }
+  .brand-mark{
+    width:38px; height:38px;
+    border-radius:50%;
+    background: var(--amber);
+    border: 2px solid var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-display);
+    font-weight:700;
+    font-size:14px;
+    color: var(--ink);
+    flex-shrink:0;
+  }
+  .brand-text{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--slate);
+  }
+  .serial{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--slate);
+    text-align:right;
+  }
+
+  .voucher{
+    position:relative;
+    background: var(--paper-2);
+    border: 1.5px solid var(--ink);
+    border-radius: 4px;
+    padding: 26px 26px 4px;
+    overflow: visible;
+  }
+  .voucher::before{
+    content:"";
+    position:absolute;
+    left:-1px; right:-1px; top:0;
+    height: 12px;
+    background-image: radial-gradient(circle at 10px 0, transparent 5px, var(--paper) 5.5px);
+    background-size: 20px 12px;
+    background-repeat: repeat-x;
+    transform: translateY(-6px);
+  }
+
+  .v-head{
+    text-align:center;
+    margin-bottom: 18px;
+  }
+  .v-head h1{
+    font-family: var(--font-display);
+    font-weight:700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: 22px;
+    margin: 0 0 2px;
+  }
+  .v-head .v-sub{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--slate);
+  }
+
+  .field-row{
+    display:flex;
+    gap: 18px;
+    margin-bottom: 12px;
+  }
+  .field{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap: 4px;
+  }
+  .field label{
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--slate);
+  }
+  .field input, .field textarea{
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed var(--line-strong);
+    padding: 3px 2px 5px;
+    outline: none;
+    width:100%;
+  }
+  .field input:focus, .field textarea:focus{
+    border-bottom: 1px solid var(--teal);
+  }
+  .field textarea{ resize:none; font-family: inherit; }
+
+  .amount-field label{ color: var(--coral-d); }
+  .amount-field .rprefix{
+    display:flex; align-items:baseline; gap:4px;
+  }
+  .rprefix span{
+    font-family: var(--font-mono);
+    font-weight:600;
+    font-size: 13px;
+  }
+
+  .divider{
+    height:1px;
+    background: var(--line-strong);
+    margin: 18px 0 14px;
+  }
+
+  /* ---------- Transaction strip ---------- */
+  .tx-strip{
+    display:flex;
+    border: 1.5px solid var(--ink);
+    margin-bottom: 2px;
+  }
+  .tx-label{
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-display);
+    font-weight:600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 8px 12px;
+    display:flex; align-items:center;
+    flex-shrink:0;
+  }
+  .tx-supplier{
+    flex:1;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding: 6px 12px;
+    border-left: 1px solid var(--line-strong);
+    border-right: 1px solid var(--line-strong);
+  }
+  .tx-supplier label{
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform:uppercase;
+    color: var(--slate);
+    flex-shrink:0;
+  }
+  .tx-supplier input{
+    border:none; background:transparent; outline:none;
+    font-family: var(--font-body); font-size: 13px; width:100%;
+  }
+  .tx-amount{
+    width: 128px;
+    flex-shrink:0;
+    display:flex; align-items:center; gap:4px;
+    padding: 6px 12px;
+    font-family: var(--font-mono);
+    font-weight:600;
+    font-size:14px;
+  }
+  .tx-amount input{
+    border:none; background:transparent; outline:none;
+    font-family: var(--font-mono); font-weight:600; font-size:14px; width:100%;
+  }
+
+  /* ---------- Expense / ledger table ---------- */
+  .ledger{
+    border: 1px solid var(--line-strong);
+    border-top:none;
+    margin-bottom: 20px;
+  }
+  .ledger-row{
+    display:flex;
+    border-top: 1px solid var(--line-strong);
+  }
+  .ledger-row:first-child{ border-top:none; }
+  .ledger-cell{
+    padding: 7px 10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .lc-label{
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--slate);
+    flex-shrink:0;
+  }
+  .ledger-cell input{
+    border:none; background:transparent; outline:none;
+    font-family: var(--font-body); font-size: 13px; width:100%;
+  }
+  .ledger-head{ background: var(--paper); font-weight:600; }
+  .split-2 .ledger-cell{ flex:1; border-left:1px solid var(--line-strong); }
+  .split-2 .ledger-cell:first-child{ border-left:none; }
+
+  .bal-row{
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .bal-row .lc-label{ color: rgba(244,240,228,0.6); font-weight:600; font-family: var(--font-display); text-transform:uppercase; letter-spacing:0.04em; font-size:12px; }
+  .bal-row input{ color: var(--amber); font-family: var(--font-mono); font-weight:600; }
+
+  .invoice-block{
+    display:flex;
+  }
+  .invoice-tag{
+    width: 84px;
+    flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-display);
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    font-size:13px;
+    border-right: 1px solid var(--line-strong);
+    text-align:center;
+    padding: 6px;
+  }
+  .invoice-lines{ flex:1; }
+  .inv-line{
+    display:flex;
+    border-top: 1px solid var(--line);
+  }
+  .inv-line:first-child{ border-top:none; }
+  .inv-line .lc-label{ width: 96px; }
+  .inv-line input{ font-family: var(--font-mono); text-align:right; }
+  .inv-total{
+    border-top: 1px solid var(--line-strong);
+    background: var(--paper);
+  }
+  .inv-total .lc-label{ font-weight:600; color: var(--ink); font-family: var(--font-display); text-transform:uppercase; letter-spacing:0.03em; font-size:12px; }
+  .inv-total input{ font-weight:600; color: var(--teal-d); }
+
+  .client-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding: 10px 2px 20px;
+  }
+  .client-row label{
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--slate);
+    flex-shrink:0;
+  }
+  .client-row input{
+    flex:1;
+    border:none; border-bottom:1px dashed var(--line-strong);
+    background:transparent; outline:none;
+    font-family: var(--font-body); font-size:13px; padding: 3px 2px;
+  }
+
+  .foot-note{
+    text-align:center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--slate);
+    margin-top: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .print-bar{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-top: 16px;
+  }
+  .print-bar button{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 3px;
+    padding: 8px 16px;
+    cursor:pointer;
+  }
+  .print-bar button:hover{ background: var(--ink-2); }
+  .print-bar button.ghost{
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line-strong);
+  }
+
+  @media print{
+    .print-bar{ display:none; }
+    body{ background: white; }
+  }
+
+  @media (max-width: 480px){
+    .field-row{ flex-direction:column; gap:12px; }
+    .tx-amount{ width: 100px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top-tag">
+    <div class="brand">
+      <div class="brand-mark">OP</div>
+      <div class="brand-text">City: Ophelp — Projekte</div>
+    </div>
+    <div class="serial">Voucher no. ______</div>
+  </div>
+
+  <div class="voucher">
+    <div class="v-head">
+      <h1>Cash voucher</h1>
+      <div class="v-sub">Petty cash disbursement slip</div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Day</label>
+        <input type="text" placeholder="e.g. Thursday">
+      </div>
+      <div class="field">
+        <label>Date</label>
+        <input type="date">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Taken by</label>
+        <input type="text" placeholder="Full name">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field amount-field">
+        <label>Amount</label>
+        <div class="rprefix"><span>R</span><input type="number" step="0.01" placeholder="0.00" id="amountOut"></div>
+      </div>
+      <div class="field amount-field">
+        <label>Change</label>
+        <div class="rprefix"><span>R</span><input type="number" step="0.01" placeholder="0.00"></div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Purpose</label>
+        <input type="text" placeholder="What is this cash for?">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Approved by</label>
+        <input type="text" placeholder="Signature / name">
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="tx-strip">
+      <div class="tx-label">Transaction</div>
+      <div class="tx-supplier">
+        <label>Supplier</label>
+        <input type="text" placeholder="Supplier name">
+      </div>
+      <div class="tx-amount"><span>R</span><input type="number" step="0.01" placeholder="0.00"></div>
+    </div>
+
+    <div class="ledger">
+      <div class="ledger-row ledger-head">
+        <div class="ledger-cell" style="width:96px; flex-shrink:0;"><span class="lc-label">Expense</span></div>
+        <div class="ledger-cell" style="flex:1;"><span class="lc-label">Account</span><input type="text" placeholder="Account name"></div>
+        <div class="ledger-cell" style="flex:1;"><span class="lc-label">Column</span><input type="text" placeholder="Column ref"></div>
+      </div>
+      <div class="ledger-row">
+        <div class="ledger-cell" style="width:96px; flex-shrink:0;"><span class="lc-label">Caption</span></div>
+        <div class="split-2" style="display:flex; flex:1;">
+          <div class="ledger-cell"><span class="lc-label">C · R</span><input type="number" step="0.01" placeholder="0.00"></div>
+          <div class="ledger-cell"><span class="lc-label">E · R</span><input type="number" step="0.01" placeholder="0.00"></div>
+        </div>
+      </div>
+      <div class="ledger-row bal-row">
+        <div class="ledger-cell" style="width:96px; flex-shrink:0;"><span class="lc-label">Ophelp balance</span></div>
+        <div class="ledger-cell" style="flex:1;"></div>
+        <div class="ledger-cell" style="width:120px; flex-shrink:0;"><span class="lc-label" style="color:rgba(244,240,228,.6)">R</span><input type="number" step="0.01" placeholder="0.00"></div>
+      </div>
+    </div>
+
+    <div class="invoice-block ledger" style="margin-top:-1px;">
+      <div class="invoice-tag">Invoice</div>
+      <div class="invoice-lines">
+        <div class="inv-line"><div class="ledger-cell lc-label" style="width:96px;">Pay</div><div class="ledger-cell" style="flex:1; justify-content:flex-end;"><span class="lc-label" style="margin-right:2px;">R</span><input class="inv-input" type="number" step="0.01" placeholder="0.00"></div></div>
+        <div class="inv-line"><div class="ledger-cell lc-label" style="width:96px;">Transport</div><div class="ledger-cell" style="flex:1; justify-content:flex-end;"><span class="lc-label" style="margin-right:2px;">R</span><input class="inv-input" type="number" step="0.01" placeholder="0.00"></div></div>
+        <div class="inv-line"><div class="ledger-cell lc-label" style="width:96px;">Material</div><div class="ledger-cell" style="flex:1; justify-content:flex-end;"><span class="lc-label" style="margin-right:2px;">R</span><input class="inv-input" type="number" step="0.01" placeholder="0.00"></div></div>
+        <div class="inv-line"><div class="ledger-cell lc-label" style="width:96px;">Admin</div><div class="ledger-cell" style="flex:1; justify-content:flex-end;"><span class="lc-label" style="margin-right:2px;">R</span><input class="inv-input" type="number" step="0.01" placeholder="0.00"></div></div>
+        <div class="inv-line"><div class="ledger-cell lc-label" style="width:96px;">Other</div><div class="ledger-cell" style="flex:1; justify-content:flex-end;"><span class="lc-label" style="margin-right:2px;">R</span><input class="inv-input" type="number" step="0.01" placeholder="0.00"></div></div>
+        <div class="inv-line"><div class="ledger-cell lc-label" style="width:96px;">Fee</div><div class="ledger-cell" style="flex:1; justify-content:flex-end;"><span class="lc-label" style="margin-right:2px;">R</span><input class="inv-input" type="number" step="0.01" placeholder="0.00"></div></div>
+        <div class="inv-line inv-total"><div class="ledger-cell lc-label" style="width:96px;">Invoice total</div><div class="ledger-cell" style="flex:1; justify-content:flex-end;"><span class="lc-label" style="margin-right:2px;">R</span><input type="text" id="invTotal" value="0.00" readonly></div></div>
+      </div>
+    </div>
+
+    <div class="client-row">
+      <label>Client</label>
+      <input type="text" placeholder="Client name">
+    </div>
+  </div>
+
+  <div class="foot-note">Ophelp Servor · Operational Files · Cash Voucher for City Depot</div>
+
+  <div class="print-bar">
+    <button class="ghost" id="clearBtn">Clear form</button>
+    <button id="printBtn">Print voucher</button>
+  </div>
+
+</div>
+
+<script>
+const invInputs = document.querySelectorAll('.inv-input');
+const invTotal = document.getElementById('invTotal');
+
+function recalc(){
+  let sum = 0;
+  invInputs.forEach(i=>{ sum += parseFloat(i.value) || 0; });
+  invTotal.value = sum.toFixed(2);
+}
+invInputs.forEach(i=>i.addEventListener('input', recalc));
+
+document.getElementById('printBtn').addEventListener('click', ()=>window.print());
+document.getElementById('clearBtn').addEventListener('click', ()=>{
+  document.querySelectorAll('input').forEach(i=>{
+    if(i.readOnly) return;
+    i.value='';
+  });
+  recalc();
+});
+</script>
+</body>
+</html>

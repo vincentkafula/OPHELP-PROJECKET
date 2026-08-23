@@ -1,0 +1,10 @@
+{
+  "description": "Create professional, visually appealing websites with ease to showcase your business or portfolio and attract more clients online.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

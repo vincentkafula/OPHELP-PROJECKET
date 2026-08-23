@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre-School Ops — Weekly Deployment Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14201E;
+    --ink-2:#1D2E2A;
+    --paper:#F4F0E4;
+    --paper-2:#EAE4D4;
+    --amber:#E8A33D;
+    --amber-d:#7A5015;
+    --teal:#1F6F6B;
+    --teal-d:#0E3532;
+    --coral:#D65B3C;
+    --coral-d:#6E2C1B;
+    --slate:#6B7370;
+    --line: rgba(20,32,30,0.14);
+    --line-strong: rgba(20,32,30,0.28);
+    --font-display:'Oswald', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  .board{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 24px 80px;
+  }
+
+  /* ---------- Header ---------- */
+  .depot-header{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap: 24px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid var(--ink);
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+  .depot-id{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .depot-mark{
+    width:46px; height:46px;
+    border-radius:50%;
+    background: var(--amber);
+    border: 2px solid var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-display);
+    font-weight:700;
+    font-size:18px;
+    color: var(--ink);
+    flex-shrink:0;
+  }
+  h1.depot-title{
+    font-family: var(--font-display);
+    font-weight:700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 30px;
+    margin:0;
+    line-height:1;
+  }
+  .depot-sub{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--slate);
+    margin-top:6px;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+  }
+  .depot-meta{
+    text-align:right;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--slate);
+    line-height:1.6;
+  }
+  .depot-meta b{ color: var(--ink); font-weight:600; }
+
+  /* ---------- Day tab strip ---------- */
+  .day-strip{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    padding-bottom: 4px;
+    margin-bottom: 22px;
+  }
+  .day-tab{
+    position:relative;
+    flex: 1 1 0;
+    min-width: 118px;
+    background: var(--paper-2);
+    border: 1px solid var(--line-strong);
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    padding: 10px 12px 12px;
+    cursor:pointer;
+    font-family: var(--font-body);
+    text-align:left;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+  .day-tab:hover{ background:#E1DAC5; }
+  .day-tab .dow{
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+  }
+  .day-tab .ddate{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--slate);
+    margin-top:2px;
+  }
+  .day-tab .dcount{
+    margin-top:8px;
+    display:inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+  .day-tab.active{
+    background: var(--ink);
+    border-color: var(--ink);
+    transform: translateY(-3px);
+  }
+  .day-tab.active .dow{ color: var(--amber); }
+  .day-tab.active .ddate{ color: rgba(244,240,228,0.65); }
+  .day-tab.active .dcount{ background: var(--amber); color: var(--ink); }
+
+  .day-panel{ display:none; border-top: 3px solid var(--ink); padding-top: 20px; }
+  .day-panel.active{ display:block; }
+
+  /* ---------- Deployment window ---------- */
+  .window{ margin-bottom: 30px; }
+  .window-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom: 12px;
+  }
+  .window-head .wtime{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--slate);
+  }
+  .window-head h2{
+    font-family: var(--font-display);
+    font-size: 17px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin:0;
+    font-weight:600;
+  }
+  .window-head::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background: var(--line-strong);
+  }
+
+  .ticket-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+
+  /* ---------- Dispatch ticket card ---------- */
+  .ticket{
+    position:relative;
+    background: var(--paper-2);
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    padding: 14px 16px 14px 22px;
+    overflow:hidden;
+  }
+  .ticket::before{
+    content:"";
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width: 10px;
+    background-image: radial-gradient(circle at 5px 0, transparent 4px, var(--paper) 4.5px);
+    background-size: 10px 14px;
+    background-repeat: repeat-y;
+  }
+  .ticket.client-ccid{ border-left: 4px solid var(--teal); }
+  .ticket.client-ophelp{ border-left: 4px solid var(--coral); }
+  .ticket.client-obsid{ border-left: 4px solid #3E6FA6; }
+  .ticket.client-cidc{ border-left: 4px solid #6C7A3B; }
+  .ticket.client-church{ border-left: 4px solid #8A5AA6; }
+  .ticket.client-coaching{ border-left: 4px solid var(--amber-d); }
+  .ticket.client-community{ border-left: 4px solid var(--slate); }
+  .ticket.client-other{ border-left: 4px solid #A8792F; }
+
+  .ticket-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+  }
+  .ticket-title{
+    font-family: var(--font-display);
+    font-weight:600;
+    font-size: 15px;
+    line-height:1.25;
+    text-transform: uppercase;
+    letter-spacing:0.01em;
+  }
+  .ticket-dur{
+    flex-shrink:0;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 3px 7px;
+    border-radius: 3px;
+    white-space:nowrap;
+  }
+  .ticket-client{
+    display:inline-block;
+    margin-top:7px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--slate);
+  }
+
+  .ticket-rows{ margin-top: 10px; display:flex; flex-direction:column; gap:6px; }
+  .ticket-row{ display:flex; gap:8px; align-items:flex-start; }
+  .ticket-row .rk{
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform:uppercase;
+    color: var(--slate);
+    width: 58px;
+    flex-shrink:0;
+    padding-top:2px;
+    letter-spacing:0.03em;
+  }
+  .slots{ display:flex; flex-wrap:wrap; gap:5px; }
+  .slot{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    border: 1px dashed var(--line-strong);
+    border-radius: 3px;
+    padding: 2px 7px;
+    color: var(--slate);
+    background: rgba(255,255,255,0.35);
+  }
+  .slot.filled{
+    border-style: solid;
+    border-color: var(--ink);
+    color: var(--ink);
+    background: rgba(255,255,255,0.6);
+    font-weight:500;
+  }
+
+  .ticket-comment{
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--line);
+    font-size: 11.5px;
+    color: var(--coral-d);
+    font-weight:500;
+  }
+  .ticket-comment i{ font-style: normal; color: var(--slate); font-weight:400; }
+
+  .stamp{
+    position:absolute;
+    top: 10px; right: -22px;
+    background: var(--amber);
+    color: var(--amber-d);
+    font-family: var(--font-display);
+    font-size: 9.5px;
+    font-weight:700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 26px;
+    transform: rotate(28deg);
+    border: 1px solid var(--amber-d);
+  }
+
+  .sign-off{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding-top:6px;
+  }
+  .sign-line{
+    flex:1;
+    border-bottom: 1px dashed var(--line-strong);
+    height: 18px;
+  }
+  .sign-label{
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform:uppercase;
+    color: var(--slate);
+  }
+
+  @media (max-width: 640px){
+    .depot-header{ flex-direction:column; align-items:flex-start; }
+    .depot-meta{ text-align:left; }
+    h1.depot-title{ font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="board">
+
+  <header class="depot-header">
+    <div class="depot-id">
+      <div class="depot-mark">PS</div>
+      <div>
+        <h1 class="depot-title">Pre-School Ops</h1>
+        <div class="depot-sub">Weekly deployment board</div>
+      </div>
+    </div>
+    <div class="depot-meta">
+      Week 34 · <b>20&nbsp;–&nbsp;26 Aug 2026</b><br>
+      Issued for team leads &amp; partner sign-off
+    </div>
+  </header>
+
+  <nav class="day-strip" id="dayStrip"></nav>
+  <div id="dayPanels"></div>
+
+</div>
+
+<script>
+const S = (n)=>Array.from({length:n},(_,i)=>({label:String(i+1), filled:false}));
+const W = (arr)=>arr.map(v=>({label:v, filled:true}));
+
+const CLIENT_CLASS = (client)=>{
+  if(!client) return 'client-community';
+  const c = client.toLowerCase();
+  if(c.includes('ccid') || c.includes('opruim')) return 'client-ccid';
+  if(c.includes('ophelp')) return 'client-ophelp';
+  if(c.includes('obsid')) return 'client-obsid';
+  if(c.includes('cidc')) return 'client-cidc';
+  if(c.includes('kerk')) return 'client-church';
+  if(c.includes('coaching')) return 'client-coaching';
+  if(c === '') return 'client-community';
+  return 'client-other';
+};
+
+function shift(title, dur, leader, workers, partner, comment, stamp){
+  return {title, dur, foreman: leader, workers, client: partner, comment: comment||'', stamp: stamp||false};
+}
+
+const DAYS = [
+{
+  dow:"Thursday", date:"20 Aug 2026",
+  windows:[
+    { name:"Morning", time:"", shifts:[
+      shift("Pre-school administration","5-hr session","1", [],"Ophelp Salaries"),
+      shift("Response Team 1","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("Cigarette butt cleaning — AM","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("CCID Junior Supervisor — AM","5-hr session","CJS", [],"CCID Opruim Services"),
+      shift("Groote Kerk","5-hr session","1", [],"Groote Kerk"),
+      shift("Grand Parade cleaning","5-hr session","", W(["1","2"]),"Team Coaching"),
+      shift("OBSID service manager","9-hr session","OSM", [],"OBSID"),
+      shift("OBSID independent worker","9-hr session","", S(5),"OBSID"),
+    ]},
+    { name:"Afternoon", time:"", shifts:[
+      shift("Response Team 2","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("Cigarette butt cleaning — PM","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("CCID Junior Supervisor — PM","5-hr session","M", [],"CCID Opruim Services"),
+      shift("OBSID general cleaning","4-hr session","1", S(2),"OBSID"),
+    ]},
+  ]
+},
+{
+  dow:"Friday", date:"21 Aug 2026",
+  windows:[
+    { name:"Morning", time:"", shifts:[
+      shift("Pre-school administration","5-hr session","1", [],"Ophelp Salaries"),
+      shift("CIDC cleaning","5-hr session","1", S(2),"CIDC","Vocational track"),
+      shift("Response Team 1","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("Cigarette butt cleaning — AM","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("CCID Junior Supervisor — AM","5-hr session","CJS", [],"CCID Opruim Services"),
+      shift("Grand Parade cleaning","5-hr session","", W(["1","2"]),"Team Coaching"),
+      shift("OBSID independent worker","9-hr session","", S(6),"OBSID","6-hr session, office cleaner — worker 6"),
+      shift("OBSID service manager","9-hr session","OSM", [],"OBSID"),
+    ]},
+    { name:"Afternoon", time:"", shifts:[
+      shift("Response Team 2","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("Cigarette butt cleaning — PM","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("CCID Junior Supervisor — PM","5-hr session","CJS", [],"CCID Opruim Services"),
+      shift("OBSID general cleaning","4-hr session","1", S(2),"OBSID"),
+    ]},
+  ]
+},
+{
+  dow:"Saturday", date:"22 Aug 2026",
+  windows:[
+    { name:"Morning", time:"", shifts:[
+      shift("Pre-school administration","5-hr session","1", [],"Ophelp Salaries"),
+      shift("Jan Mutton cleaning","5-hr session","1", S(2),"Jan Mutton and Friends"),
+    ]},
+  ]
+},
+{
+  dow:"Sunday", date:"23 Aug 2026",
+  windows:[
+    { name:"Morning", time:"", shifts:[
+      shift("Groote Kerk","5-hr session","1", [],"Groote Kerk"),
+    ]},
+  ]
+},
+{
+  dow:"Monday", date:"24 Aug 2026",
+  windows:[
+    { name:"Morning", time:"", shifts:[
+      shift("Pre-school administration","5-hr session","1", [],"Ophelp Salaries"),
+      shift("CIDC cleaning","5-hr session","1", S(2),"CIDC","Vocational track"),
+      shift("Response Team 1","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("Cigarette butt cleaning — AM","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("CCID Junior Supervisor — AM","5-hr session","CJS", [],"CCID Opruim Services"),
+      shift("Grand Parade cleaning","5-hr session","", W(["1","2"]),"Team Coaching"),
+      shift("OBSID independent worker","9-hr session","", S(6),"OBSID","6-hr session, office cleaner — worker 6"),
+      shift("OBSID service manager","9-hr session","OSM", [],"OBSID"),
+    ]},
+    { name:"Afternoon", time:"", shifts:[
+      shift("Response Team 2","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("Cigarette butt cleaning — PM","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("CCID Junior Supervisor — PM","5-hr session","CJS", [],"CCID Opruim Services"),
+      shift("OBSID general cleaning","4-hr session","1", S(2),"OBSID"),
+    ]},
+  ]
+},
+{
+  dow:"Tuesday", date:"25 Aug 2026",
+  windows:[
+    { name:"Morning", time:"", shifts:[
+      shift("Pre-school administration","5-hr session","1", [],"Ophelp Salaries"),
+      shift("Jan Mutton cleaning","5-hr session","1", S(2),"Jan Mutton and Friends"),
+      shift("Response Team 1","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("Cigarette butt cleaning — AM","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("CCID Junior Supervisor — AM","5-hr session","CJS", [],"CCID Opruim Services"),
+      shift("Groote Kerk","5-hr session","1", [],"Groote Kerk"),
+      shift("Grand Parade cleaning","5-hr session","", W(["1","2"]),"Team Coaching"),
+      shift("OBSID independent worker","9-hr session","", S(5),"OBSID"),
+      shift("OBSID service manager","9-hr session","OSM", [],"OBSID"),
+    ]},
+    { name:"Afternoon", time:"", shifts:[
+      shift("Response Team 2","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("Cigarette butt cleaning — PM","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("CCID Junior Supervisor — PM","5-hr session","CJS", [],"CCID Opruim Services"),
+      shift("OBSID general cleaning","4-hr session","1", S(2),"OBSID"),
+    ]},
+  ]
+},
+{
+  dow:"Wednesday", date:"26 Aug 2026",
+  windows:[
+    { name:"Morning", time:"", shifts:[
+      shift("Pre-school administration","5-hr session","1", [],"Ophelp Salaries"),
+      shift("CIDC cleaning","5-hr session","1", S(2),"CIDC","Vocational track"),
+      shift("Response Team 1","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("Cigarette butt cleaning — AM","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("CCID Junior Supervisor — AM","5-hr session","CJS", [],"CCID Opruim Services"),
+      shift("Grand Parade cleaning","5-hr session","", W(["1","2"]),"Team Coaching"),
+      shift("OBSID independent worker","9-hr session","", S(6),"OBSID","6-hr session, office cleaner — worker 6"),
+      shift("OBSID service manager","9-hr session","OSM", [],"OBSID"),
+    ]},
+    { name:"Afternoon", time:"", shifts:[
+      shift("Response Team 2","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("Cigarette butt cleaning — PM","5-hr session","1", S(2),"CCID Opruim Services"),
+      shift("CCID Junior Supervisor — PM","5-hr session","CJS", [],"CCID Opruim Services"),
+      shift("OBSID general cleaning","4-hr session","1", S(2),"OBSID"),
+    ]},
+  ]
+},
+];
+
+function renderSlots(list){
+  if(!list || list.length===0) return '<span class="slot">—</span>';
+  return list.map(s=>`<span class="slot${s.filled?' filled':''}">${s.label}</span>`).join('');
+}
+
+function renderTicket(sh){
+  const cls = CLIENT_CLASS(sh.client);
+  return `
+  <div class="ticket ${cls}">
+    ${sh.stamp ? '<div class="stamp">Supervisor</div>' : ''}
+    <div class="ticket-top">
+      <div class="ticket-title">${sh.title}</div>
+      <div class="ticket-dur">${sh.dur}</div>
+    </div>
+    ${sh.client ? `<div class="ticket-client">${sh.client}</div>` : ''}
+    <div class="ticket-rows">
+      ${sh.foreman ? `<div class="ticket-row"><span class="rk">Leader</span><span class="slots"><span class="slot filled">${sh.foreman}</span></span></div>` : ''}
+      ${sh.workers && sh.workers.length ? `<div class="ticket-row"><span class="rk">Workers</span><span class="slots">${renderSlots(sh.workers)}</span></div>` : ''}
+    </div>
+    ${sh.comment ? `<div class="ticket-comment"><i>Note —</i> ${sh.comment}</div>` : ''}
+  </div>`;
+}
+
+function renderWindow(w){
+  return `
+  <section class="window">
+    <div class="window-head">
+      <h2>${w.name}</h2>
+      ${w.time ? `<span class="wtime">${w.time}</span>` : ''}
+    </div>
+    <div class="ticket-grid">
+      ${w.shifts.map(renderTicket).join('')}
+    </div>
+  </section>`;
+}
+
+function countShifts(day){
+  return day.windows.reduce((n,w)=>n+w.shifts.length,0);
+}
+
+function buildBoard(){
+  const strip = document.getElementById('dayStrip');
+  const panels = document.getElementById('dayPanels');
+
+  DAYS.forEach((day, i)=>{
+    const tab = document.createElement('button');
+    tab.className = 'day-tab' + (i===0 ? ' active' : '');
+    const n = countShifts(day);
+    tab.innerHTML = `<div class="dow">${day.dow}</div><div class="ddate">${day.date}</div><div class="dcount">${n} shift${n===1?'':'s'}</div>`;
+    tab.addEventListener('click', ()=>selectDay(i));
+    strip.appendChild(tab);
+
+    const panel = document.createElement('div');
+    panel.className = 'day-panel' + (i===0 ? ' active' : '');
+    panel.id = 'panel-'+i;
+    panel.innerHTML = day.windows.map(renderWindow).join('');
+    panels.appendChild(panel);
+  });
+}
+
+function selectDay(i){
+  document.querySelectorAll('.day-tab').forEach((el,idx)=>el.classList.toggle('active', idx===i));
+  document.querySelectorAll('.day-panel').forEach((el,idx)=>el.classList.toggle('active', idx===i));
+}
+
+buildBoard();
+</script>
+</body>
+</html>
