@@ -14,7 +14,8 @@
     "import:payroll": "node scripts/import-payroll.js",
     "import:payment-authorisation": "node scripts/import-payment-authorisation.js",
     "import:weekly-register": "node scripts/import-weekly-register.js",
-    "import:accsys-export": "node scripts/import-accsys-export.js"
+    "import:accsys-export": "node scripts/import-accsys-export.js",
+    "import:oasys-checks": "node scripts/import-oasys-checks.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

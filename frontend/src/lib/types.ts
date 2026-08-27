@@ -478,6 +478,29 @@ export interface WeeklyRegister {
   createdAt: string
 }
 
+// ── OASys Reconciliation Checks (weekly OASys-vs-Registers balancing) ──────
+export interface OasysCheckDaily {
+  date: string
+  a: number | null
+  b: number | null
+  difference: number
+}
+
+export interface OasysCheck {
+  id: string
+  weekStart: string
+  weekEnd: string
+  labelA: string
+  labelB: string
+  totalA: number
+  totalB: number
+  dailyChecks: OasysCheckDaily[]
+  balanced: boolean
+  sourceFile?: string
+  sourceSheet?: string
+  createdAt: string
+}
+
 // ── Auth ──────────────────────────────────────────────────────────────────────
 export interface AuthToken {
   token: string

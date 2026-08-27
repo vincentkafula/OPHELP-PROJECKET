@@ -22,7 +22,7 @@ import type {
   CardTransaction, PartnerShop, AtmLocation, Project, AuditLog,
   Team, Skill, SkillAssessment, Equipment, InventoryItem, Incident,
   Notification, Message, PayrollPeriod, PayrollRosterEntry, PayrollEntry,
-  PayrollCorrection, PaymentAuthorisation, WeeklyRegister,
+  PayrollCorrection, PaymentAuthorisation, WeeklyRegister, OasysCheck,
 } from './types'
 
 // -- Helpers ------------------------------------------------------------
@@ -70,6 +70,7 @@ const ENDPOINTS: Record<string, string> = {
   payroll_corrections: 'payroll-corrections',
   payment_authorisations: 'payment-authorisations',
   weekly_registers: 'weekly-registers',
+  oasys_checks: 'oasys-checks',
 }
 
 // -- In-memory cache, hydrated once by bootstrap() ------------------------
@@ -226,6 +227,7 @@ export const PayrollEntries = new Collection<PayrollEntry>('ophelp_payroll_entri
 export const PayrollCorrections = new Collection<PayrollCorrection>('ophelp_payroll_corrections', 'payroll_corrections')
 export const PaymentAuthorisations = new Collection<PaymentAuthorisation>('ophelp_payment_authorisations', 'payment_authorisations')
 export const WeeklyRegisters = new Collection<WeeklyRegister>('ophelp_weekly_registers', 'weekly_registers')
+export const OasysChecks = new Collection<OasysCheck>('ophelp_oasys_checks', 'oasys_checks')
 
 /**
  * The original app called this synchronously at module load to seed

@@ -272,6 +272,37 @@ It deliberately doesn't create `payroll_entries` — this report has
 per-person totals only, no day/task detail, so hours/gross pay still come
 from the Paybook (`import-payroll.js`).
 
+## OASys Reconciliation (Operation Office)
+
+`Checking_OAYS.xlsx` is a multi-year weekly reconciliation log (one sheet
+per month, back to late 2022) that checks OASys ledger totals against the
+field registers (Jobsheets, Cash Vouchers) — every week has a pair of
+summary rows (historically "OASys Value" / "Payroll Value", more recently
+just "Correct") followed by a difference row that should be all zeros.
+
+Rather than model every individual transaction row (the layout is a
+personal working sheet and drifts release to release), `backend/scripts/import-oasys-checks.js`
+extracts the reconciliation itself — the two weekly totals being compared
+and whether they balanced — which is both the actual point of the sheet
+and far more reliably extractable across 150+ historical weeks than the
+line-item detail is. It scans every sheet in the workbook for 7-day
+header blocks followed by a near-zero difference row, and skips sheets
+that don't match the pattern (the rough scratch sheets in this workbook,
+"Sheet1"/"Sheet2"/"Sheet3", are skipped automatically).
+
+The **OASys Reconciliation** tab (`frontend/src/components/OasysChecksPanel.tsx`)
+lists every imported week with a Balanced/Discrepancy badge, an
+"Unbalanced Only" filter, and a day-by-day detail view. Verified against
+the real workbook: 178 weeks across 37 sheets, with exactly one genuine
+discrepancy found (a R75 mismatch in one August 2024 week).
+
+```
+railway run npm run import:oasys-checks --prefix backend -- backend/scripts/data/Checking_OAYS.xlsx
+```
+
+Idempotent per (source file, sheet, week start date) — safe to re-run
+after the source workbook gets new months appended.
+
 ## Known limitations / follow-ups
 
 - The admin **"Add User"** screen in the dashboard (`Dashboard.tsx`) still
@@ -305,3 +336,13 @@ from the Paybook (`import-payroll.js`).
   skipped with a console message rather than silently importing wrong
   numbers. Spot-check a newly-imported register against its source sheet
   once before relying on it.
+- The OASys checker (`backend/scripts/import-oasys-checks.js`) finds its
+  weekly totals by position (the two numeric rows directly above a
+  near-zero difference row), not by the row labels, since those labels
+  changed wording over the workbook's history ("OASys Value"/"Payroll
+  Value" in older sheets, "Correct" in newer ones). On the rare block
+  where a label cell is missing or a date is mistyped in the source
+  sheet, the check still imports but shows a generic "Total A"/"Total B"
+  label or an odd week-end date — the discrepancy figure itself is still
+  reliable, just double-check the label/dates for that one week before
+  citing it.

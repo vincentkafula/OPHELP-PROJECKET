@@ -58,6 +58,7 @@ const ENTITY_ROUTES = {
   'payroll-corrections': 'payroll_corrections',
   'payment-authorisations': 'payment_authorisations',
   'weekly-registers': 'weekly_registers',
+  'oasys-checks': 'oasys_checks',
 }
 
 for (const [urlSegment, entityName] of Object.entries(ENTITY_ROUTES)) {

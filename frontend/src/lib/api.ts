@@ -8,7 +8,7 @@ import {
   Cards, Payments, Transactions, PartnerShops, AtmLocations, Projects,
   Equipments, Inventory, Incidents, Notifications, Messages, AuditLogs,
   PayrollPeriods, PayrollRoster, PayrollEntries, PayrollCorrections,
-  PaymentAuthorisations, WeeklyRegisters,
+  PaymentAuthorisations, WeeklyRegisters, OasysChecks,
   now, uid,
 } from './db'
 import type {
@@ -16,7 +16,7 @@ import type {
   OphelpCard, Payment, CardTransaction, PartnerShop, AtmLocation, Project,
   Equipment, InventoryItem, Incident, Notification, Message, AuditLog,
   DashboardStats, ApiResult, PayrollPeriod, PayrollRosterEntry, PayrollEntry,
-  PayrollCorrection, PaymentAuthorisation, WeeklyRegister,
+  PayrollCorrection, PaymentAuthorisation, WeeklyRegister, OasysCheck,
 } from './types'
 
 // ── Participants ──────────────────────────────────────────────────────────────
@@ -708,5 +708,24 @@ export const WeeklyRegisterApi = {
   },
   delete(id: string): ApiResult {
     return WeeklyRegisters.delete(id) ? { success: true } : { success: false, error: 'Register not found' }
+  },
+}
+
+// ── OASys Reconciliation Checks ─────────────────────────────────────────────
+export const OasysCheckApi = {
+  list(): OasysCheck[] {
+    return OasysChecks.all().sort((a, b) => b.weekStart.localeCompare(a.weekStart))
+  },
+  unbalanced(): OasysCheck[] { return OasysChecks.where(c => !c.balanced) },
+  byMonth(sourceSheet: string): OasysCheck[] { return OasysChecks.where(c => c.sourceSheet === sourceSheet) },
+  summary(): { totalWeeks: number; balancedWeeks: number; unbalancedWeeks: number; totalDifference: number } {
+    const all = OasysChecks.all()
+    const unbalanced = all.filter(c => !c.balanced)
+    return {
+      totalWeeks: all.length,
+      balancedWeeks: all.length - unbalanced.length,
+      unbalancedWeeks: unbalanced.length,
+      totalDifference: unbalanced.reduce((s, c) => s + c.dailyChecks.reduce((s2, d) => s2 + d.difference, 0), 0),
+    }
   },
 }
