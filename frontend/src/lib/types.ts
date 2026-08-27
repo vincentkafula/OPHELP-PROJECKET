@@ -588,63 +588,49 @@ export interface Invoice {
   createdAt: string
 }
 
-// ── Jobsheets (money engine: shift payout → serial number → OpHelp ledger →
-// partner invoice rollup). Field names and formulas follow the "System
-// Configuration Prompt — Field Services Operations Platform" spec, §4-7.
-//
-// FLAGGED ASSUMPTIONS (spec left these ambiguous — defaulting conservatively,
-// per the spec's own instruction to flag rather than guess):
-//   1. The spec's §4.5 shows two named "accounts" per Jobsheet in the existing
-//      print-form UI, but the §4.4 calculation is written as a single set of
-//      formulas with no per-account split specified. Rather than invent a
-//      split with no basis in the spec, this computes ONE financial result
-//      per Jobsheet (cash/eft/extra/6X/transport/material/other/subtotal/
-//      admin fee/invoice total) and keeps `accountName` as a single
-//      free-text label for record-keeping.
-//   2. "Extra" (pay beyond the contracted R365/R385 team total) is a
-//      separate manual field, not derived by subtraction — the UI warns if
-//      cash+eft+6X-reward doesn't already equal the contracted total.
-//   3. "Other" is not in the §4.4 subtotal formula's listed terms, but is a
-//      ledger column in §6 with its own cash/EFT split — a real cost with
-//      nowhere else to go would make the invoice under-bill, so it's
-//      included in the subtotal here.
-//   4. Serial number format follows the literal "8-digit, DDMMYY + 2-digit
-//      sequence" rule from §5, not the inconsistent "EG260827010" example.
-//   5. Admin fee rate defaults to 25% per §4.4 but is editable per Jobsheet,
-//      since §6 lists "Fee Rate %" as its own ledger column (implying it can
-//      vary by partner/contract).
-export type JobsheetStatus = 'draft' | 'submitted' | 'confirmed'
-export type PaymentMethod = 'cash' | 'eft'
-
-export interface JobsheetPayment {
-  name: string
-  role: 'foreman' | 'worker'
-  method: PaymentMethod
-  amount: number
+// ── Jobsheets — wraps the REAL JobSheet print-form data (see the
+// JobSheetData/FixedRow/AccRow/ParticipantRow shapes below, which mirror
+// JobSheet.tsx's exported data exactly: ref boxes, taxi/other rows, the
+// Taonga row, participant rows, cash/EFT payment, two named accounts
+// each with C/E/Xtra/6X-Reward/Transport/Material/Other/Admin-fee,
+// area/task, subtotal/invoice total, bags/gloves) plus the workflow
+// metadata (status, serial number, who confirmed it) needed to move a
+// Jobsheet through Foreman -> Operation Office -> OpHelp Ledger. All the
+// money fields are free-text, matching the real form's role as a manual
+// capture tool (the person filling it in does the arithmetic, same as on
+// paper) — this does not re-derive or override those figures.
+export interface JobSheetParticipantRow {
+  id: string; name: string; adv: string; ret: string; team: string; paid: string; foreman: string; worker: string
 }
+export interface JobSheetFixedRow {
+  adv: string; ret: string; num: string; paid: string; foreman: string; paymaster: string
+}
+export interface JobSheetAccRow {
+  total: string; c: string; e: string; xtra: string; rewrd: string; transport: string; material: string; other: string; adminfee: string
+}
+export interface JobSheetData {
+  meta: { day: string; date: string; timeSlot: string; details: string; partner: string }
+  refLeft: [string, string, string]
+  refRight: [string, string, string, string, string, string]
+  fixedRows: { taxi: JobSheetFixedRow; other: JobSheetFixedRow; otherDetails: string }
+  taonga: { adv: string; ret: string; team: string; paid: string; foreman: string; worker: string }
+  participantRows: JobSheetParticipantRow[]
+  payments: { cashPaid: string; cashBy: string; eft: string }
+  accounts: { acc1: JobSheetAccRow; acc2: JobSheetAccRow }
+  area: string; task: string; ceSubtotal: string; invoiceTotal: string; invoices: string
+  consumables: {
+    bag: { issued: string; returned: string; used: string; others: string; total: string }
+    glove: { issued: string; returned: string; used: string; total: string; client2: string }
+  }
+}
+
+export type JobsheetStatus = 'draft' | 'submitted' | 'confirmed'
 
 export interface Jobsheet {
   id: string
-  date: string
-  jobDetail: string
+  data: JobSheetData
   partnerShopId?: string
   teamBookingId?: string
-  accountName: string
-  qualified: boolean
-  shiftHours: 4 | 8
-  contractedLabourTotal: 365 | 385
-  payments: JobsheetPayment[]
-  extraAmount: number
-  transportAmount: number
-  bagsChargeEnabled: boolean
-  bagsIssued: number
-  bagsReturned: number
-  bagsUsed: number
-  glovesIssued: number
-  glovesReturned: number
-  glovesUsed: number
-  otherAmount: number
-  adminFeeRatePct: number
   status: JobsheetStatus
   serialNumber?: string
   createdBy?: string
@@ -755,6 +741,30 @@ export interface TeamBooking {
   deployedBy?: string
   deployedAt?: string
   bookedBy?: string
+  createdAt: string
+}
+
+// ── Task Sheets — wraps the real GrandParadeTaskSheet.tsx print-form data.
+// Note: unlike JobSheet (generic, any job) and OASys (generic ledger),
+// this specific document is scoped to one recurring shift type (the Grand
+// Parade cleaning shift) — it is not a general-purpose task sheet for any
+// booking, so this only covers that shift, not the wider field-ops flow.
+export interface TaskSheetRatedTask { slight: boolean; dirty: boolean; veryDirty: boolean; comment: string; bags: string; minutes: string }
+export interface TaskSheetData {
+  meta: { shifttime: string; day: string; date: string; senior: string; junior: string }
+  tasks: TaskSheetRatedTask[]
+  suggestions: string
+  materials: { glovesUsed: string; bagsUsed: string; materialsType: string; materialsQty: string; minutesTotal: string }
+  specialInstructions: string
+}
+
+export type TaskSheetStatus = 'draft' | 'submitted'
+
+export interface TaskSheet {
+  id: string
+  data: TaskSheetData
+  status: TaskSheetStatus
+  createdBy?: string
   createdAt: string
 }
 

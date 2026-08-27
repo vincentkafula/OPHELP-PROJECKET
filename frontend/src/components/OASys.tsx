@@ -4,6 +4,7 @@
  * Persists to localStorage under STORAGE_KEY.
  */
 import { useState, useEffect, useCallback } from 'react'
+import { JobsheetApi } from '@/lib/api'
 
 // ── CSS tokens ────────────────────────────────────────────────────────────────
 const T = {
@@ -23,6 +24,9 @@ interface Entry {
   pay_c: number; pay_e: number; reward_c: number; reward_e: number
   transport_c: number; transport_e: number; material_c: number; material_e: number
   admin_c: number; admin_e: number; other_c: number; other_e: number
+  /** Set when this entry was auto-imported from a confirmed Jobsheet
+   * (JobsheetsPanel / JobSheet.tsx), so re-importing doesn't duplicate it. */
+  sourceJobsheetId?: string
 }
 interface Category { id: string; name: string; entries: Entry[] }
 interface Client { id: string; name: string; categories: Category[] }
@@ -511,6 +515,73 @@ export default function OASys() {
   }
   function startEdit(entryId: string) { setEditingId(entryId); setFormOpen(true) }
 
+  /** Pulls every confirmed Jobsheet (from JobsheetsPanel / the real
+   * JobSheet.tsx form) not yet in this register into the right client's
+   * "Jobsheets" category — one entry per account that has data (Account 1
+   * is always "OPHELP Salaries" per the printed form; Account 2's client
+   * name comes from the form's own "Client 2" field on the glove row). */
+  function importConfirmedJobsheets() {
+    const confirmed = JobsheetApi.confirmed()
+    const alreadyImported = new Set(
+      s.clients.flatMap(c => c.categories.flatMap(cat => cat.entries.map(e => e.sourceJobsheetId).filter(Boolean)))
+    )
+    const toImport = confirmed.filter(j => !alreadyImported.has(j.id))
+    if (toImport.length === 0) { alert('No new confirmed Jobsheets to import.'); return }
+
+    let imported = 0
+    update(prev => {
+      let clients = [...prev.clients]
+      const findOrCreateClient = (name: string) => {
+        let idx = clients.findIndex(c => c.name.toLowerCase() === name.toLowerCase())
+        if (idx === -1) { clients = [...clients, newClient(name)]; idx = clients.length - 1 }
+        return idx
+      }
+      const findOrCreateJobsheetsCategory = (clientIdx: number) => {
+        const client = clients[clientIdx]
+        let cat = client.categories.find(c => c.name === 'Jobsheets')
+        if (!cat) { cat = newCategory('Jobsheets'); clients[clientIdx] = { ...client, categories: [...client.categories, cat] } }
+        return cat.id
+      }
+
+      for (const j of toImport) {
+        const d = j.data
+        const [yyyy, mm, dd] = (d.meta.date || '').split('-')
+        const accounts: { name: string; acc: typeof d.accounts.acc1 }[] = [
+          { name: 'OPHELP Salaries', acc: d.accounts.acc1 },
+          { name: d.consumables.glove.client2?.trim() || 'Unnamed Client', acc: d.accounts.acc2 },
+        ]
+        for (const { name, acc } of accounts) {
+          const hasData = [acc.c, acc.e, acc.xtra, acc.rewrd, acc.transport, acc.material, acc.other, acc.adminfee].some(v => num(v) !== 0)
+          if (!hasData) continue
+          const clientIdx = findOrCreateClient(name)
+          const catId = findOrCreateJobsheetsCategory(clientIdx)
+          const entry: Entry = {
+            ...blankEntry(),
+            dd: dd || '', mm: mm || '', yyyy: yyyy || String(new Date().getFullYear()),
+            no: j.serialNumber || '', description: d.task || d.area || '',
+            foremen: d.participantRows.filter(p => p.foreman.trim()).length || (d.taonga.foreman ? 1 : 0),
+            workers: d.participantRows.filter(p => p.worker.trim()).length,
+            feeRate: 25, xtra: num(acc.xtra),
+            pay_c: num(acc.c), pay_e: num(acc.e),
+            reward_c: num(acc.rewrd), reward_e: 0,
+            transport_c: num(acc.transport), transport_e: 0,
+            material_c: num(acc.material), material_e: 0,
+            admin_c: num(acc.adminfee), admin_e: 0,
+            other_c: num(acc.other), other_e: 0,
+            sourceJobsheetId: j.id,
+          }
+          clients[clientIdx] = {
+            ...clients[clientIdx],
+            categories: clients[clientIdx].categories.map(cat => cat.id === catId ? { ...cat, entries: [...cat.entries, entry] } : cat),
+          }
+          imported++
+        }
+      }
+      return { ...prev, clients }
+    })
+    alert(`Imported ${imported} entr${imported === 1 ? 'y' : 'ies'} from ${toImport.length} confirmed Jobsheet(s).`)
+  }
+
   const clientTotals = activeClient ? sumClient(activeClient) : null
   const catTotals = activeCategory ? sumCategory(activeCategory) : null
   const editingEntry = editingId && activeCategory ? activeCategory.entries.find(e => e.id === editingId) ?? null : null
@@ -585,6 +656,12 @@ export default function OASys() {
             />
             <button onClick={addClient} style={{ background: T.gold, border: 'none', color: T.coverDark, fontWeight: 700, padding: '0 12px', borderRadius: 2, cursor: 'pointer', fontFamily: serif }}>Add</button>
           </div>
+
+          {/* Import confirmed Jobsheets */}
+          <button onClick={importConfirmedJobsheets} title="Pull every confirmed Jobsheet (from the Jobsheets tab) not yet logged here into the right client's Jobsheets register"
+            style={{ marginTop: 10, width: '100%', padding: '9px 10px', border: `1px dashed ${T.goldSoft}`, background: 'transparent', color: T.goldSoft, borderRadius: 2, cursor: 'pointer', fontFamily: serif, fontSize: 12.5 }}>
+            ⇩ Import Confirmed Jobsheets
+          </button>
 
           {/* Summary */}
           {s.clients.length > 0 && (

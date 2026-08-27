@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
+import type { TaskSheetData, TaskSheetRatedTask } from '@/lib/types'
+export type { TaskSheetData }
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 const C = {
@@ -11,10 +13,10 @@ const C = {
 }
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-interface RatedTask { slight: boolean; dirty: boolean; veryDirty: boolean; comment: string; bags: string; minutes: string }
-interface Meta { shifttime: string; day: string; date: string; senior: string; junior: string }
-interface Materials { glovesUsed: string; bagsUsed: string; materialsType: string; materialsQty: string; minutesTotal: string }
-interface SheetState { meta: Meta; tasks: RatedTask[]; suggestions: string; materials: Materials; specialInstructions: string }
+type RatedTask = TaskSheetRatedTask
+type Meta = TaskSheetData['meta']
+type Materials = TaskSheetData['materials']
+type SheetState = TaskSheetData
 
 function blankTask(): RatedTask { return { slight: false, dirty: false, veryDirty: false, comment: '', bags: '', minutes: '' } }
 function blankState(): SheetState {
@@ -66,8 +68,15 @@ function exportJSON(s: SheetState) {
 }
 
 // ── Main component ─────────────────────────────────────────────────────────────
-export default function GrandParadeTaskSheet() {
-  const [s, setS] = useState<SheetState>(blankState)
+interface GrandParadeTaskSheetProps {
+  initialData?: SheetState
+  onSave?: (data: SheetState) => void
+  readOnly?: boolean
+  footerExtra?: React.ReactNode
+}
+
+export default function GrandParadeTaskSheet({ initialData, onSave, readOnly = false, footerExtra }: GrandParadeTaskSheetProps = {}) {
+  const [s, setS] = useState<SheetState>(initialData ?? blankState)
 
   // Auto-update day name when date changes
   useEffect(() => {
@@ -102,7 +111,7 @@ export default function GrandParadeTaskSheet() {
   return (
     <div style={{ background: '#EDF1F6', padding: '20px 8px 60px', fontFamily: "'Segoe UI', Arial, sans-serif", color: C.ink }}>
       {/* Sheet */}
-      <div style={{ maxWidth: 1100, margin: '0 auto', ...sheetBorder }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', ...sheetBorder, opacity: readOnly ? 0.92 : 1, pointerEvents: readOnly ? 'none' : 'auto' }}>
 
         {/* Header */}
         <div style={{ padding: '16px 22px', borderBottom: `2px solid ${C.navy}` }}>
@@ -287,15 +296,19 @@ export default function GrandParadeTaskSheet() {
 
       {/* Footer actions */}
       <div className="no-print" style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, padding: '16px 4px 0', maxWidth: 1100, margin: '0 auto' }}>
-        <button onClick={resetForm} style={{ background: '#fff', color: '#B23A3A', border: '2px solid #B23A3A', borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+        {!readOnly && <button onClick={resetForm} style={{ background: '#fff', color: '#B23A3A', border: '2px solid #B23A3A', borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
           Clear form
-        </button>
+        </button>}
         <button onClick={() => window.print()} style={{ background: '#fff', color: C.navy, border: `2px solid ${C.navy}`, borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
           Print
         </button>
-        <button onClick={() => exportJSON(s)} style={{ background: C.navy, color: '#fff', border: 'none', borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+        <button onClick={() => exportJSON(s)} style={{ background: '#fff', color: C.navy, border: `2px solid ${C.navy}`, borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
           Export JSON
         </button>
+        {!readOnly && onSave && <button onClick={() => onSave(s)} style={{ background: C.navy, color: '#fff', border: 'none', borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+          Save Task Sheet
+        </button>}
+        {footerExtra}
       </div>
     </div>
   )

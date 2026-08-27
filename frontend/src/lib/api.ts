@@ -9,7 +9,7 @@ import {
   Equipments, Inventory, Incidents, Notifications, Messages, AuditLogs,
   PayrollPeriods, PayrollRoster, PayrollEntries, PayrollCorrections,
   PaymentAuthorisations, WeeklyRegisters, OasysChecks, DepotSchedules, Quotations, Invoices,
-  Jobsheets, MonthlyInvoices, QuotationRequests, ScheduledJobs, TeamBookings,
+  Jobsheets, MonthlyInvoices, QuotationRequests, ScheduledJobs, TeamBookings, TaskSheets,
   now, uid,
 } from './db'
 import type {
@@ -18,8 +18,8 @@ import type {
   Equipment, InventoryItem, Incident, Notification, Message, AuditLog,
   DashboardStats, ApiResult, PayrollPeriod, PayrollRosterEntry, PayrollEntry,
   PayrollCorrection, PaymentAuthorisation, WeeklyRegister, OasysCheck,
-  DepotSchedule, Quotation, Invoice, Jobsheet, JobsheetPayment, MonthlyInvoice,
-  QuotationRequest, ScheduledJob, TeamBooking, TeamBookingReplacement,
+  DepotSchedule, Quotation, Invoice, Jobsheet, JobSheetData, JobSheetAccRow, MonthlyInvoice,
+  QuotationRequest, ScheduledJob, TeamBooking, TeamBookingReplacement, TaskSheet, TaskSheetData,
 } from './types'
 
 // ── Participants ──────────────────────────────────────────────────────────────
@@ -788,44 +788,33 @@ export const InvoiceApi = {
   },
 }
 
-// ── Jobsheets — money engine (§4-7 of the field-services platform spec) ────────
-export interface JobsheetFinancials {
-  cashAmount: number
-  eftAmount: number
-  sixXRewardAmount: number
-  payAmount: number
-  payMismatch: boolean // cash+eft+6X should equal the contracted labour total
-  bagsAmount: number
-  glovesAmount: number
-  materialAmount: number
-  subtotal: number
-  adminFee: number
-  invoiceAmount: number
+// ── Jobsheets — wraps the real JobSheet.tsx print-form data with the
+// Foreman -> Operation Office -> OpHelp Ledger workflow (§3.8-3.12, §5 of
+// the field-services platform spec). The money fields inside JobSheetData
+// are free text (the form is a manual capture tool, same as the paper
+// original) — deriveJobsheetTotals() below reads them as numbers for
+// reporting/ledger purposes only, it never overrides what was typed.
+function parseAmount(v: string | undefined): number {
+  const n = parseFloat(String(v ?? '').replace(/,/g, ''))
+  return Number.isFinite(n) ? n : 0
 }
 
-/** Pure calculation engine — used by both the entry form (live preview) and
- * anything server-side/summary that needs the same numbers, so the math
- * only lives in one place. */
-export function computeJobsheetFinancials(js: Pick<Jobsheet,
-  'payments' | 'qualified' | 'shiftHours' | 'contractedLabourTotal' | 'extraAmount' |
-  'transportAmount' | 'bagsChargeEnabled' | 'bagsUsed' | 'glovesUsed' | 'otherAmount' | 'adminFeeRatePct'
->): JobsheetFinancials {
-  const cashAmount = js.payments.filter(p => p.method === 'cash').reduce((s, p) => s + p.amount, 0)
-  const eftAmount = js.payments.filter(p => p.method === 'eft').reduce((s, p) => s + p.amount, 0)
-  const memberCount = js.payments.length || 3
-  const sixXRewardAmount = js.qualified ? 0 : (js.shiftHours === 4 ? 10 : 20) * memberCount
-  const payAmount = cashAmount + eftAmount + sixXRewardAmount
-  const payMismatch = Math.round(payAmount * 100) !== Math.round(js.contractedLabourTotal * 100)
+export interface JobsheetTotals {
+  cash: number; eft: number; xtra: number; sixXReward: number
+  transport: number; material: number; other: number; adminFee: number
+  subtotal: number; invoiceAmount: number
+}
 
-  const bagsAmount = js.bagsChargeEnabled ? js.bagsUsed * 1.94 : 0
-  const glovesAmount = js.bagsChargeEnabled ? js.glovesUsed * 7.50 : 0
-  const materialAmount = bagsAmount + glovesAmount
-
-  const subtotal = cashAmount + eftAmount + js.extraAmount + sixXRewardAmount + js.transportAmount + materialAmount + js.otherAmount
-  const adminFee = subtotal * (js.adminFeeRatePct / 100)
-  const invoiceAmount = subtotal + adminFee
-
-  return { cashAmount, eftAmount, sixXRewardAmount, payAmount, payMismatch, bagsAmount, glovesAmount, materialAmount, subtotal, adminFee, invoiceAmount }
+/** Reads the two accounts' free-text figures as numbers, for the ledger
+ * and reporting views — a read-only summary, not a recalculation. */
+export function deriveJobsheetTotals(data: JobSheetData): JobsheetTotals {
+  const accs = [data.accounts.acc1, data.accounts.acc2]
+  const sum = (k: keyof JobSheetAccRow) => accs.reduce((s, a) => s + parseAmount(a[k]), 0)
+  const cash = sum('c'), eft = sum('e'), xtra = sum('xtra'), sixXReward = sum('rewrd')
+  const transport = sum('transport'), material = sum('material'), other = sum('other'), adminFee = sum('adminfee')
+  const subtotal = cash + eft + xtra + sixXReward + transport + material + other
+  const invoiceAmount = parseAmount(data.invoiceTotal) || subtotal + adminFee
+  return { cash, eft, xtra, sixXReward, transport, material, other, adminFee, subtotal, invoiceAmount }
 }
 
 /** 8-digit serial number: 6-digit date (DDMMYY) + 2-digit daily sequence,
@@ -840,33 +829,38 @@ function nextSerialNumber(date: string, existing: Jobsheet[]): string {
 }
 
 export const JobsheetApi = {
-  list(): Jobsheet[] { return Jobsheets.all().sort((a, b) => b.date.localeCompare(a.date)) },
+  list(): Jobsheet[] { return Jobsheets.all().sort((a, b) => b.createdAt.localeCompare(a.createdAt)) },
   get(id: string): Jobsheet | undefined { return Jobsheets.findById(id) },
   byStatus(status: Jobsheet['status']): Jobsheet[] { return Jobsheets.where(j => j.status === status) },
   byCreator(createdBy: string): Jobsheet[] { return Jobsheets.where(j => j.createdBy === createdBy) },
   byPartner(partnerShopId: string): Jobsheet[] { return Jobsheets.where(j => j.partnerShopId === partnerShopId) },
   confirmed(): Jobsheet[] { return Jobsheets.where(j => j.status === 'confirmed') },
 
-  financials(js: Jobsheet): JobsheetFinancials { return computeJobsheetFinancials(js) },
+  totals(js: Jobsheet): JobsheetTotals { return deriveJobsheetTotals(js.data) },
 
-  create(data: Omit<Jobsheet, 'id' | 'createdAt' | 'status' | 'serialNumber'>): ApiResult<Jobsheet> {
-    const j = Jobsheets.insert({ ...data, status: 'draft', createdAt: now() })
+  /** Foreman saves a draft (or first save) of the real Jobsheet form. */
+  create(input: { data: JobSheetData; partnerShopId?: string; teamBookingId?: string; createdBy?: string }): ApiResult<Jobsheet> {
+    const j = Jobsheets.insert({ ...input, status: 'draft', createdAt: now() })
     return { success: true, data: j }
   },
   update(id: string, patch: Partial<Jobsheet>): ApiResult<Jobsheet> {
     const j = Jobsheets.update(id, patch)
     return j ? { success: true, data: j } : { success: false, error: 'Jobsheet not found' }
   },
+  /** Foreman edits the form and saves again (still a draft or resubmitting). */
+  saveData(id: string, data: JobSheetData): ApiResult<Jobsheet> { return this.update(id, { data }) },
   submit(id: string): ApiResult<Jobsheet> { return this.update(id, { status: 'submitted' }) },
 
   /** Operation Office confirms a submitted Jobsheet: assigns its serial
-   * number and makes it appear in the OpHelp Accounting ledger. */
+   * number (also written into the printed sheet's own "Invoice(s)" field
+   * if that was left blank) and makes it appear in the OpHelp ledger. */
   confirm(id: string, confirmedBy: string): ApiResult<Jobsheet> {
     const js = Jobsheets.findById(id)
     if (!js) return { success: false, error: 'Jobsheet not found' }
     if (js.status !== 'submitted') return { success: false, error: 'Only submitted Jobsheets can be confirmed' }
-    const serialNumber = nextSerialNumber(js.date, Jobsheets.all())
-    const updated = Jobsheets.update(id, { status: 'confirmed', serialNumber, confirmedBy, confirmedAt: now() })
+    const serialNumber = nextSerialNumber(js.data.meta.date, Jobsheets.all())
+    const data = js.data.invoices ? js.data : { ...js.data, invoices: serialNumber }
+    const updated = Jobsheets.update(id, { status: 'confirmed', serialNumber, confirmedBy, confirmedAt: now(), data })
     return updated ? { success: true, data: updated } : { success: false, error: 'Could not confirm Jobsheet' }
   },
   delete(id: string): ApiResult {
@@ -883,8 +877,8 @@ export const MonthlyInvoiceApi = {
    * into a finalized Monthly Invoice yet, with their running total. */
   pendingForMonth(partnerShopId: string, month: string): { jobsheets: Jobsheet[]; total: number } {
     const finalized = new Set(MonthlyInvoices.where(m => m.partnerShopId === partnerShopId && m.month === month).flatMap(m => m.jobsheetIds))
-    const jobsheets = JobsheetApi.confirmed().filter(j => j.partnerShopId === partnerShopId && j.date.startsWith(month) && !finalized.has(j.id))
-    const total = jobsheets.reduce((s, j) => s + computeJobsheetFinancials(j).invoiceAmount, 0)
+    const jobsheets = JobsheetApi.confirmed().filter(j => j.partnerShopId === partnerShopId && j.data.meta.date.startsWith(month) && !finalized.has(j.id))
+    const total = jobsheets.reduce((s, j) => s + deriveJobsheetTotals(j.data).invoiceAmount, 0)
     return { jobsheets, total }
   },
 
@@ -1014,5 +1008,30 @@ export const TeamBookingApi = {
   complete(id: string): ApiResult<TeamBooking> {
     const b = TeamBookings.update(id, { status: 'completed' })
     return b ? { success: true, data: b } : { success: false, error: 'Team booking not found' }
+  },
+}
+
+// ── Task Sheets — wraps the real GrandParadeTaskSheet.tsx print-form data.
+// Scoped to that one recurring shift type, not a general task sheet for
+// any booking (see the note on TaskSheet in lib/types.ts). ─────────────────
+export const TaskSheetApi = {
+  list(): TaskSheet[] { return TaskSheets.all().sort((a, b) => b.createdAt.localeCompare(a.createdAt)) },
+  get(id: string): TaskSheet | undefined { return TaskSheets.findById(id) },
+  byCreator(createdBy: string): TaskSheet[] { return TaskSheets.where(t => t.createdBy === createdBy) },
+
+  create(input: { data: TaskSheetData; createdBy?: string }): ApiResult<TaskSheet> {
+    const t = TaskSheets.insert({ ...input, status: 'draft', createdAt: now() })
+    return { success: true, data: t }
+  },
+  saveData(id: string, data: TaskSheetData): ApiResult<TaskSheet> {
+    const t = TaskSheets.update(id, { data })
+    return t ? { success: true, data: t } : { success: false, error: 'Task sheet not found' }
+  },
+  submit(id: string): ApiResult<TaskSheet> {
+    const t = TaskSheets.update(id, { status: 'submitted' })
+    return t ? { success: true, data: t } : { success: false, error: 'Task sheet not found' }
+  },
+  delete(id: string): ApiResult {
+    return TaskSheets.delete(id) ? { success: true } : { success: false, error: 'Task sheet not found' }
   },
 }

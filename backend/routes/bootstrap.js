@@ -14,6 +14,7 @@ const ENTITIES = [
   'invoices',
   'jobsheets', 'monthly_invoices',
   'quotation_requests', 'scheduled_jobs', 'team_bookings',
+  'task_sheets',
 ]
 
 // The whole app (marketing pages + dashboard) reads through one in-memory

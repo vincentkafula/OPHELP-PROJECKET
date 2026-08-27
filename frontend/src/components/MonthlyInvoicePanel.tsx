@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { MonthlyInvoiceApi, PartnerShopApi, computeJobsheetFinancials } from '@/lib/api'
+import { MonthlyInvoiceApi, PartnerShopApi, deriveJobsheetTotals } from '@/lib/api'
 import { dbBus } from '@/lib/events'
 import { DataTable } from './shared/DataTable'
 import { Select } from './shared/FormField'
@@ -108,8 +108,8 @@ export default function MonthlyInvoicePanel({ mode, partnerShopId, currentUserNa
                   <ul className="space-y-1 text-sm mb-4">
                     {pending.jobsheets.map(j => (
                       <li key={j.id} className="flex justify-between">
-                        <span>{j.jobDetail} <span className="text-gray-400 font-mono text-xs">{j.serialNumber}</span></span>
-                        <span>{fmtMoney(computeJobsheetFinancials(j).invoiceAmount)}</span>
+                        <span>{j.data.task || j.data.area} <span className="text-gray-400 font-mono text-xs">{j.serialNumber}</span></span>
+                        <span>{fmtMoney(deriveJobsheetTotals(j.data).invoiceAmount)}</span>
                       </li>
                     ))}
                   </ul>

@@ -399,67 +399,66 @@ shared between roles the same way [Quotations](#quotations-operation-office--par
 is: Operation Office sees the full register with CSV export; Partner
 sees only invoices whose `client` field matches their `PartnerShop.name`.
 
-## Jobsheets — Money Engine (Foreman → Operation Office → Accounting → Partner)
+## Jobsheets, OASys Ledger & Task Sheets — the real documents, wired up
 
-This implements the financial core of the "Field Services Operations
-Platform" spec: a Jobsheet's exact pay/6X-Reward/material/admin-fee
-calculation, serial numbering, the OpHelp Accounting ledger, and the
-partner monthly invoice rollup. It's a deliberately scoped slice of a
-much larger spec (quotation requests, the 3-stage approval chain,
-scheduling, team booking, and day-admin roll-call/deployment are **not**
-built yet) — this is the piece everything else would eventually feed
-into.
+Earlier drafts of this build introduced parallel custom components
+(`JobsheetsPanel` with its own invented fields, a separate
+`AccountingLedgerPanel`) instead of using the app's existing real
+documents. That was wrong — those documents (`JobSheet.tsx`, `OASys.tsx`,
+`GrandParadeTaskSheet.tsx`) are the actual paper forms this organisation
+already uses, and duplicating them with a different field layout would
+mean two systems drifting apart. This has been corrected: the real forms
+now do the actual data capture, and the workflow (draft → submit →
+confirm) is layered on top of them via `initialData`/`onSave`/`readOnly`/
+`footerExtra` props, not replaced by new ones.
 
-**Flow:** Foreman creates a Jobsheet (**Jobsheets** tab) after a shift,
-entering the team's pay (cash/EFT per person), bags/gloves counts,
-transport, and any extra. It computes live as you type. Foreman submits
-→ Operation Office reviews (**Jobsheet Review** tab) and confirms, which
-assigns the serial number and makes it appear in **OpHelp Ledger**. A
-partner's confirmed Jobsheets roll up into a **Monthly Invoice**
-(Operation Office finalizes it; the partner sees it read-only under
-**Monthly Invoice** on their own dashboard).
+**JobSheet.tsx** (Foreman's real Jobsheet print form — day/date, taxi/
+other rows, the Taonga row, participant rows, cash/EFT payment, two named
+accounts each with C/E/Xtra/6X-Reward/Transport/Material/Other/Admin-fee,
+area/task, bags/gloves) is unchanged in its layout and behaviour. It now
+also accepts:
+- `initialData` — pre-fills the whole form from a saved record
+- `onSave` — wired to a new "Save Jobsheet" button
+- `readOnly` — locks the form (used once a Jobsheet is confirmed)
+- `footerExtra` — lets the parent add a workflow button (Submit / Confirm)
 
-**Calculation** (`computeJobsheetFinancials` in `frontend/src/lib/api.ts`
-— the single source of truth used by both the live entry-form preview
-and the ledger):
-1. Cash / EFT = sum of the team's per-person payments by method.
-2. 6X Reward = unqualified team only — R10/member (4h) or R20/member (8h).
-3. Pay Amount = Cash + EFT + 6X Reward — should equal the contracted
-   labour total (R385 or R365, set per Jobsheet); the entry form warns
-   if it doesn't.
-4. Material = (bags used × R1.94) + (gloves used × R7.50), zero if the
-   contract's "client pays direct" toggle is on.
-5. Subtotal = Cash + EFT + Extra + 6X Reward + Transport + Material + Other.
-6. Admin Fee = Subtotal × fee rate (defaults to 25%, editable per Jobsheet).
-7. Invoice Amount = Subtotal + Admin Fee.
+All the money fields stay free text, exactly as on the real form — this
+is a manual capture tool (the person filling it in does the arithmetic,
+same as on paper), not a calculator. `deriveJobsheetTotals()` in
+`frontend/src/lib/api.ts` reads those free-text figures as numbers for
+reporting only; it never overrides what was typed.
 
-**Flagged assumptions** (the source spec left these ambiguous — each is
-also documented as a comment on the `Jobsheet` type in
-`frontend/src/lib/types.ts`):
-- The spec's own print-form UI (`JobSheet.tsx`) shows **two** named
-  accounts per Jobsheet, but the calculation section gives one set of
-  formulas with no per-account split defined. Rather than invent a
-  split, this computes **one** financial result per Jobsheet and keeps
-  `accountName` as a single free-text label.
-- "Extra" (pay beyond the contracted total) is a manual field, not
-  derived by subtraction — matching the spec's own wording that Extra is
-  "recorded separately."
-- "Other" isn't listed in the subtotal formula's terms but does have its
-  own ledger column with a real cost behind it, so it's included in the
-  subtotal — excluding a real cost would under-bill the client.
-- The serial number follows the literal "8-digit, DDMMYY + 2-digit daily
-  sequence" rule, not the spec's own inconsistent `EG260827010` example.
-- Admin fee rate defaults to 25% but is editable per Jobsheet, since the
-  ledger has its own "Fee Rate %" column implying it varies.
-- The OpHelp Accounting ledger tracks Transport/Material/Admin/Other as
-  single amounts rather than cash/EFT pairs — only team labour pay
-  differentiates cash vs EFT per person; the spec doesn't say how the
-  other categories are paid out.
-- For an unqualified team, Cash+EFT+6X-Reward will generally **not**
-  equal R365/R385 (the unqualified base rates sum to R270), which the
-  entry form will flag as a mismatch — this is a literal reading of the
-  spec's own formula, not a bug; reconcile the difference with the Extra
-  field per Jobsheet.
+**Flow:** Foreman opens the real form (**Jobsheets** tab), fills it in
+job as usual, and saves → Operation Office opens the same real form
+read-only-once-confirmed (**Jobsheet Review** tab) and confirms, which
+assigns an 8-digit serial number (DDMMYY + daily sequence — the spec's
+own `EG260827010` example doesn't match its own "8-digit" rule, so this
+follows the stated rule) → a partner's confirmed Jobsheets roll up into
+a **Monthly Invoice** (Operation Office finalizes it; the partner sees
+it read-only on their own dashboard).
+
+**OASys.tsx** (the real OPHELP Accounting System ledger — clients →
+registers → entries, each with Pay/6X-Reward/Transport/Material/Admin/
+Other split by Cash/EFT, computing invoice total, expense total, 6X
+reward balance, and OPHELP balance exactly per the spec's §6 ledger
+columns) is unchanged and remains the single ledger — the old parallel
+`AccountingLedgerPanel` has been deleted, and "OpHelp Ledger" nav items
+now open the real OASys. It gained one new capability: an
+**"Import Confirmed Jobsheets"** button that pulls every confirmed
+Jobsheet not already logged into the right client's "Jobsheets"
+register — Account 1 always maps to the "OPHELP Salaries" client (per
+the form's own fixed label), Account 2 maps to whatever name was typed
+into the form's own "Client 2" field. Each imported entry is tagged with
+the source Jobsheet's id so re-importing never duplicates it.
+
+**GrandParadeTaskSheet.tsx** got the same `initialData`/`onSave`/
+`readOnly`/`footerExtra` treatment as JobSheet.tsx, and Foreman's
+**Tasksheet** tab now lists and opens real saved Task Sheets instead of
+one disconnected static form. One honest scoping note: this document is
+specifically the Grand Parade cleaning shift's task sheet, not a general
+task sheet for any job — it hasn't been forced into the wider field-ops
+flow (scheduling / team booking / roll call), since that would misrepresent
+what the real document actually covers.
 
 ## Quotation Request Approval Chain (Partner → Operation Management →
 ## Operation Office → Manager)
@@ -518,10 +517,11 @@ issued/returned/used figures foremen record on each Jobsheet (§3.8/3.11).
   the `team` role in this app already represents an individual
   logged-in participant (`My Shifts` etc.) — Team Booking is additive to
   that, not a replacement.
-- Foreman's Task Sheet (mentioned alongside the Jobsheet in §3.8) isn't
-  digitized here — the existing static print-form components
-  (`GrandParadeTaskSheet.tsx`, `CityDepotShiftSlip.tsx`) still serve that
-  role; only the Jobsheet's money side is backed by real data.
+- Foreman's Task Sheet (mentioned alongside the Jobsheet in §3.8) is the
+  real `GrandParadeTaskSheet.tsx` document (see the note above) — it's
+  digitized the same way as the Jobsheet, but it's scoped to the Grand
+  Parade shift specifically, so it isn't part of this general
+  scheduling/booking flow the way the Jobsheet's money side is.
 
 ## Known limitations / follow-ups
 

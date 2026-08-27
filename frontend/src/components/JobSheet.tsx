@@ -1,4 +1,6 @@
 import { useState, useRef } from 'react'
+import type { JobSheetData, JobSheetParticipantRow as ParticipantRow, JobSheetFixedRow as FixedRow, JobSheetAccRow as AccRow } from '@/lib/types'
+export type { JobSheetData }
 
 // ── Tokens ────────────────────────────────────────────────────────────────────
 const C = {
@@ -10,17 +12,6 @@ const C = {
   teal: '#3F8F6F', tealLight: '#E4F3ED',
   line: '#B9C7DA', ink: '#16233F', muted: '#6B7686',
   paper: '#FFFFFF', bgPage: '#EDF1F6',
-}
-
-// ── Types ─────────────────────────────────────────────────────────────────────
-interface ParticipantRow {
-  id: string; name: string; adv: string; ret: string; team: string; paid: string; foreman: string; worker: string
-}
-interface FixedRow {
-  adv: string; ret: string; num: string; paid: string; foreman: string; paymaster: string
-}
-interface AccRow {
-  total: string; c: string; e: string; xtra: string; rewrd: string; transport: string; material: string; other: string; adminfee: string
 }
 
 function mkId() { return Math.random().toString(36).slice(2, 10) }
@@ -62,52 +53,62 @@ interface JobSheetProps {
   defaultSite?: string
   defaultDate?: string
   defaultTimeSlot?: string
+  /** Pre-fill the sheet from a previously-saved record (Operation Office
+   * review, or resuming a draft). */
+  initialData?: JobSheetData
+  /** Called with the sheet's current data — wired to the "Save" button. */
+  onSave?: (data: JobSheetData) => void
+  /** Disables all inputs — used for a read-only confirmed view. */
+  readOnly?: boolean
+  /** Extra buttons (e.g. Office's "Confirm & Assign Serial No.") rendered
+   * alongside Clear/Print/Export/Save. */
+  footerExtra?: React.ReactNode
 }
 
-export default function JobSheet({ defaultSite = '', defaultDate = '', defaultTimeSlot = '' }: JobSheetProps) {
+export default function JobSheet({ defaultSite = '', defaultDate = '', defaultTimeSlot = '', initialData, onSave, readOnly = false, footerExtra }: JobSheetProps) {
   const today = new Date()
   const todayStr = defaultDate || today.toISOString().slice(0, 10)
   const todayDay = dayNames[today.getDay()]
 
   // ── State ─────────────────────────────────────────────────────────────────
-  const [refLeft, setRefLeft] = useState<[string, string, string]>(['', '', ''])
-  const [refRight, setRefRight] = useState<[string, string, string, string, string, string]>(['', '', '', '', '', ''])
-  const [day, setDay] = useState(todayDay)
-  const [date, setDate] = useState(todayStr)
-  const [timeSlot, setTimeSlot] = useState(defaultTimeSlot || '07:00-11:00')
-  const [details, setDetails] = useState('')
-  const [partner, setPartner] = useState('OPHELP')
+  const [refLeft, setRefLeft] = useState<[string, string, string]>(initialData?.refLeft ?? ['', '', ''])
+  const [refRight, setRefRight] = useState<[string, string, string, string, string, string]>(initialData?.refRight ?? ['', '', '', '', '', ''])
+  const [day, setDay] = useState(initialData?.meta.day ?? todayDay)
+  const [date, setDate] = useState(initialData?.meta.date ?? todayStr)
+  const [timeSlot, setTimeSlot] = useState(initialData?.meta.timeSlot ?? (defaultTimeSlot || '07:00-11:00'))
+  const [details, setDetails] = useState(initialData?.meta.details ?? '')
+  const [partner, setPartner] = useState(initialData?.meta.partner ?? 'OPHELP')
 
-  const [taxi, setTaxi] = useState<FixedRow>(mkFixed())
-  const [other, setOther] = useState<FixedRow>(mkFixed())
-  const [otherDetails, setOtherDetails] = useState('')
+  const [taxi, setTaxi] = useState<FixedRow>(initialData?.fixedRows.taxi ?? mkFixed())
+  const [other, setOther] = useState<FixedRow>(initialData?.fixedRows.other ?? mkFixed())
+  const [otherDetails, setOtherDetails] = useState(initialData?.fixedRows.otherDetails ?? '')
 
-  const [taonga, setTaonga] = useState({ adv: '', ret: '', team: '', paid: '110', foreman: '', worker: '' })
-  const [participants, setParticipants] = useState<ParticipantRow[]>([mkPRow(), mkPRow(), mkPRow(), mkPRow()])
+  const [taonga, setTaonga] = useState(initialData?.taonga ?? { adv: '', ret: '', team: '', paid: '110', foreman: '', worker: '' })
+  const [participants, setParticipants] = useState<ParticipantRow[]>(initialData?.participantRows ?? [mkPRow(), mkPRow(), mkPRow(), mkPRow()])
 
-  const [cashPaid, setCashPaid] = useState('')
-  const [cashBy, setCashBy] = useState('')
-  const [eft, setEft] = useState('')
+  const [cashPaid, setCashPaid] = useState(initialData?.payments.cashPaid ?? '')
+  const [cashBy, setCashBy] = useState(initialData?.payments.cashBy ?? '')
+  const [eft, setEft] = useState(initialData?.payments.eft ?? '')
 
-  const [acc1, setAcc1] = useState<AccRow>(mkAcc())
-  const [acc2, setAcc2] = useState<AccRow>(mkAcc())
+  const [acc1, setAcc1] = useState<AccRow>(initialData?.accounts.acc1 ?? mkAcc())
+  const [acc2, setAcc2] = useState<AccRow>(initialData?.accounts.acc2 ?? mkAcc())
 
-  const [area, setArea] = useState(defaultSite)
-  const [task, setTask] = useState('')
-  const [ceSubtotal, setCeSubtotal] = useState('')
-  const [invoiceTotal, setInvoiceTotal] = useState('')
-  const [invoices, setInvoices] = useState('')
+  const [area, setArea] = useState(initialData?.area ?? defaultSite)
+  const [task, setTask] = useState(initialData?.task ?? '')
+  const [ceSubtotal, setCeSubtotal] = useState(initialData?.ceSubtotal ?? '')
+  const [invoiceTotal, setInvoiceTotal] = useState(initialData?.invoiceTotal ?? '')
+  const [invoices, setInvoices] = useState(initialData?.invoices ?? '')
 
-  const [bagIssued, setBagIssued] = useState('')
-  const [bagReturned, setBagReturned] = useState('')
-  const [bagUsed, setBagUsed] = useState('')
-  const [bagOthers, setBagOthers] = useState('')
-  const [bagTotal, setBagTotal] = useState('')
-  const [gloveIssued, setGloveIssued] = useState('')
-  const [gloveReturned, setGloveReturned] = useState('')
-  const [gloveUsed, setGloveUsed] = useState('')
-  const [gloveTotal, setGloveTotal] = useState('')
-  const [client2, setClient2] = useState('')
+  const [bagIssued, setBagIssued] = useState(initialData?.consumables.bag.issued ?? '')
+  const [bagReturned, setBagReturned] = useState(initialData?.consumables.bag.returned ?? '')
+  const [bagUsed, setBagUsed] = useState(initialData?.consumables.bag.used ?? '')
+  const [bagOthers, setBagOthers] = useState(initialData?.consumables.bag.others ?? '')
+  const [bagTotal, setBagTotal] = useState(initialData?.consumables.bag.total ?? '')
+  const [gloveIssued, setGloveIssued] = useState(initialData?.consumables.glove.issued ?? '')
+  const [gloveReturned, setGloveReturned] = useState(initialData?.consumables.glove.returned ?? '')
+  const [gloveUsed, setGloveUsed] = useState(initialData?.consumables.glove.used ?? '')
+  const [gloveTotal, setGloveTotal] = useState(initialData?.consumables.glove.total ?? '')
+  const [client2, setClient2] = useState(initialData?.consumables.glove.client2 ?? '')
 
   const sheetRef = useRef<HTMLDivElement>(null)
 
@@ -132,8 +133,8 @@ export default function JobSheet({ defaultSite = '', defaultDate = '', defaultTi
     setGloveIssued(''); setGloveReturned(''); setGloveUsed(''); setGloveTotal(''); setClient2('')
   }
 
-  function exportData() {
-    const data = {
+  function buildData(): JobSheetData {
+    return {
       meta: { day, date, timeSlot, details, partner },
       refLeft, refRight,
       fixedRows: { taxi, other, otherDetails },
@@ -144,11 +145,17 @@ export default function JobSheet({ defaultSite = '', defaultDate = '', defaultTi
       area, task, ceSubtotal, invoiceTotal, invoices,
       consumables: { bag: { issued: bagIssued, returned: bagReturned, used: bagUsed, others: bagOthers, total: bagTotal }, glove: { issued: gloveIssued, returned: gloveReturned, used: gloveUsed, total: gloveTotal, client2 } },
     }
+  }
+
+  function exportData() {
+    const data = buildData()
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a'); a.href = url; a.download = `jobsheet-${date || 'export'}.json`; a.click()
     URL.revokeObjectURL(url)
   }
+
+  function saveSheet() { onSave?.(buildData()) }
 
   function printSheet() { window.print() }
 
@@ -172,7 +179,7 @@ export default function JobSheet({ defaultSite = '', defaultDate = '', defaultTi
       `}</style>
 
       {/* Sheet */}
-      <div ref={sheetRef} style={{ maxWidth: 1080, margin: '0 auto', background: C.paper, border: `3px solid ${C.navy}`, borderRadius: 6, overflow: 'hidden' }}>
+      <div ref={sheetRef} style={{ maxWidth: 1080, margin: '0 auto', background: C.paper, border: `3px solid ${C.navy}`, borderRadius: 6, overflow: 'hidden', opacity: readOnly ? 0.92 : 1, pointerEvents: readOnly ? 'none' : 'auto' }}>
 
         {/* Header */}
         <div style={{ textAlign: 'center', padding: '18px 22px 14px', borderBottom: `2px solid ${C.navy}` }}>
@@ -456,9 +463,11 @@ export default function JobSheet({ defaultSite = '', defaultDate = '', defaultTi
 
       {/* Footer actions */}
       <div className="no-print" style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, padding: '16px 4px 0', maxWidth: 1080, margin: '0 auto' }}>
-        <button onClick={clearForm} style={{ border: '2px solid #B23A3A', background: '#fff', color: '#B23A3A', borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>Clear form</button>
+        {!readOnly && <button onClick={clearForm} style={{ border: '2px solid #B23A3A', background: '#fff', color: '#B23A3A', borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>Clear form</button>}
         <button onClick={printSheet} style={{ border: `2px solid ${C.navy}`, background: '#fff', color: C.navy, borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>Print</button>
-        <button onClick={exportData} style={{ background: C.navy, color: '#fff', border: 'none', borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>Export JSON</button>
+        <button onClick={exportData} style={{ border: `2px solid ${C.navy}`, background: '#fff', color: C.navy, borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>Export JSON</button>
+        {!readOnly && onSave && <button onClick={saveSheet} style={{ background: C.navy, color: '#fff', border: 'none', borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>Save Jobsheet</button>}
+        {footerExtra}
       </div>
     </div>
   )

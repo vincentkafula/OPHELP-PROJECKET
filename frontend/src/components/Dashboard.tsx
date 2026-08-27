@@ -2,8 +2,8 @@ import { useState, useEffect, ReactNode, useCallback } from 'react'
 import type { AuthUser, UserRole } from './LoginModal'
 import opHelpLogo from '@/imports/Ophelp_Final_Logo.png'
 import JobSheet from './JobSheet'
+import TaskSheetsPanel from './TaskSheetsPanel'
 import OASys from './OASys'
-import GrandParadeTaskSheet from './GrandParadeTaskSheet'
 import CityDepotShiftSlip from './CityDepotShiftSlip'
 import SchoolDeploymentSchedule from './SchoolDeploymentSchedule'
 import PreSchoolDeploymentSchedule from './PreSchoolDeploymentSchedule'
@@ -20,7 +20,6 @@ import DepotSchedulesPanel from './DepotSchedulesPanel'
 import QuotationsPanel from './QuotationsPanel'
 import InvoicesPanel from './InvoicesPanel'
 import JobsheetsPanel from './JobsheetsPanel'
-import AccountingLedgerPanel from './AccountingLedgerPanel'
 import MonthlyInvoicePanel from './MonthlyInvoicePanel'
 import QuotationRequestPanel from './QuotationRequestPanel'
 import RequestApprovalPanel from './RequestApprovalPanel'
@@ -1042,7 +1041,7 @@ function ForemanDashboard({ user, activeIdx }: { user: AuthUser; activeIdx: numb
     const mySite = SiteApi.list().find(s => s.foremanId === user.id)
     return <JobSheet defaultSite={mySite?.name ?? ''} defaultDate={today} defaultTimeSlot="07:00-11:00" />
   }
-  if (activeIdx === 6) return <GrandParadeTaskSheet />
+  if (activeIdx === 6) return <TaskSheetsPanel currentUserName={user.name} />
   if (activeIdx === 7) return <CityDepotShiftSlip />
   if (activeIdx === 8) return <JobsheetsPanel mode="foreman" currentUserName={user.name} />
 
@@ -1297,7 +1296,7 @@ function OperationOfficeDashboard({ user, activeIdx }: { user: AuthUser; activeI
   if (activeIdx === 13) return <QuotationsPanel />
   if (activeIdx === 14) return <InvoicesPanel />
   if (activeIdx === 15) return <JobsheetsPanel mode="office" currentUserName={user.name} />
-  if (activeIdx === 16) return <AccountingLedgerPanel />
+  if (activeIdx === 16) return <OASys />
   if (activeIdx === 17) return <MonthlyInvoicePanel mode="office" currentUserName={user.name} />
   if (activeIdx === 18) return <RequestApprovalPanel stage="office" currentUserName={user.name} />
   if (activeIdx === 19) return <SchedulingPanel currentUserName={user.name} />
@@ -1447,7 +1446,7 @@ function ProjectManagerDashboard({ user, activeIdx }: { user: AuthUser; activeId
 
   if (activeIdx === 1) return <ProjectsPanel userId={user.id} />
   if (activeIdx === 2) return <SitesMgmtPanel color="#AD1457" />
-  if (activeIdx === 4) return <AccountingLedgerPanel />
+  if (activeIdx === 4) return <OASys />
   if (activeIdx === 5) return <RequestApprovalPanel stage="manager" currentUserName={user.name} />
 
   if (activeIdx === 3) return (
