@@ -52,6 +52,10 @@ const ENTITY_ROUTES = {
   notifications: 'notifications',
   messages: 'messages',
   'audit-logs': 'audit_logs',
+  'payroll-periods': 'payroll_periods',
+  'payroll-roster': 'payroll_roster',
+  'payroll-entries': 'payroll_entries',
+  'payroll-corrections': 'payroll_corrections',
 }
 
 for (const [urlSegment, entityName] of Object.entries(ENTITY_ROUTES)) {

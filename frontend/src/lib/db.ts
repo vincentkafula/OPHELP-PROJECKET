@@ -21,7 +21,8 @@ import type {
   SystemUser, Participant, WorkSite, Shift, OphelpCard, Payment,
   CardTransaction, PartnerShop, AtmLocation, Project, AuditLog,
   Team, Skill, SkillAssessment, Equipment, InventoryItem, Incident,
-  Notification, Message,
+  Notification, Message, PayrollPeriod, PayrollRosterEntry, PayrollEntry,
+  PayrollCorrection,
 } from './types'
 
 // -- Helpers ------------------------------------------------------------
@@ -63,6 +64,10 @@ const ENDPOINTS: Record<string, string> = {
   notifications: 'notifications',
   messages: 'messages',
   audit_logs: 'audit-logs',
+  payroll_periods: 'payroll-periods',
+  payroll_roster: 'payroll-roster',
+  payroll_entries: 'payroll-entries',
+  payroll_corrections: 'payroll-corrections',
 }
 
 // -- In-memory cache, hydrated once by bootstrap() ------------------------
@@ -213,6 +218,10 @@ export const Incidents = new Collection<Incident>('ophelp_incidents', 'incidents
 export const Notifications = new Collection<Notification>('ophelp_notifications', 'notifications')
 export const Messages = new Collection<Message>('ophelp_messages', 'messages')
 export const AuditLogs = new Collection<AuditLog>('ophelp_audit_logs', 'audit_logs')
+export const PayrollPeriods = new Collection<PayrollPeriod>('ophelp_payroll_periods', 'payroll_periods')
+export const PayrollRoster = new Collection<PayrollRosterEntry>('ophelp_payroll_roster', 'payroll_roster')
+export const PayrollEntries = new Collection<PayrollEntry>('ophelp_payroll_entries', 'payroll_entries')
+export const PayrollCorrections = new Collection<PayrollCorrection>('ophelp_payroll_corrections', 'payroll_corrections')
 
 /**
  * The original app called this synchronously at module load to seed

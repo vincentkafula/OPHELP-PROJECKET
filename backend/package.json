@@ -10,7 +10,8 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "seed": "node seed.js",
-    "migrate": "node migrate.js"
+    "migrate": "node migrate.js",
+    "import:payroll": "node scripts/import-payroll.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

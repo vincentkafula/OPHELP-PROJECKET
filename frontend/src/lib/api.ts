@@ -7,13 +7,15 @@ import {
   Users, Participants, Teams, Skills, SkillAssessments, Sites, Shifts,
   Cards, Payments, Transactions, PartnerShops, AtmLocations, Projects,
   Equipments, Inventory, Incidents, Notifications, Messages, AuditLogs,
+  PayrollPeriods, PayrollRoster, PayrollEntries, PayrollCorrections,
   now, uid,
 } from './db'
 import type {
   SystemUser, Participant, Team, Skill, SkillAssessment, WorkSite, Shift,
   OphelpCard, Payment, CardTransaction, PartnerShop, AtmLocation, Project,
   Equipment, InventoryItem, Incident, Notification, Message, AuditLog,
-  DashboardStats, ApiResult,
+  DashboardStats, ApiResult, PayrollPeriod, PayrollRosterEntry, PayrollEntry,
+  PayrollCorrection,
 } from './types'
 
 // ── Participants ──────────────────────────────────────────────────────────────
@@ -552,5 +554,111 @@ export const ReportApi = {
       budget: s.budget,
       spent: s.spent,
     }))
+  },
+}
+
+// ── Payroll (Operation Office paysheet runs) ────────────────────────────────────
+export interface PayrollPersonSummary {
+  fileNo: string
+  name: string
+  participantId?: string | null
+  hours: number
+  gross: number
+  corrections: number
+  net: number
+}
+
+export interface PayrollTotals {
+  people: number
+  hours: number
+  gross: number
+  corrections: number
+  net: number
+}
+
+export const PayrollApi = {
+  periods(): PayrollPeriod[] {
+    return PayrollPeriods.all().sort((a, b) => b.number - a.number)
+  },
+  latestPeriod(): PayrollPeriod | undefined {
+    return this.periods()[0]
+  },
+  createPeriod(data: Omit<PayrollPeriod, 'id' | 'createdAt' | 'status'> & { status?: PayrollPeriod['status'] }): ApiResult<PayrollPeriod> {
+    if (PayrollPeriods.findOne(p => p.number === data.number)) {
+      return { success: false, error: `Period ${data.number} already exists` }
+    }
+    const p = PayrollPeriods.insert({ ...data, status: data.status ?? 'draft', createdAt: now() })
+    return { success: true, data: p }
+  },
+  updatePeriod(id: string, patch: Partial<PayrollPeriod>): ApiResult<PayrollPeriod> {
+    const p = PayrollPeriods.update(id, patch)
+    return p ? { success: true, data: p } : { success: false, error: 'Payroll period not found' }
+  },
+
+  roster(): PayrollRosterEntry[] { return PayrollRoster.all() },
+
+  entriesByPeriod(periodId: string): PayrollEntry[] {
+    return PayrollEntries.where(e => e.periodId === periodId)
+  },
+  addEntry(data: Omit<PayrollEntry, 'id' | 'createdAt'>): ApiResult<PayrollEntry> {
+    const e = PayrollEntries.insert({ ...data, createdAt: now() })
+    return { success: true, data: e }
+  },
+  deleteEntry(id: string): ApiResult {
+    return PayrollEntries.delete(id) ? { success: true } : { success: false, error: 'Entry not found' }
+  },
+
+  correctionsByPeriod(periodId: string): PayrollCorrection[] {
+    return PayrollCorrections.where(c => c.periodId === periodId)
+  },
+  addCorrection(data: Omit<PayrollCorrection, 'id' | 'createdAt'>): ApiResult<PayrollCorrection> {
+    const c = PayrollCorrections.insert({ ...data, createdAt: now() })
+    return { success: true, data: c }
+  },
+  deleteCorrection(id: string): ApiResult {
+    return PayrollCorrections.delete(id) ? { success: true } : { success: false, error: 'Correction not found' }
+  },
+
+  /** Per-person payslip summary for a period: hours worked, gross pay,
+   * corrections (deductions are negative), and net payable. */
+  summaryByPeriod(periodId: string): PayrollPersonSummary[] {
+    const entries = this.entriesByPeriod(periodId)
+    const corrections = this.correctionsByPeriod(periodId)
+    const rosterByFileNo = new Map(PayrollRoster.all().map(r => [r.fileNo, r]))
+    const byFileNo = new Map<string, PayrollPersonSummary>()
+
+    for (const e of entries) {
+      const row = byFileNo.get(e.fileNo) ?? {
+        fileNo: e.fileNo, name: e.name,
+        participantId: rosterByFileNo.get(e.fileNo)?.participantId ?? null,
+        hours: 0, gross: 0, corrections: 0, net: 0,
+      }
+      row.hours += e.hours
+      row.gross += e.amount
+      byFileNo.set(e.fileNo, row)
+    }
+    for (const c of corrections) {
+      const row = byFileNo.get(c.fileNo) ?? {
+        fileNo: c.fileNo, name: c.name,
+        participantId: rosterByFileNo.get(c.fileNo)?.participantId ?? null,
+        hours: 0, gross: 0, corrections: 0, net: 0,
+      }
+      row.corrections += c.amount
+      byFileNo.set(c.fileNo, row)
+    }
+    for (const row of byFileNo.values()) row.net = row.gross + row.corrections
+
+    return [...byFileNo.values()].sort((a, b) => a.name.localeCompare(b.name))
+  },
+
+  periodTotals(periodId: string): PayrollTotals {
+    const summary = this.summaryByPeriod(periodId)
+    return summary.reduce((acc, r) => ({
+      people: acc.people + 1,
+      hours: acc.hours + r.hours,
+      gross: acc.gross + r.gross,
+      corrections: acc.corrections + r.corrections,
+      net: acc.net + r.net,
+    }), { people: 0, hours: 0, gross: 0, corrections: 0, net: 0 })
   },
 }

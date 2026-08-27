@@ -335,6 +335,61 @@ export interface AuditLog {
   createdAt: string
 }
 
+// ── Payroll (Operation Office paysheet runs) ──────────────────────────────────
+export type PayrollPeriodStatus = 'draft' | 'imported' | 'finalized' | 'paid'
+
+export interface PayrollPeriod {
+  id: string
+  number: number
+  label: string
+  status: PayrollPeriodStatus
+  importedAt?: string
+  createdAt: string
+}
+
+// One roster record per payee for a payroll run — this is deliberately
+// separate from Participant (which is the field-operations identity)
+// since a payroll roster carries bank/beneficiary detail that not every
+// participant profile has yet, and a payroll roster entry may not match
+// an existing participant at all until reconciled.
+export interface PayrollRosterEntry {
+  id: string
+  fileNo: string
+  name: string
+  absaBeneficiaryNumber: string
+  payrollCode: string
+  participantId?: string | null
+  createdAt: string
+}
+
+// One paysheet line: a person's hours/pay for one task on one day of a period.
+export interface PayrollEntry {
+  id: string
+  periodId: string
+  rosterId?: string | null
+  name: string
+  fileNo: string
+  day: string
+  task: string
+  hours: number
+  amount: number
+  createdAt: string
+}
+
+// A deduction/addition against a person for a period (medical aid, staff
+// loan repayment, training fund, etc.) — negative amounts are deductions.
+export interface PayrollCorrection {
+  id: string
+  periodId: string
+  rosterId?: string | null
+  name: string
+  fileNo: string
+  detail: string
+  amount: number
+  journalEntry?: string
+  createdAt: string
+}
+
 // ── Auth ──────────────────────────────────────────────────────────────────────
 export interface AuthToken {
   token: string

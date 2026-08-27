@@ -12,6 +12,7 @@ import LeaveDaysRegister from './LeaveDaysRegister'
 import FieldOperationsLedger from './FieldOperationsLedger'
 import IncidentLog from './IncidentLog'
 import SheetsLibrary from './SheetsLibrary'
+import PayrollPanel from './PayrollPanel'
 import {
   ReportApi, ParticipantApi, ShiftApi, PaymentApi, CardApi,
   UserApi, SiteApi, PartnerShopApi, ProjectApi, AuditApi,
@@ -59,6 +60,7 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '📦', label: 'Operations' }, { icon: '📊', label: 'Analytics' },
     { icon: '📒', label: 'OASys' }, { icon: '📅', label: 'School Deployment' },
     { icon: '🏫', label: 'Pre-School Deploy' }, { icon: '🗓️', label: 'Leave Register' },
+    { icon: '💰', label: 'Payroll' },
   ],
   operation_management: [
     { icon: '🏠', label: 'Overview' }, { icon: '🏗️', label: 'Sites' },
@@ -1257,6 +1259,7 @@ function OperationOfficeDashboard({ user, activeIdx }: { user: AuthUser; activeI
   if (activeIdx === 5) return <SchoolDeploymentSchedule />
   if (activeIdx === 6) return <PreSchoolDeploymentSchedule />
   if (activeIdx === 7) return <LeaveDaysRegister />
+  if (activeIdx === 8) return <PayrollPanel />
 
   if (activeIdx === 1) return <SitesMgmtPanel color="#1565C0" />
   if (activeIdx === 2) return <ShiftsMgmtPanel userId={user.id} />

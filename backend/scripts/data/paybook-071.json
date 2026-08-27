@@ -1,0 +1,3255 @@
+{
+  "period": {
+    "number": 71,
+    "label": "25 Feb - 03 Mar 2026"
+  },
+  "roster": [
+    {
+      "fileNo": "013-270",
+      "name": "Adome",
+      "absaBeneficiaryNumber": "Bernard",
+      "payrollCode": "1206"
+    },
+    {
+      "fileNo": "013-2111",
+      "name": "Adonis",
+      "absaBeneficiaryNumber": "Anthony",
+      "payrollCode": "1065"
+    },
+    {
+      "fileNo": "013-242",
+      "name": "Bangeni",
+      "absaBeneficiaryNumber": "Amanda Khuthala",
+      "payrollCode": "1135"
+    },
+    {
+      "fileNo": "013-266",
+      "name": "Bayliss",
+      "absaBeneficiaryNumber": "Wendy",
+      "payrollCode": "1193"
+    },
+    {
+      "fileNo": "013-2118",
+      "name": "Bliaja Emelda",
+      "absaBeneficiaryNumber": "1089",
+      "payrollCode": "OPH100"
+    },
+    {
+      "fileNo": "013-250",
+      "name": "Bosch",
+      "absaBeneficiaryNumber": "Ashton Jaide",
+      "payrollCode": "1151"
+    },
+    {
+      "fileNo": "013-2109",
+      "name": "Botes",
+      "absaBeneficiaryNumber": "Jacobus",
+      "payrollCode": "1061"
+    },
+    {
+      "fileNo": "013-2053",
+      "name": "Brand",
+      "absaBeneficiaryNumber": "Andre",
+      "payrollCode": "745"
+    },
+    {
+      "fileNo": "013-259",
+      "name": "Bruce",
+      "absaBeneficiaryNumber": "Stuart",
+      "payrollCode": "1170"
+    },
+    {
+      "fileNo": "013-1735",
+      "name": "Chirume",
+      "absaBeneficiaryNumber": "Tembesiya",
+      "payrollCode": "975"
+    },
+    {
+      "fileNo": "013-231",
+      "name": "Dambile",
+      "absaBeneficiaryNumber": "Thobelani",
+      "payrollCode": "-"
+    },
+    {
+      "fileNo": "013-245",
+      "name": "De Waal",
+      "absaBeneficiaryNumber": "Bennie",
+      "payrollCode": "1140"
+    },
+    {
+      "fileNo": "013-244",
+      "name": "Diedericks",
+      "absaBeneficiaryNumber": "Lenka",
+      "payrollCode": "1138"
+    },
+    {
+      "fileNo": "013-2035",
+      "name": "Du Plooy",
+      "absaBeneficiaryNumber": "Craig",
+      "payrollCode": "698"
+    },
+    {
+      "fileNo": "013-257",
+      "name": "Dumbisa",
+      "absaBeneficiaryNumber": "Mandisi Joseph",
+      "payrollCode": "1159"
+    },
+    {
+      "fileNo": "013-2071",
+      "name": "Eckert",
+      "absaBeneficiaryNumber": "Konstantin",
+      "payrollCode": "778"
+    },
+    {
+      "fileNo": "013-2097",
+      "name": "Falithenjwa",
+      "absaBeneficiaryNumber": "Veronica",
+      "payrollCode": "1013"
+    },
+    {
+      "fileNo": "013-2102",
+      "name": "Feni",
+      "absaBeneficiaryNumber": "Nozipho",
+      "payrollCode": "1031"
+    },
+    {
+      "fileNo": "013-2056",
+      "name": "Fortuin",
+      "absaBeneficiaryNumber": "Gert",
+      "payrollCode": "750"
+    },
+    {
+      "fileNo": "013-1891",
+      "name": "Gabaathlole",
+      "absaBeneficiaryNumber": "Christopher",
+      "payrollCode": "1181"
+    },
+    {
+      "fileNo": "013-2039",
+      "name": "Gladwin",
+      "absaBeneficiaryNumber": "Leon",
+      "payrollCode": "707"
+    },
+    {
+      "fileNo": "013-2106",
+      "name": "Godwin",
+      "absaBeneficiaryNumber": "Justin",
+      "payrollCode": "1052"
+    },
+    {
+      "fileNo": "013-1957",
+      "name": "Gongotha",
+      "absaBeneficiaryNumber": "Thabiso",
+      "payrollCode": "558"
+    },
+    {
+      "fileNo": "013-2100",
+      "name": "Goosen",
+      "absaBeneficiaryNumber": "Ashley",
+      "payrollCode": "1030"
+    },
+    {
+      "fileNo": "013-2063",
+      "name": "Gouws",
+      "absaBeneficiaryNumber": "Clive",
+      "payrollCode": "763"
+    },
+    {
+      "fileNo": "013-2046",
+      "name": "Gqunta",
+      "absaBeneficiaryNumber": "Babalwa",
+      "payrollCode": "724"
+    },
+    {
+      "fileNo": "013-2090",
+      "name": "Hadebe",
+      "absaBeneficiaryNumber": "Timothy",
+      "payrollCode": "982"
+    },
+    {
+      "fileNo": "013-2113",
+      "name": "Hadebe",
+      "absaBeneficiaryNumber": "Sindiso",
+      "payrollCode": "1067"
+    },
+    {
+      "fileNo": "013-2011",
+      "name": "Hendricks",
+      "absaBeneficiaryNumber": "Leon",
+      "payrollCode": "654"
+    },
+    {
+      "fileNo": "013-1999",
+      "name": "Hlungwani",
+      "absaBeneficiaryNumber": "Vukosi",
+      "payrollCode": "752"
+    },
+    {
+      "fileNo": "013-238",
+      "name": "Jacobs",
+      "absaBeneficiaryNumber": "Miguel",
+      "payrollCode": "1127"
+    },
+    {
+      "fileNo": "013-1752",
+      "name": "Jairos",
+      "absaBeneficiaryNumber": "Mary",
+      "payrollCode": "526"
+    },
+    {
+      "fileNo": "013-1980",
+      "name": "Jama",
+      "absaBeneficiaryNumber": "Samuel",
+      "payrollCode": "595"
+    },
+    {
+      "fileNo": "013-1751",
+      "name": "Januarie",
+      "absaBeneficiaryNumber": "Charlotte",
+      "payrollCode": "1203"
+    },
+    {
+      "fileNo": "013-2047",
+      "name": "Jonas",
+      "absaBeneficiaryNumber": "Asanda",
+      "payrollCode": "1048"
+    },
+    {
+      "fileNo": "013-1967",
+      "name": "Kafula",
+      "absaBeneficiaryNumber": "Vincent",
+      "payrollCode": "987"
+    },
+    {
+      "fileNo": "013-1923",
+      "name": "Kahlane",
+      "absaBeneficiaryNumber": "Eunice",
+      "payrollCode": "475"
+    },
+    {
+      "fileNo": "013-2117",
+      "name": "Koen",
+      "absaBeneficiaryNumber": "Melanie",
+      "payrollCode": "-"
+    },
+    {
+      "fileNo": "013-2043",
+      "name": "Komanisi",
+      "absaBeneficiaryNumber": "Mpilipili",
+      "payrollCode": "718"
+    },
+    {
+      "fileNo": "013-2078",
+      "name": "Kona",
+      "absaBeneficiaryNumber": "Meshack",
+      "payrollCode": "792"
+    },
+    {
+      "fileNo": "013-1942",
+      "name": "Krawe",
+      "absaBeneficiaryNumber": "Thamela",
+      "payrollCode": "685"
+    },
+    {
+      "fileNo": "013-1935",
+      "name": "Kroutz",
+      "absaBeneficiaryNumber": "Deon",
+      "payrollCode": "501"
+    },
+    {
+      "fileNo": "013-2087",
+      "name": "Kudzinesa",
+      "absaBeneficiaryNumber": "Charles",
+      "payrollCode": "980"
+    },
+    {
+      "fileNo": "013-2017",
+      "name": "Kupoluyi",
+      "absaBeneficiaryNumber": "Samuel",
+      "payrollCode": "666"
+    },
+    {
+      "fileNo": "013-1930",
+      "name": "Kusure",
+      "absaBeneficiaryNumber": "Taonga",
+      "payrollCode": "1129"
+    },
+    {
+      "fileNo": "013-239",
+      "name": "Le Fleur",
+      "absaBeneficiaryNumber": "Dawn",
+      "payrollCode": "1128"
+    },
+    {
+      "fileNo": "013-1997",
+      "name": "Le-Roux",
+      "absaBeneficiaryNumber": "Jamiel",
+      "payrollCode": "628"
+    },
+    {
+      "fileNo": "013-1760",
+      "name": "Lehana",
+      "absaBeneficiaryNumber": "Peter",
+      "payrollCode": "704"
+    },
+    {
+      "fileNo": "013-2048",
+      "name": "Lerutla",
+      "absaBeneficiaryNumber": "Lucas",
+      "payrollCode": "730"
+    },
+    {
+      "fileNo": "013-1904",
+      "name": "Letsatsi",
+      "absaBeneficiaryNumber": "Norman",
+      "payrollCode": "1168"
+    },
+    {
+      "fileNo": "013-1979",
+      "name": "Letsoalo",
+      "absaBeneficiaryNumber": "Emmanuel",
+      "payrollCode": "758"
+    },
+    {
+      "fileNo": "013-2003",
+      "name": "Liatla",
+      "absaBeneficiaryNumber": "Lebona",
+      "payrollCode": "638"
+    },
+    {
+      "fileNo": "013-2021",
+      "name": "Lindwa",
+      "absaBeneficiaryNumber": "Thando",
+      "payrollCode": "672"
+    },
+    {
+      "fileNo": "013-2092",
+      "name": "Louw",
+      "absaBeneficiaryNumber": "Neville",
+      "payrollCode": "1002"
+    },
+    {
+      "fileNo": "013-1761",
+      "name": "Mabaya",
+      "absaBeneficiaryNumber": "Gary",
+      "payrollCode": "722"
+    },
+    {
+      "fileNo": "013-1764",
+      "name": "Mafunga",
+      "absaBeneficiaryNumber": "Pandukai",
+      "payrollCode": "276"
+    },
+    {
+      "fileNo": "013-2075",
+      "name": "Magwaza",
+      "absaBeneficiaryNumber": "Mxolisi",
+      "payrollCode": "785"
+    },
+    {
+      "fileNo": "013-2088",
+      "name": "Mahlaba",
+      "absaBeneficiaryNumber": "Peter",
+      "payrollCode": "961"
+    },
+    {
+      "fileNo": "013-2062",
+      "name": "Mahladisa",
+      "absaBeneficiaryNumber": "Mapula",
+      "payrollCode": "760"
+    },
+    {
+      "fileNo": "013-2082",
+      "name": "Mahlakwana",
+      "absaBeneficiaryNumber": "Phellimon",
+      "payrollCode": "800"
+    },
+    {
+      "fileNo": "013-2023",
+      "name": "Mahlase",
+      "absaBeneficiaryNumber": "German",
+      "payrollCode": "677"
+    },
+    {
+      "fileNo": "013-1845",
+      "name": "Mahlulo",
+      "absaBeneficiaryNumber": "Siyasanga",
+      "payrollCode": "547"
+    },
+    {
+      "fileNo": "013-2114",
+      "name": "Mahoa",
+      "absaBeneficiaryNumber": "Samuel",
+      "payrollCode": "1072"
+    },
+    {
+      "fileNo": "013-1976",
+      "name": "Makhala",
+      "absaBeneficiaryNumber": "Thabisa",
+      "payrollCode": "588"
+    },
+    {
+      "fileNo": "013-1998",
+      "name": "Makhalima",
+      "absaBeneficiaryNumber": "Patience",
+      "payrollCode": "650"
+    },
+    {
+      "fileNo": "013-1985",
+      "name": "Makontwana",
+      "absaBeneficiaryNumber": "Nosipo",
+      "payrollCode": "606"
+    },
+    {
+      "fileNo": "013-2008",
+      "name": "Makontwana",
+      "absaBeneficiaryNumber": "Vuyokazi",
+      "payrollCode": "645"
+    },
+    {
+      "fileNo": "013-2066",
+      "name": "Makwe",
+      "absaBeneficiaryNumber": "Grace",
+      "payrollCode": "766"
+    },
+    {
+      "fileNo": "013-2007",
+      "name": "Malimba",
+      "absaBeneficiaryNumber": "Xabiso",
+      "payrollCode": "644"
+    },
+    {
+      "fileNo": "013-2032",
+      "name": "Mangele",
+      "absaBeneficiaryNumber": "Nozuko",
+      "payrollCode": "692"
+    },
+    {
+      "fileNo": "013-2099",
+      "name": "Mankumpa",
+      "absaBeneficiaryNumber": "Vukile",
+      "payrollCode": "1017"
+    },
+    {
+      "fileNo": "013-1940",
+      "name": "Manqola",
+      "absaBeneficiaryNumber": "Cyprian",
+      "payrollCode": "510"
+    },
+    {
+      "fileNo": "013-2108",
+      "name": "Mans",
+      "absaBeneficiaryNumber": "Johnny",
+      "payrollCode": "1058"
+    },
+    {
+      "fileNo": "013-2044",
+      "name": "Maqhashu",
+      "absaBeneficiaryNumber": "Simphiwe",
+      "payrollCode": "720"
+    },
+    {
+      "fileNo": "013-1988",
+      "name": "Marais",
+      "absaBeneficiaryNumber": "Gerhardus",
+      "payrollCode": "653"
+    },
+    {
+      "fileNo": "013-1766",
+      "name": "Marera",
+      "absaBeneficiaryNumber": "William",
+      "payrollCode": "520"
+    },
+    {
+      "fileNo": "013-251",
+      "name": "Marimane",
+      "absaBeneficiaryNumber": "Repmari",
+      "payrollCode": "1164"
+    },
+    {
+      "fileNo": "013-1986",
+      "name": "Mase",
+      "absaBeneficiaryNumber": "Patricia",
+      "payrollCode": "603"
+    },
+    {
+      "fileNo": "013-2099",
+      "name": "Mashanda",
+      "absaBeneficiaryNumber": "Dominic",
+      "payrollCode": "1024"
+    },
+    {
+      "fileNo": "013-1770",
+      "name": "Matipedza",
+      "absaBeneficiaryNumber": "Sarah",
+      "payrollCode": "402"
+    },
+    {
+      "fileNo": "013-1992",
+      "name": "Matolengwe",
+      "absaBeneficiaryNumber": "Mkhululi",
+      "payrollCode": "1023"
+    },
+    {
+      "fileNo": "013-2029",
+      "name": "Matutu",
+      "absaBeneficiaryNumber": "Sibusiso",
+      "payrollCode": "687"
+    },
+    {
+      "fileNo": "013-275",
+      "name": "Matyeni",
+      "absaBeneficiaryNumber": "Luthando",
+      "payrollCode": "1221"
+    },
+    {
+      "fileNo": "013-1908",
+      "name": "Mbasa",
+      "absaBeneficiaryNumber": "Ntombekhaya",
+      "payrollCode": "424"
+    },
+    {
+      "fileNo": "013-232",
+      "name": "Mbede",
+      "absaBeneficiaryNumber": "Luyolo",
+      "payrollCode": "1107"
+    },
+    {
+      "fileNo": "013-2068",
+      "name": "Mbeqani",
+      "absaBeneficiaryNumber": "Nomthandazo",
+      "payrollCode": "768"
+    },
+    {
+      "fileNo": "013-2016",
+      "name": "Mcetywa",
+      "absaBeneficiaryNumber": "Nicholas",
+      "payrollCode": "660"
+    },
+    {
+      "fileNo": "013-2115",
+      "name": "Mervis",
+      "absaBeneficiaryNumber": "Shannon",
+      "payrollCode": "1073"
+    },
+    {
+      "fileNo": "013-2073",
+      "name": "Mhlanga",
+      "absaBeneficiaryNumber": "Memory",
+      "payrollCode": "782"
+    },
+    {
+      "fileNo": "013-2038",
+      "name": "Miezi Bulungidi",
+      "absaBeneficiaryNumber": "Ruddy",
+      "payrollCode": "706"
+    },
+    {
+      "fileNo": "013-2070",
+      "name": "Mjila",
+      "absaBeneficiaryNumber": "Bandile",
+      "payrollCode": "787"
+    },
+    {
+      "fileNo": "013-2045",
+      "name": "Mkhehle",
+      "absaBeneficiaryNumber": "Siphiwo",
+      "payrollCode": "725"
+    },
+    {
+      "fileNo": "013-2020",
+      "name": "Mkosi",
+      "absaBeneficiaryNumber": "Siyabulela",
+      "payrollCode": "772"
+    },
+    {
+      "fileNo": "013-2107",
+      "name": "Mkosi",
+      "absaBeneficiaryNumber": "Siyabulela",
+      "payrollCode": "1053"
+    },
+    {
+      "fileNo": "013-1892",
+      "name": "Mlata",
+      "absaBeneficiaryNumber": "Zakhele",
+      "payrollCode": "793"
+    },
+    {
+      "fileNo": "013-1859",
+      "name": "Mndende",
+      "absaBeneficiaryNumber": "Nyameka",
+      "payrollCode": "289"
+    },
+    {
+      "fileNo": "013-2094",
+      "name": "Mnguni",
+      "absaBeneficiaryNumber": "Nhlakanipho",
+      "payrollCode": "1008"
+    },
+    {
+      "fileNo": "013-249",
+      "name": "Moalafi",
+      "absaBeneficiaryNumber": "Boitshoko",
+      "payrollCode": "1180"
+    },
+    {
+      "fileNo": "013-2080",
+      "name": "Mohamed",
+      "absaBeneficiaryNumber": "Khalef",
+      "payrollCode": "1040"
+    },
+    {
+      "fileNo": "013-2105",
+      "name": "Mokgethwa",
+      "absaBeneficiaryNumber": "Tebatso",
+      "payrollCode": "1043"
+    },
+    {
+      "fileNo": "013-2024",
+      "name": "Mokhele",
+      "absaBeneficiaryNumber": "Tanduxolo",
+      "payrollCode": "678"
+    },
+    {
+      "fileNo": "013-256",
+      "name": "Mokhele",
+      "absaBeneficiaryNumber": "Pule Edward",
+      "payrollCode": "1158"
+    },
+    {
+      "fileNo": "013-1996",
+      "name": "Mokoena",
+      "absaBeneficiaryNumber": "Phakiso",
+      "payrollCode": "626"
+    },
+    {
+      "fileNo": "013-2087",
+      "name": "Molato",
+      "absaBeneficiaryNumber": "Segomotso",
+      "payrollCode": "968"
+    },
+    {
+      "fileNo": "013-260",
+      "name": "Momoza",
+      "absaBeneficiaryNumber": "Simbonile",
+      "payrollCode": "1173"
+    },
+    {
+      "fileNo": "013-1877",
+      "name": "Moni",
+      "absaBeneficiaryNumber": "Mkhululi",
+      "payrollCode": "374"
+    },
+    {
+      "fileNo": "013-1960",
+      "name": "Mooketsi",
+      "absaBeneficiaryNumber": "Peter",
+      "payrollCode": "655"
+    },
+    {
+      "fileNo": "013-1973",
+      "name": "Morake",
+      "absaBeneficiaryNumber": "Ernest",
+      "payrollCode": "605"
+    },
+    {
+      "fileNo": "013-1834",
+      "name": "Mpakati",
+      "absaBeneficiaryNumber": "Phelisa",
+      "payrollCode": "994"
+    },
+    {
+      "fileNo": "013-234",
+      "name": "Mpisi",
+      "absaBeneficiaryNumber": "Mvelisi",
+      "payrollCode": "-"
+    },
+    {
+      "fileNo": "013-262",
+      "name": "Mrwetyana",
+      "absaBeneficiaryNumber": "Yolanda",
+      "payrollCode": "1175"
+    },
+    {
+      "fileNo": "013-2065",
+      "name": "Msibi",
+      "absaBeneficiaryNumber": "Jacob",
+      "payrollCode": "1196"
+    },
+    {
+      "fileNo": "013-1966",
+      "name": "Msila",
+      "absaBeneficiaryNumber": "Ntselekazi",
+      "payrollCode": "457"
+    },
+    {
+      "fileNo": "013-254",
+      "name": "Mtimkulu",
+      "absaBeneficiaryNumber": "Saldanha",
+      "payrollCode": "1156"
+    },
+    {
+      "fileNo": "013-1958",
+      "name": "Mtintsilane",
+      "absaBeneficiaryNumber": "David",
+      "payrollCode": "710"
+    },
+    {
+      "fileNo": "013-2102",
+      "name": "Mukuka",
+      "absaBeneficiaryNumber": "Henry",
+      "payrollCode": "1039"
+    },
+    {
+      "fileNo": "013-264",
+      "name": "Musiringofa",
+      "absaBeneficiaryNumber": "Keenly",
+      "payrollCode": "1179"
+    },
+    {
+      "fileNo": "013-243",
+      "name": "Mzamo",
+      "absaBeneficiaryNumber": "Mzimkulu Gerald",
+      "payrollCode": "1136"
+    },
+    {
+      "fileNo": "013-2088",
+      "name": "Mzee",
+      "absaBeneficiaryNumber": "Fatima",
+      "payrollCode": "826"
+    },
+    {
+      "fileNo": "013-1969",
+      "name": "Nabada",
+      "absaBeneficiaryNumber": "Moreen",
+      "payrollCode": "1079"
+    },
+    {
+      "fileNo": "013-2009",
+      "name": "Naidoo",
+      "absaBeneficiaryNumber": "Lindsay",
+      "payrollCode": "646"
+    },
+    {
+      "fileNo": "013-1861",
+      "name": "Ncube",
+      "absaBeneficiaryNumber": "Getrude",
+      "payrollCode": "695"
+    },
+    {
+      "fileNo": "013-2100",
+      "name": "Ncube",
+      "absaBeneficiaryNumber": "Eric",
+      "payrollCode": "1041"
+    },
+    {
+      "fileNo": "013-2085",
+      "name": "Ndayi",
+      "absaBeneficiaryNumber": "Wellington",
+      "payrollCode": "xxx"
+    },
+    {
+      "fileNo": "013-2001",
+      "name": "Ndlovu",
+      "absaBeneficiaryNumber": "Abel",
+      "payrollCode": "634"
+    },
+    {
+      "fileNo": "013-274",
+      "name": "Ndlovu",
+      "absaBeneficiaryNumber": "Thabo",
+      "payrollCode": "1220"
+    },
+    {
+      "fileNo": "013-1977",
+      "name": "Ndzendze",
+      "absaBeneficiaryNumber": "Mkhohleni",
+      "payrollCode": "591"
+    },
+    {
+      "fileNo": "013-2079",
+      "name": "Nel",
+      "absaBeneficiaryNumber": "Mark",
+      "payrollCode": "796"
+    },
+    {
+      "fileNo": "013-233",
+      "name": "Ngalimani",
+      "absaBeneficiaryNumber": "Phelelani",
+      "payrollCode": "1109"
+    },
+    {
+      "fileNo": "013-2103",
+      "name": "Ngalman",
+      "absaBeneficiaryNumber": "Primrose",
+      "payrollCode": "1032"
+    },
+    {
+      "fileNo": "013-272",
+      "name": "Ngcobo",
+      "absaBeneficiaryNumber": "Sbusiso",
+      "payrollCode": "1214"
+    },
+    {
+      "fileNo": "013-273",
+      "name": "Ngqendeshe",
+      "absaBeneficiaryNumber": "Lungani",
+      "payrollCode": "1218"
+    },
+    {
+      "fileNo": "013-2033",
+      "name": "Ngubo",
+      "absaBeneficiaryNumber": "Nkosifikile",
+      "payrollCode": "699"
+    },
+    {
+      "fileNo": "013-2112",
+      "name": "Ngwenya",
+      "absaBeneficiaryNumber": "Fanelo",
+      "payrollCode": "1205"
+    },
+    {
+      "fileNo": "013-1956",
+      "name": "Ngxasa",
+      "absaBeneficiaryNumber": "Thabisa",
+      "payrollCode": "557"
+    },
+    {
+      "fileNo": "013-2022",
+      "name": "Ngxokozela",
+      "absaBeneficiaryNumber": "Siphamandla",
+      "payrollCode": "676"
+    },
+    {
+      "fileNo": "013-1787",
+      "name": "Njemla",
+      "absaBeneficiaryNumber": "Nolukholo",
+      "payrollCode": "1076"
+    },
+    {
+      "fileNo": "013-2067",
+      "name": "Njiji",
+      "absaBeneficiaryNumber": "Ntombekhaya",
+      "payrollCode": "769"
+    },
+    {
+      "fileNo": "013-1947",
+      "name": "Njobeni",
+      "absaBeneficiaryNumber": "Nolusindiso",
+      "payrollCode": "1014"
+    },
+    {
+      "fileNo": "013-2037",
+      "name": "Nkantini",
+      "absaBeneficiaryNumber": "William",
+      "payrollCode": "703"
+    },
+    {
+      "fileNo": "013-2072",
+      "name": "Nkathana",
+      "absaBeneficiaryNumber": "Thembinkosi",
+      "payrollCode": "781"
+    },
+    {
+      "fileNo": "013-240",
+      "name": "Nkhobo",
+      "absaBeneficiaryNumber": "Zolile",
+      "payrollCode": "1130"
+    },
+    {
+      "fileNo": "013-1974",
+      "name": "Nonkonyama",
+      "absaBeneficiaryNumber": "Redeemer",
+      "payrollCode": "1211"
+    },
+    {
+      "fileNo": "013-1936",
+      "name": "Noordien",
+      "absaBeneficiaryNumber": "Kharltoem",
+      "payrollCode": "xxx"
+    },
+    {
+      "fileNo": "013-1788",
+      "name": "Ntakadzana",
+      "absaBeneficiaryNumber": "Ntloheleng",
+      "payrollCode": "534"
+    },
+    {
+      "fileNo": "013-268",
+      "name": "Ntsila",
+      "absaBeneficiaryNumber": "Lwandile",
+      "payrollCode": "1198"
+    },
+    {
+      "fileNo": "013-2084",
+      "name": "Nyawo",
+      "absaBeneficiaryNumber": "Phumzile",
+      "payrollCode": "806"
+    },
+    {
+      "fileNo": "013-2104",
+      "name": "Olyn",
+      "absaBeneficiaryNumber": "Mercy",
+      "payrollCode": "1037"
+    },
+    {
+      "fileNo": "013-1959",
+      "name": "Pambou",
+      "absaBeneficiaryNumber": "Euloge",
+      "payrollCode": "562"
+    },
+    {
+      "fileNo": "013-1836",
+      "name": "Papi",
+      "absaBeneficiaryNumber": "Sharon",
+      "payrollCode": "657"
+    },
+    {
+      "fileNo": "013-246",
+      "name": "Parsons",
+      "absaBeneficiaryNumber": "Shane",
+      "payrollCode": "1141"
+    },
+    {
+      "fileNo": "013-255",
+      "name": "Pekeur",
+      "absaBeneficiaryNumber": "Leon",
+      "payrollCode": "1157"
+    },
+    {
+      "fileNo": "013-1989",
+      "name": "Pitzer",
+      "absaBeneficiaryNumber": "Collin",
+      "payrollCode": "1160"
+    },
+    {
+      "fileNo": "013-2010",
+      "name": "Pono",
+      "absaBeneficiaryNumber": "Second",
+      "payrollCode": "647"
+    },
+    {
+      "fileNo": "013-2093",
+      "name": "Poole",
+      "absaBeneficiaryNumber": "Etienne",
+      "payrollCode": "1009"
+    },
+    {
+      "fileNo": "013-1885",
+      "name": "Qinela",
+      "absaBeneficiaryNumber": "Edward",
+      "payrollCode": "384"
+    },
+    {
+      "fileNo": "013-236",
+      "name": "Qoyise",
+      "absaBeneficiaryNumber": "Silumko",
+      "payrollCode": "1217"
+    },
+    {
+      "fileNo": "013-1928",
+      "name": "Quluba",
+      "absaBeneficiaryNumber": "Simphiwe",
+      "payrollCode": "483"
+    },
+    {
+      "fileNo": "013-252",
+      "name": "Qunta",
+      "absaBeneficiaryNumber": "Bongani",
+      "payrollCode": "1153"
+    },
+    {
+      "fileNo": "013-247",
+      "name": "Ralebakeng",
+      "absaBeneficiaryNumber": "Johannes",
+      "payrollCode": "1142"
+    },
+    {
+      "fileNo": "013-263",
+      "name": "Reid",
+      "absaBeneficiaryNumber": "Bruce",
+      "payrollCode": "1176"
+    },
+    {
+      "fileNo": "013-230",
+      "name": "Roman",
+      "absaBeneficiaryNumber": "Nicolene",
+      "payrollCode": "1095"
+    },
+    {
+      "fileNo": "013-271",
+      "name": "Roro",
+      "absaBeneficiaryNumber": "Jeffery",
+      "payrollCode": "1207"
+    },
+    {
+      "fileNo": "013-2101",
+      "name": "Rossouw",
+      "absaBeneficiaryNumber": "Cecil-John",
+      "payrollCode": "1016"
+    },
+    {
+      "fileNo": "013-1795",
+      "name": "Runeli",
+      "absaBeneficiaryNumber": "Monica",
+      "payrollCode": "560"
+    },
+    {
+      "fileNo": "013-1955",
+      "name": "Sachiwo",
+      "absaBeneficiaryNumber": "Caspar",
+      "payrollCode": "1165"
+    },
+    {
+      "fileNo": "013-1970",
+      "name": "Sandulela",
+      "absaBeneficiaryNumber": "Kholosa",
+      "payrollCode": "583"
+    },
+    {
+      "fileNo": "013-2061",
+      "name": "Scheepers",
+      "absaBeneficiaryNumber": "Nicholas",
+      "payrollCode": "759"
+    },
+    {
+      "fileNo": "013-1995",
+      "name": "Sears",
+      "absaBeneficiaryNumber": "Michelle",
+      "payrollCode": "625"
+    },
+    {
+      "fileNo": "013-1922",
+      "name": "Sebastian",
+      "absaBeneficiaryNumber": "Baderonessa",
+      "payrollCode": "472"
+    },
+    {
+      "fileNo": "013-1920",
+      "name": "Seef",
+      "absaBeneficiaryNumber": "Larry",
+      "payrollCode": "465"
+    },
+    {
+      "fileNo": "013-2101",
+      "name": "Setlaba",
+      "absaBeneficiaryNumber": "Elliot",
+      "payrollCode": "1172"
+    },
+    {
+      "fileNo": "013-261",
+      "name": "Shange",
+      "absaBeneficiaryNumber": "Lungelo",
+      "payrollCode": "1174"
+    },
+    {
+      "fileNo": "013-253",
+      "name": "Shoco",
+      "absaBeneficiaryNumber": "Abigail",
+      "payrollCode": "1155"
+    },
+    {
+      "fileNo": "013-2014",
+      "name": "Sibali",
+      "absaBeneficiaryNumber": "Nomveliso",
+      "payrollCode": "663"
+    },
+    {
+      "fileNo": "013-1968",
+      "name": "Sikweza",
+      "absaBeneficiaryNumber": "Ntombikayise",
+      "payrollCode": "575"
+    },
+    {
+      "fileNo": "013-2077",
+      "name": "Siyekeni",
+      "absaBeneficiaryNumber": "Babongile",
+      "payrollCode": "791"
+    },
+    {
+      "fileNo": "013-2116",
+      "name": "Skosana Dingaan",
+      "absaBeneficiaryNumber": "1077",
+      "payrollCode": "-"
+    },
+    {
+      "fileNo": "013-267",
+      "name": "Solomon",
+      "absaBeneficiaryNumber": "Jody",
+      "payrollCode": "1197"
+    },
+    {
+      "fileNo": "013-235",
+      "name": "Sotyato",
+      "absaBeneficiaryNumber": "Gcobisa Primrose",
+      "payrollCode": "1119"
+    },
+    {
+      "fileNo": "013-1994",
+      "name": "Sowazi",
+      "absaBeneficiaryNumber": "Victor",
+      "payrollCode": "620"
+    },
+    {
+      "fileNo": "013-2119",
+      "name": "Stemmet",
+      "absaBeneficiaryNumber": "Ivar",
+      "payrollCode": "-"
+    },
+    {
+      "fileNo": "013-248",
+      "name": "Swanepoel",
+      "absaBeneficiaryNumber": "Jannie",
+      "payrollCode": "1171"
+    },
+    {
+      "fileNo": "013-1921",
+      "name": "Takavadiyi",
+      "absaBeneficiaryNumber": "Patience",
+      "payrollCode": "694"
+    },
+    {
+      "fileNo": "013-1800",
+      "name": "Tana",
+      "absaBeneficiaryNumber": "Wendy",
+      "payrollCode": "318"
+    },
+    {
+      "fileNo": "013-2026",
+      "name": "Tati",
+      "absaBeneficiaryNumber": "Arthur",
+      "payrollCode": "682"
+    },
+    {
+      "fileNo": "013-2002",
+      "name": "Taylor",
+      "absaBeneficiaryNumber": "Shane",
+      "payrollCode": "635"
+    },
+    {
+      "fileNo": "013-1972",
+      "name": "Terblanche",
+      "absaBeneficiaryNumber": "James",
+      "payrollCode": "728"
+    },
+    {
+      "fileNo": "013-237",
+      "name": "Theifane",
+      "absaBeneficiaryNumber": "Frank",
+      "payrollCode": "1121"
+    },
+    {
+      "fileNo": "013-1802",
+      "name": "Togarepi",
+      "absaBeneficiaryNumber": "Obey",
+      "payrollCode": "310"
+    },
+    {
+      "fileNo": "013-1991",
+      "name": "Tsewu",
+      "absaBeneficiaryNumber": "Tulani",
+      "payrollCode": "619"
+    },
+    {
+      "fileNo": "013-2051",
+      "name": "Tsiu",
+      "absaBeneficiaryNumber": "Jeremiah",
+      "payrollCode": "744"
+    },
+    {
+      "fileNo": "013-1964",
+      "name": "Tuku",
+      "absaBeneficiaryNumber": "Nosisa",
+      "payrollCode": "570"
+    },
+    {
+      "fileNo": "013-258",
+      "name": "Twani",
+      "absaBeneficiaryNumber": "Simpiwe",
+      "payrollCode": "1162"
+    },
+    {
+      "fileNo": "013-1993",
+      "name": "Twenani",
+      "absaBeneficiaryNumber": "Thandokazi",
+      "payrollCode": "622"
+    },
+    {
+      "fileNo": "013-1803",
+      "name": "Vaki",
+      "absaBeneficiaryNumber": "Reward",
+      "payrollCode": "996"
+    },
+    {
+      "fileNo": "013-269",
+      "name": "Van De Merwe",
+      "absaBeneficiaryNumber": "Leon John",
+      "payrollCode": "1200"
+    },
+    {
+      "fileNo": "013-2054",
+      "name": "Van Der Westthuizen",
+      "absaBeneficiaryNumber": "Carl",
+      "payrollCode": "746"
+    },
+    {
+      "fileNo": "013-1961",
+      "name": "Van Louw",
+      "absaBeneficiaryNumber": "Lance",
+      "payrollCode": "564"
+    },
+    {
+      "fileNo": "013-1951",
+      "name": "Van Niekerk",
+      "absaBeneficiaryNumber": "Michael",
+      "payrollCode": "551"
+    },
+    {
+      "fileNo": "013-241",
+      "name": "Vassen",
+      "absaBeneficiaryNumber": "Neil Elgin",
+      "payrollCode": "1134"
+    },
+    {
+      "fileNo": "013-2006",
+      "name": "Venter",
+      "absaBeneficiaryNumber": "Petrus",
+      "payrollCode": "641"
+    },
+    {
+      "fileNo": "013-265",
+      "name": "Venter",
+      "absaBeneficiaryNumber": "Yolande",
+      "payrollCode": "1190"
+    },
+    {
+      "fileNo": "013-2076",
+      "name": "Williams",
+      "absaBeneficiaryNumber": "Tony",
+      "payrollCode": "790"
+    },
+    {
+      "fileNo": "013-2013",
+      "name": "Winner",
+      "absaBeneficiaryNumber": "Oluyemi",
+      "payrollCode": "659"
+    },
+    {
+      "fileNo": "013-1915",
+      "name": "Wowo",
+      "absaBeneficiaryNumber": "Nokhaya",
+      "payrollCode": "1163"
+    },
+    {
+      "fileNo": "013-2057",
+      "name": "Zungu",
+      "absaBeneficiaryNumber": "Mzwandile",
+      "payrollCode": "753"
+    }
+  ],
+  "entries": [
+    {
+      "name": "Kusure",
+      "fileNo": "013-1930",
+      "day": "1.Wednesday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Kusure",
+      "fileNo": "013-1930",
+      "day": "2.Thursday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Kusure",
+      "fileNo": "013-1930",
+      "day": "3.Friday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Kusure",
+      "fileNo": "013-1930",
+      "day": "6.Monday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Kusure",
+      "fileNo": "013-1930",
+      "day": "7.Tuesday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Ngcobo",
+      "fileNo": "013-272",
+      "day": "1.Wednesday",
+      "task": "CCID Festive Season Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Ngcobo",
+      "fileNo": "013-272",
+      "day": "2.Thursday",
+      "task": "CCID Festive Season Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Ngcobo",
+      "fileNo": "013-272",
+      "day": "3.Friday",
+      "task": "CCID Festive Season Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Ngcobo",
+      "fileNo": "013-272",
+      "day": "4.Saturday",
+      "task": "CCID Festive Season Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Ngcobo",
+      "fileNo": "013-272",
+      "day": "6.Monday",
+      "task": "CCID Festive Season Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Ngcobo",
+      "fileNo": "013-272",
+      "day": "7.Tuesday",
+      "task": "CCID Festive Season Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Ngcobo",
+      "fileNo": "013-272",
+      "day": "1.Wednesday",
+      "task": "CCID Festive Season Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Ngcobo",
+      "fileNo": "013-272",
+      "day": "2.Thursday",
+      "task": "CCID Festive Season Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Ngcobo",
+      "fileNo": "013-272",
+      "day": "3.Friday",
+      "task": "CCID Festive Season Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Ngcobo",
+      "fileNo": "013-272",
+      "day": "4.Saturday",
+      "task": "CCID Festive Season Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Ngcobo",
+      "fileNo": "013-272",
+      "day": "6.Monday",
+      "task": "CCID Festive Season Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Ngcobo",
+      "fileNo": "013-272",
+      "day": "7.Tuesday",
+      "task": "CCID Festive Season Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Kudzinesa",
+      "fileNo": "013-2087",
+      "day": "2.Thursday",
+      "task": "OPHELP Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 212.0
+    },
+    {
+      "name": "Pitzer",
+      "fileNo": "013-1989",
+      "day": "4.Saturday",
+      "task": "OPHELP Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 220.0
+    },
+    {
+      "name": "Venter",
+      "fileNo": "013-2006",
+      "day": "2.Thursday",
+      "task": "OPHELP Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 145.0
+    },
+    {
+      "name": "Pitzer",
+      "fileNo": "013-1989",
+      "day": "4.Saturday",
+      "task": "OPHELP Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 220.0
+    },
+    {
+      "name": "Le Fleur",
+      "fileNo": "013-239",
+      "day": "6.Monday",
+      "task": "OPHELP Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 165.0
+    },
+    {
+      "name": "Kudzinesa",
+      "fileNo": "013-2087",
+      "day": "7.Tuesday",
+      "task": "OPHELP Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 212.0
+    },
+    {
+      "name": "Pitzer",
+      "fileNo": "013-1989",
+      "day": "1.Wednesday",
+      "task": "Operations Supervision",
+      "hours": 8.0,
+      "amount": 440.0
+    },
+    {
+      "name": "Januarie",
+      "fileNo": "013-1751",
+      "day": "2.Thursday",
+      "task": "JSD Operations",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Januarie",
+      "fileNo": "013-1751",
+      "day": "3.Friday",
+      "task": "Social Development - OPHELP",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Januarie",
+      "fileNo": "013-1751",
+      "day": "6.Monday",
+      "task": "Social Development - OPHELP",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Januarie",
+      "fileNo": "013-1751",
+      "day": "7.Tuesday",
+      "task": "JSD Operations",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Kusure",
+      "fileNo": "013-1930",
+      "day": "4.Saturday",
+      "task": "Day Admin whole Day",
+      "hours": 8.0,
+      "amount": 330.0
+    },
+    {
+      "name": "Kafula",
+      "fileNo": "013-1967",
+      "day": "5.Sunday",
+      "task": "Day Admin whole Day",
+      "hours": 8.0,
+      "amount": 330.0
+    },
+    {
+      "name": "Adome",
+      "fileNo": "013-270",
+      "day": "2.Thursday",
+      "task": "Day Admin whole Day",
+      "hours": 8.0,
+      "amount": 290.0
+    },
+    {
+      "name": "Adome",
+      "fileNo": "013-270",
+      "day": "7.Tuesday",
+      "task": "Day Admin whole Day",
+      "hours": 8.0,
+      "amount": 290.0
+    },
+    {
+      "name": "Sibali",
+      "fileNo": "013-2014",
+      "day": "1.Wednesday",
+      "task": "Day Admin whole Day",
+      "hours": 8.0,
+      "amount": 240.0
+    },
+    {
+      "name": "Sibali",
+      "fileNo": "013-2014",
+      "day": "3.Friday",
+      "task": "Day Admin whole Day",
+      "hours": 8.0,
+      "amount": 240.0
+    },
+    {
+      "name": "Sibali",
+      "fileNo": "013-2014",
+      "day": "6.Monday",
+      "task": "Day Admin whole Day",
+      "hours": 8.0,
+      "amount": 240.0
+    },
+    {
+      "name": "Januarie",
+      "fileNo": "013-1751",
+      "day": "1.Wednesday",
+      "task": "Day Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Sibali",
+      "fileNo": "013-2014",
+      "day": "2.Thursday",
+      "task": "Day Admin Assistant",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Njemla",
+      "fileNo": "013-1787",
+      "day": "7.Tuesday",
+      "task": "Staff Holiday Leave",
+      "hours": 0.0,
+      "amount": 260.22
+    },
+    {
+      "name": "Le Fleur",
+      "fileNo": "013-239",
+      "day": "1.Wednesday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 165.0
+    },
+    {
+      "name": "Kudzinesa",
+      "fileNo": "013-2087",
+      "day": "1.Wednesday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 212.0
+    },
+    {
+      "name": "Venter",
+      "fileNo": "013-2006",
+      "day": "1.Wednesday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 145.0
+    },
+    {
+      "name": "Venter",
+      "fileNo": "013-2006",
+      "day": "2.Thursday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 145.0
+    },
+    {
+      "name": "Pitzer",
+      "fileNo": "013-1989",
+      "day": "2.Thursday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 220.0
+    },
+    {
+      "name": "Le Fleur",
+      "fileNo": "013-239",
+      "day": "2.Thursday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 165.0
+    },
+    {
+      "name": "Kudzinesa",
+      "fileNo": "013-2087",
+      "day": "3.Friday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 212.0
+    },
+    {
+      "name": "Pitzer",
+      "fileNo": "013-1989",
+      "day": "3.Friday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 220.0
+    },
+    {
+      "name": "Le Fleur",
+      "fileNo": "013-239",
+      "day": "3.Friday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 165.0
+    },
+    {
+      "name": "Venter",
+      "fileNo": "013-2006",
+      "day": "4.Saturday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 145.0
+    },
+    {
+      "name": "Kudzinesa",
+      "fileNo": "013-2087",
+      "day": "6.Monday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 212.0
+    },
+    {
+      "name": "Venter",
+      "fileNo": "013-2006",
+      "day": "6.Monday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 145.0
+    },
+    {
+      "name": "Le Fleur",
+      "fileNo": "013-239",
+      "day": "6.Monday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 165.0
+    },
+    {
+      "name": "Kudzinesa",
+      "fileNo": "013-2087",
+      "day": "7.Tuesday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 212.0
+    },
+    {
+      "name": "Pitzer",
+      "fileNo": "013-1989",
+      "day": "7.Tuesday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 220.0
+    },
+    {
+      "name": "Venter",
+      "fileNo": "013-2006",
+      "day": "7.Tuesday",
+      "task": "CCID Operations Supervisor AM",
+      "hours": 4.0,
+      "amount": 145.0
+    },
+    {
+      "name": "Le Fleur",
+      "fileNo": "013-239",
+      "day": "1.Wednesday",
+      "task": "CCID Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 165.0
+    },
+    {
+      "name": "Kudzinesa",
+      "fileNo": "013-2087",
+      "day": "1.Wednesday",
+      "task": "CCID Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 212.0
+    },
+    {
+      "name": "Venter",
+      "fileNo": "013-2006",
+      "day": "1.Wednesday",
+      "task": "CCID Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 145.0
+    },
+    {
+      "name": "Kudzinesa",
+      "fileNo": "013-2087",
+      "day": "2.Thursday",
+      "task": "CCID Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 212.0
+    },
+    {
+      "name": "Pitzer",
+      "fileNo": "013-1989",
+      "day": "2.Thursday",
+      "task": "CCID Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 220.0
+    },
+    {
+      "name": "Le Fleur",
+      "fileNo": "013-239",
+      "day": "2.Thursday",
+      "task": "CCID Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 165.0
+    },
+    {
+      "name": "Pitzer",
+      "fileNo": "013-1989",
+      "day": "3.Friday",
+      "task": "CCID Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 220.0
+    },
+    {
+      "name": "Kudzinesa",
+      "fileNo": "013-2087",
+      "day": "3.Friday",
+      "task": "CCID Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 212.0
+    },
+    {
+      "name": "Le Fleur",
+      "fileNo": "013-239",
+      "day": "3.Friday",
+      "task": "CCID Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 165.0
+    },
+    {
+      "name": "Venter",
+      "fileNo": "013-2006",
+      "day": "4.Saturday",
+      "task": "CCID Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 145.0
+    },
+    {
+      "name": "Kudzinesa",
+      "fileNo": "013-2087",
+      "day": "6.Monday",
+      "task": "CCID Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 212.0
+    },
+    {
+      "name": "Pitzer",
+      "fileNo": "013-1989",
+      "day": "6.Monday",
+      "task": "CCID Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 220.0
+    },
+    {
+      "name": "Venter",
+      "fileNo": "013-2006",
+      "day": "6.Monday",
+      "task": "CCID Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 145.0
+    },
+    {
+      "name": "Pitzer",
+      "fileNo": "013-1989",
+      "day": "7.Tuesday",
+      "task": "CCID Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 220.0
+    },
+    {
+      "name": "Venter",
+      "fileNo": "013-2006",
+      "day": "7.Tuesday",
+      "task": "CCID Operations Supervisor PM",
+      "hours": 4.0,
+      "amount": 145.0
+    },
+    {
+      "name": "Mzamo",
+      "fileNo": "013-243",
+      "day": "2.Thursday",
+      "task": "Storm Water Drain Cleaning",
+      "hours": 8.0,
+      "amount": 190.0
+    },
+    {
+      "name": "Eckert",
+      "fileNo": "013-2071",
+      "day": "2.Thursday",
+      "task": "OBSID cleaning",
+      "hours": 8.0,
+      "amount": 240.0
+    },
+    {
+      "name": "Krawe",
+      "fileNo": "013-1942",
+      "day": "2.Thursday",
+      "task": "OBSID cleaning",
+      "hours": 8.0,
+      "amount": 240.0
+    },
+    {
+      "name": "Sachiwo",
+      "fileNo": "013-1955",
+      "day": "2.Thursday",
+      "task": "Storm Water Drain Cleaning",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Mpakati",
+      "fileNo": "013-1834",
+      "day": "2.Thursday",
+      "task": "Cigarette Bin Maintenance P3",
+      "hours": 4.0,
+      "amount": 178.03
+    },
+    {
+      "name": "Mpakati",
+      "fileNo": "013-1834",
+      "day": "2.Thursday",
+      "task": "Cigarette Bin Maintenance P3",
+      "hours": 4.0,
+      "amount": 178.03
+    },
+    {
+      "name": "Shoco",
+      "fileNo": "013-253",
+      "day": "2.Thursday",
+      "task": "Cigarette Bin Maintenance P3",
+      "hours": 4.0,
+      "amount": 130.11
+    },
+    {
+      "name": "Matolengwe",
+      "fileNo": "013-1992",
+      "day": "2.Thursday",
+      "task": "Micro Management",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Njemla",
+      "fileNo": "013-1787",
+      "day": "2.Thursday",
+      "task": "Gardening Services P1",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Ndlovu",
+      "fileNo": "013-274",
+      "day": "2.Thursday",
+      "task": "Dawn Patrol",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Nkhobo",
+      "fileNo": "013-240",
+      "day": "2.Thursday",
+      "task": "Dawn Patrol",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Ndlovu",
+      "fileNo": "013-274",
+      "day": "2.Thursday",
+      "task": "CCID Hotspots Cleaning",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Nkhobo",
+      "fileNo": "013-240",
+      "day": "2.Thursday",
+      "task": "CCID Hotspots Cleaning",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Swanepoel",
+      "fileNo": "013-248",
+      "day": "3.Friday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 65.0
+    },
+    {
+      "name": "Qoyise",
+      "fileNo": "013-236",
+      "day": "3.Friday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 50.0
+    },
+    {
+      "name": "Solomon",
+      "fileNo": "013-267",
+      "day": "3.Friday",
+      "task": "Booking Session Administrator",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Swanepoel",
+      "fileNo": "013-248",
+      "day": "3.Friday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 65.0
+    },
+    {
+      "name": "Van De Merwe",
+      "fileNo": "013-269",
+      "day": "3.Friday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 50.0
+    },
+    {
+      "name": "Qoyise",
+      "fileNo": "013-236",
+      "day": "3.Friday",
+      "task": "Gatekeeper programme",
+      "hours": 4.0,
+      "amount": 75.0
+    },
+    {
+      "name": "Nkhobo",
+      "fileNo": "013-240",
+      "day": "3.Friday",
+      "task": "Mouille Point",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Bosch",
+      "fileNo": "013-250",
+      "day": "3.Friday",
+      "task": "CCID Recycling Project",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Krawe",
+      "fileNo": "013-1942",
+      "day": "3.Friday",
+      "task": "OBSID cleaning",
+      "hours": 8.0,
+      "amount": 240.0
+    },
+    {
+      "name": "Eckert",
+      "fileNo": "013-2071",
+      "day": "3.Friday",
+      "task": "OBSID cleaning",
+      "hours": 8.0,
+      "amount": 240.0
+    },
+    {
+      "name": "Sachiwo",
+      "fileNo": "013-1955",
+      "day": "3.Friday",
+      "task": "Storm Water Drain Cleaning",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Matolengwe",
+      "fileNo": "013-1992",
+      "day": "3.Friday",
+      "task": "Channels Cleaning",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Njemla",
+      "fileNo": "013-1787",
+      "day": "3.Friday",
+      "task": "Cigarette Bin Maintenance P4",
+      "hours": 4.0,
+      "amount": 178.03
+    },
+    {
+      "name": "Shoco",
+      "fileNo": "013-253",
+      "day": "3.Friday",
+      "task": "Cigarette Bin Maintenance P4",
+      "hours": 4.0,
+      "amount": 130.11
+    },
+    {
+      "name": "Mzamo",
+      "fileNo": "013-243",
+      "day": "3.Friday",
+      "task": "Storm Water Drain Cleaning",
+      "hours": 8.0,
+      "amount": 190.0
+    },
+    {
+      "name": "Ndlovu",
+      "fileNo": "013-274",
+      "day": "3.Friday",
+      "task": "Dawn Patrol",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Nkhobo",
+      "fileNo": "013-240",
+      "day": "3.Friday",
+      "task": "Dawn Patrol",
+      "hours": 4.0,
+      "amount": 85.0
+    },
+    {
+      "name": "De Waal",
+      "fileNo": "013-245",
+      "day": "3.Friday",
+      "task": "Dawn Patrol",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Ndlovu",
+      "fileNo": "013-274",
+      "day": "3.Friday",
+      "task": "CCID Hotspots Cleaning",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "De Waal",
+      "fileNo": "013-245",
+      "day": "3.Friday",
+      "task": "CCID Hotspots Cleaning",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Venter",
+      "fileNo": "013-2006",
+      "day": "3.Friday",
+      "task": "LMRID Team",
+      "hours": 8.0,
+      "amount": 290.0
+    },
+    {
+      "name": "Mpakati",
+      "fileNo": "013-1834",
+      "day": "3.Friday",
+      "task": "Gardening Services P4",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Njemla",
+      "fileNo": "013-1787",
+      "day": "3.Friday",
+      "task": "Cigarette Bin Maintenance P1",
+      "hours": 4.0,
+      "amount": 178.032
+    },
+    {
+      "name": "Swanepoel",
+      "fileNo": "013-248",
+      "day": "4.Saturday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 65.0
+    },
+    {
+      "name": "Qoyise",
+      "fileNo": "013-236",
+      "day": "4.Saturday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 50.0
+    },
+    {
+      "name": "Solomon",
+      "fileNo": "013-267",
+      "day": "4.Saturday",
+      "task": "Booking Session Administrator",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Swanepoel",
+      "fileNo": "013-248",
+      "day": "4.Saturday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 65.0
+    },
+    {
+      "name": "Ndlovu",
+      "fileNo": "013-274",
+      "day": "4.Saturday",
+      "task": "Mouille Point",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Nkhobo",
+      "fileNo": "013-240",
+      "day": "4.Saturday",
+      "task": "Common Ground Church Cleaning",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Shoco",
+      "fileNo": "013-253",
+      "day": "4.Saturday",
+      "task": "Plein St (Darling-Strand)",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Mabaya",
+      "fileNo": "013-1761",
+      "day": "4.Saturday",
+      "task": "Road Maintenance",
+      "hours": 8.0,
+      "amount": 460.3
+    },
+    {
+      "name": "Mashanda",
+      "fileNo": "013-2099",
+      "day": "4.Saturday",
+      "task": "Road Maintenance",
+      "hours": 8.0,
+      "amount": 301.28
+    },
+    {
+      "name": "Vaki",
+      "fileNo": "013-1803",
+      "day": "4.Saturday",
+      "task": "Road Maintenance",
+      "hours": 8.0,
+      "amount": 460.3
+    },
+    {
+      "name": "Njemla",
+      "fileNo": "013-1787",
+      "day": "4.Saturday",
+      "task": "Micro Management",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Jairos",
+      "fileNo": "013-1752",
+      "day": "4.Saturday",
+      "task": "Dignity Stock Controller",
+      "hours": 8.0,
+      "amount": 445.54
+    },
+    {
+      "name": "Matipedza",
+      "fileNo": "013-1770",
+      "day": "4.Saturday",
+      "task": "OBSID Graffiti Removal",
+      "hours": 8.0,
+      "amount": 452.61
+    },
+    {
+      "name": "Matolengwe",
+      "fileNo": "013-1992",
+      "day": "4.Saturday",
+      "task": "OBSID Graffiti Removal",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Sachiwo",
+      "fileNo": "013-1955",
+      "day": "4.Saturday",
+      "task": "LMRID Weed removal",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Ndlovu",
+      "fileNo": "013-274",
+      "day": "4.Saturday",
+      "task": "Dawn Patrol",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Nkhobo",
+      "fileNo": "013-240",
+      "day": "4.Saturday",
+      "task": "Dawn Patrol",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Mafunga",
+      "fileNo": "013-1764",
+      "day": "4.Saturday",
+      "task": "Operations Supervision",
+      "hours": 8.0,
+      "amount": 623.14
+    },
+    {
+      "name": "Bosch",
+      "fileNo": "013-250",
+      "day": "5.Sunday",
+      "task": "St Stephens Church Cleaning",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Bosch",
+      "fileNo": "013-250",
+      "day": "5.Sunday",
+      "task": "Mouille Point",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Nkhobo",
+      "fileNo": "013-240",
+      "day": "5.Sunday",
+      "task": "CCID Hotspots Cleaning",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Nkhobo",
+      "fileNo": "013-240",
+      "day": "5.Sunday",
+      "task": "CCID Hotspots Cleaning",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Swanepoel",
+      "fileNo": "013-248",
+      "day": "6.Monday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 65.0
+    },
+    {
+      "name": "Ngqendeshe",
+      "fileNo": "013-273",
+      "day": "6.Monday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 50.0
+    },
+    {
+      "name": "Bosch",
+      "fileNo": "013-250",
+      "day": "6.Monday",
+      "task": "CCID Recycling Project",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Solomon",
+      "fileNo": "013-267",
+      "day": "6.Monday",
+      "task": "Booking Session Administrator",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Swanepoel",
+      "fileNo": "013-248",
+      "day": "6.Monday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 65.0
+    },
+    {
+      "name": "Van De Merwe",
+      "fileNo": "013-269",
+      "day": "6.Monday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 50.0
+    },
+    {
+      "name": "Ngqendeshe",
+      "fileNo": "013-273",
+      "day": "6.Monday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 50.0
+    },
+    {
+      "name": "Matyeni",
+      "fileNo": "013-275",
+      "day": "6.Monday",
+      "task": "De Waal Park cleaning",
+      "hours": 4.0,
+      "amount": 85.0
+    },
+    {
+      "name": "Bosch",
+      "fileNo": "013-250",
+      "day": "6.Monday",
+      "task": "Mouille Point",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Shoco",
+      "fileNo": "013-253",
+      "day": "6.Monday",
+      "task": "P4 litter picking",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Eckert",
+      "fileNo": "013-2071",
+      "day": "6.Monday",
+      "task": "OBSID cleaning",
+      "hours": 6.0,
+      "amount": 180.0
+    },
+    {
+      "name": "Krawe",
+      "fileNo": "013-1942",
+      "day": "6.Monday",
+      "task": "OBSID cleaning",
+      "hours": 8.0,
+      "amount": 240.0
+    },
+    {
+      "name": "Mzamo",
+      "fileNo": "013-243",
+      "day": "6.Monday",
+      "task": "OBSID cleaning",
+      "hours": 8.0,
+      "amount": 190.0
+    },
+    {
+      "name": "Krawe",
+      "fileNo": "013-1942",
+      "day": "6.Monday",
+      "task": "OBSID cleaning",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Njemla",
+      "fileNo": "013-1787",
+      "day": "6.Monday",
+      "task": "Graffiti Removal",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Mpakati",
+      "fileNo": "013-1834",
+      "day": "6.Monday",
+      "task": "Rodent Baiting",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Matolengwe",
+      "fileNo": "013-1992",
+      "day": "6.Monday",
+      "task": "Cigarette Bin Maintenance P1",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Sachiwo",
+      "fileNo": "013-1955",
+      "day": "6.Monday",
+      "task": "Weed Spraying",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Nkhobo",
+      "fileNo": "013-240",
+      "day": "6.Monday",
+      "task": "Dawn Patrol",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Nkhobo",
+      "fileNo": "013-240",
+      "day": "6.Monday",
+      "task": "CCID Hotspots Cleaning",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Swanepoel",
+      "fileNo": "013-248",
+      "day": "1.Wednesday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 65.0
+    },
+    {
+      "name": "Van De Merwe",
+      "fileNo": "013-269",
+      "day": "1.Wednesday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 50.0
+    },
+    {
+      "name": "Qoyise",
+      "fileNo": "013-236",
+      "day": "1.Wednesday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 50.0
+    },
+    {
+      "name": "Shoco",
+      "fileNo": "013-253",
+      "day": "1.Wednesday",
+      "task": "Buitengracht Middle Islands",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Solomon",
+      "fileNo": "013-267",
+      "day": "1.Wednesday",
+      "task": "Booking Session Administrator",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Shoco",
+      "fileNo": "013-253",
+      "day": "1.Wednesday",
+      "task": "P2 litter picking",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Eckert",
+      "fileNo": "013-2071",
+      "day": "1.Wednesday",
+      "task": "OBSID cleaning",
+      "hours": 8.0,
+      "amount": 240.0
+    },
+    {
+      "name": "Krawe",
+      "fileNo": "013-1942",
+      "day": "1.Wednesday",
+      "task": "OBSID cleaning",
+      "hours": 8.0,
+      "amount": 240.0
+    },
+    {
+      "name": "Mzamo",
+      "fileNo": "013-243",
+      "day": "1.Wednesday",
+      "task": "Graffiti Removal",
+      "hours": 8.0,
+      "amount": 190.0
+    },
+    {
+      "name": "Swanepoel",
+      "fileNo": "013-248",
+      "day": "1.Wednesday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 65.0
+    },
+    {
+      "name": "Qoyise",
+      "fileNo": "013-236",
+      "day": "1.Wednesday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 50.0
+    },
+    {
+      "name": "Njemla",
+      "fileNo": "013-1787",
+      "day": "1.Wednesday",
+      "task": "Municipal Drains",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Matolengwe",
+      "fileNo": "013-1992",
+      "day": "1.Wednesday",
+      "task": "Graffiti Removal",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Sachiwo",
+      "fileNo": "013-1955",
+      "day": "1.Wednesday",
+      "task": "Rodent Baiting",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Mpakati",
+      "fileNo": "013-1834",
+      "day": "1.Wednesday",
+      "task": "Gardening Services P4",
+      "hours": 4.0,
+      "amount": 178.03
+    },
+    {
+      "name": "Ndlovu",
+      "fileNo": "013-274",
+      "day": "1.Wednesday",
+      "task": "Dawn Patrol",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Ndlovu",
+      "fileNo": "013-274",
+      "day": "1.Wednesday",
+      "task": "CCID Hotspots Cleaning",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Roro",
+      "fileNo": "013-271",
+      "day": "1.Wednesday",
+      "task": "LMRID Team",
+      "hours": 8.0,
+      "amount": 240.0
+    },
+    {
+      "name": "Matyeni",
+      "fileNo": "013-275",
+      "day": "1.Wednesday",
+      "task": "LMRID Team",
+      "hours": 8.0,
+      "amount": 170.0
+    },
+    {
+      "name": "Swanepoel",
+      "fileNo": "013-248",
+      "day": "2.Thursday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 65.0
+    },
+    {
+      "name": "Qoyise",
+      "fileNo": "013-236",
+      "day": "2.Thursday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 50.0
+    },
+    {
+      "name": "Bosch",
+      "fileNo": "013-250",
+      "day": "2.Thursday",
+      "task": "Mouille Point",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Solomon",
+      "fileNo": "013-267",
+      "day": "2.Thursday",
+      "task": "Booking Session Administrator",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Swanepoel",
+      "fileNo": "013-248",
+      "day": "2.Thursday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 65.0
+    },
+    {
+      "name": "Van De Merwe",
+      "fileNo": "013-269",
+      "day": "2.Thursday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 50.0
+    },
+    {
+      "name": "Swanepoel",
+      "fileNo": "013-248",
+      "day": "7.Tuesday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 65.0
+    },
+    {
+      "name": "Ngqendeshe",
+      "fileNo": "013-273",
+      "day": "7.Tuesday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 50.0
+    },
+    {
+      "name": "Bosch",
+      "fileNo": "013-250",
+      "day": "7.Tuesday",
+      "task": "CCID Recycling Project",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Solomon",
+      "fileNo": "013-267",
+      "day": "7.Tuesday",
+      "task": "Booking Session Administrator",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Swanepoel",
+      "fileNo": "013-248",
+      "day": "7.Tuesday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 65.0
+    },
+    {
+      "name": "Ngqendeshe",
+      "fileNo": "013-273",
+      "day": "7.Tuesday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 50.0
+    },
+    {
+      "name": "Qoyise",
+      "fileNo": "013-236",
+      "day": "7.Tuesday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 50.0
+    },
+    {
+      "name": "Van De Merwe",
+      "fileNo": "013-269",
+      "day": "7.Tuesday",
+      "task": "Jesus Saves DAILY - City Depot",
+      "hours": 2.0,
+      "amount": 50.0
+    },
+    {
+      "name": "Bosch",
+      "fileNo": "013-250",
+      "day": "7.Tuesday",
+      "task": "CCID Recycling Project",
+      "hours": 4.0,
+      "amount": 95.0
+    },
+    {
+      "name": "Krawe",
+      "fileNo": "013-1942",
+      "day": "7.Tuesday",
+      "task": "OBSID cleaning",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Eckert",
+      "fileNo": "013-2071",
+      "day": "7.Tuesday",
+      "task": "OBSID cleaning",
+      "hours": 8.0,
+      "amount": 240.0
+    },
+    {
+      "name": "Sibali",
+      "fileNo": "013-2014",
+      "day": "7.Tuesday",
+      "task": "OBSID cleaning",
+      "hours": 8.0,
+      "amount": 240.0
+    },
+    {
+      "name": "Nkhobo",
+      "fileNo": "013-240",
+      "day": "7.Tuesday",
+      "task": "Mouille Point",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Mzamo",
+      "fileNo": "013-243",
+      "day": "7.Tuesday",
+      "task": "Tree Well Maintenance",
+      "hours": 8.0,
+      "amount": 190.0
+    },
+    {
+      "name": "Matolengwe",
+      "fileNo": "013-1992",
+      "day": "7.Tuesday",
+      "task": "Storm Water Drain Cleaning",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Sachiwo",
+      "fileNo": "013-1955",
+      "day": "7.Tuesday",
+      "task": "Tree Well Maintenance",
+      "hours": 8.0,
+      "amount": 356.06
+    },
+    {
+      "name": "Mpakati",
+      "fileNo": "013-1834",
+      "day": "7.Tuesday",
+      "task": "Gardening Services P1",
+      "hours": 4.0,
+      "amount": 178.03
+    },
+    {
+      "name": "Mpakati",
+      "fileNo": "013-1834",
+      "day": "7.Tuesday",
+      "task": "Gardening Services P2",
+      "hours": 4.0,
+      "amount": 178.03
+    },
+    {
+      "name": "Shoco",
+      "fileNo": "013-253",
+      "day": "7.Tuesday",
+      "task": "Gardening Services P2",
+      "hours": 4.0,
+      "amount": 130.11
+    },
+    {
+      "name": "Ndlovu",
+      "fileNo": "013-274",
+      "day": "7.Tuesday",
+      "task": "Dawn Patrol",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Nkhobo",
+      "fileNo": "013-240",
+      "day": "7.Tuesday",
+      "task": "Dawn Patrol",
+      "hours": 4.0,
+      "amount": 85.0
+    },
+    {
+      "name": "Ndlovu",
+      "fileNo": "013-274",
+      "day": "7.Tuesday",
+      "task": "Dawn Patrol",
+      "hours": 4.0,
+      "amount": 120.0
+    },
+    {
+      "name": "Le Fleur",
+      "fileNo": "013-239",
+      "day": "7.Tuesday",
+      "task": "LMRID Team",
+      "hours": 8.0,
+      "amount": 330.0
+    },
+    {
+      "name": "De Waal",
+      "fileNo": "013-245",
+      "day": "7.Tuesday",
+      "task": "LMRID Team",
+      "hours": 8.0,
+      "amount": 170.0
+    },
+    {
+      "name": "Matyeni",
+      "fileNo": "013-275",
+      "day": "7.Tuesday",
+      "task": "LMRID Team",
+      "hours": 8.0,
+      "amount": 170.0
+    },
+    {
+      "name": "Ncube",
+      "fileNo": "013-1861",
+      "day": "1.Wednesday",
+      "task": "City Depot stock control",
+      "hours": 8.0,
+      "amount": 445.54
+    },
+    {
+      "name": "Ncube",
+      "fileNo": "013-1861",
+      "day": "2.Thursday",
+      "task": "City Depot stock control",
+      "hours": 8.0,
+      "amount": 445.54
+    },
+    {
+      "name": "Ncube",
+      "fileNo": "013-1861",
+      "day": "3.Friday",
+      "task": "City Depot stock control",
+      "hours": 8.0,
+      "amount": 445.54
+    },
+    {
+      "name": "Ncube",
+      "fileNo": "013-1861",
+      "day": "4.Saturday",
+      "task": "City Depot stock control",
+      "hours": 8.0,
+      "amount": 445.54
+    },
+    {
+      "name": "Ncube",
+      "fileNo": "013-1861",
+      "day": "6.Monday",
+      "task": "City Depot stock control",
+      "hours": 8.0,
+      "amount": 445.54
+    },
+    {
+      "name": "Ncube",
+      "fileNo": "013-1861",
+      "day": "7.Tuesday",
+      "task": "City Depot stock control",
+      "hours": 8.0,
+      "amount": 445.54
+    },
+    {
+      "name": "Mpakati",
+      "fileNo": "013-1834",
+      "day": "1.Wednesday",
+      "task": "City Depot stock control",
+      "hours": 4.0,
+      "amount": 178.03
+    },
+    {
+      "name": "Shoco",
+      "fileNo": "013-253",
+      "day": "2.Thursday",
+      "task": "City Depot stock control",
+      "hours": 4.0,
+      "amount": 145.0
+    },
+    {
+      "name": "Shoco",
+      "fileNo": "013-253",
+      "day": "3.Friday",
+      "task": "City Depot stock control",
+      "hours": 4.0,
+      "amount": 145.0
+    },
+    {
+      "name": "Shoco",
+      "fileNo": "013-253",
+      "day": "4.Saturday",
+      "task": "City Depot stock control",
+      "hours": 4.0,
+      "amount": 145.0
+    },
+    {
+      "name": "Shoco",
+      "fileNo": "013-253",
+      "day": "6.Monday",
+      "task": "City Depot stock control",
+      "hours": 4.0,
+      "amount": 145.0
+    },
+    {
+      "name": "Shoco",
+      "fileNo": "013-253",
+      "day": "7.Tuesday",
+      "task": "City Depot stock control",
+      "hours": 4.0,
+      "amount": 145.0
+    },
+    {
+      "name": "Chirume",
+      "fileNo": "013-1735",
+      "day": "1.Wednesday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 445.54
+    },
+    {
+      "name": "Chirume",
+      "fileNo": "013-1735",
+      "day": "2.Thursday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 445.54
+    },
+    {
+      "name": "Chirume",
+      "fileNo": "013-1735",
+      "day": "3.Friday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 445.54
+    },
+    {
+      "name": "Chirume",
+      "fileNo": "013-1735",
+      "day": "6.Monday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 445.54
+    },
+    {
+      "name": "Chirume",
+      "fileNo": "013-1735",
+      "day": "7.Tuesday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 445.54
+    },
+    {
+      "name": "Musiringofa",
+      "fileNo": "013-264",
+      "day": "1.Wednesday",
+      "task": "Unpaid Leave",
+      "hours": 0.0,
+      "amount": 0.0
+    },
+    {
+      "name": "Musiringofa",
+      "fileNo": "013-264",
+      "day": "2.Thursday",
+      "task": "Unpaid Leave",
+      "hours": 0.0,
+      "amount": 0.0
+    },
+    {
+      "name": "Musiringofa",
+      "fileNo": "013-264",
+      "day": "3.Friday",
+      "task": "Unpaid Leave",
+      "hours": 0.0,
+      "amount": 0.0
+    },
+    {
+      "name": "Musiringofa",
+      "fileNo": "013-264",
+      "day": "6.Monday",
+      "task": "Unpaid Leave",
+      "hours": 0.0,
+      "amount": 0.0
+    },
+    {
+      "name": "Musiringofa",
+      "fileNo": "013-264",
+      "day": "7.Tuesday",
+      "task": "Unpaid Leave",
+      "hours": 0.0,
+      "amount": 0.0
+    },
+    {
+      "name": "Jonas",
+      "fileNo": "013-2047",
+      "day": "1.Wednesday",
+      "task": "Road Maintenance",
+      "hours": 8.0,
+      "amount": 301.28
+    },
+    {
+      "name": "Jonas",
+      "fileNo": "013-2047",
+      "day": "2.Thursday",
+      "task": "Unpaid Leave",
+      "hours": 0.0,
+      "amount": 0.0
+    },
+    {
+      "name": "Jonas",
+      "fileNo": "013-2047",
+      "day": "3.Friday",
+      "task": "Road Maintenance",
+      "hours": 8.0,
+      "amount": 301.28
+    },
+    {
+      "name": "Jonas",
+      "fileNo": "013-2047",
+      "day": "6.Monday",
+      "task": "Road Maintenance",
+      "hours": 8.0,
+      "amount": 301.28
+    },
+    {
+      "name": "Jonas",
+      "fileNo": "013-2047",
+      "day": "7.Tuesday",
+      "task": "Road Maintenance",
+      "hours": 8.0,
+      "amount": 301.28
+    },
+    {
+      "name": "Mashanda",
+      "fileNo": "013-2099",
+      "day": "1.Wednesday",
+      "task": "Unpaid Leave",
+      "hours": 0.0,
+      "amount": 0.0
+    },
+    {
+      "name": "Mashanda",
+      "fileNo": "013-2099",
+      "day": "2.Thursday",
+      "task": "Road Maintenance",
+      "hours": 8.0,
+      "amount": 301.28
+    },
+    {
+      "name": "Mashanda",
+      "fileNo": "013-2099",
+      "day": "3.Friday",
+      "task": "Road Maintenance",
+      "hours": 8.0,
+      "amount": 301.28
+    },
+    {
+      "name": "Mashanda",
+      "fileNo": "013-2099",
+      "day": "6.Monday",
+      "task": "Road Maintenance",
+      "hours": 8.0,
+      "amount": 301.28
+    },
+    {
+      "name": "Mashanda",
+      "fileNo": "013-2099",
+      "day": "7.Tuesday",
+      "task": "Road Maintenance",
+      "hours": 8.0,
+      "amount": 301.28
+    },
+    {
+      "name": "Letsatsi",
+      "fileNo": "013-1904",
+      "day": "1.Wednesday",
+      "task": "Road Maintenance",
+      "hours": 8.0,
+      "amount": 301.28
+    },
+    {
+      "name": "Letsatsi",
+      "fileNo": "013-1904",
+      "day": "2.Thursday",
+      "task": "Road Maintenance",
+      "hours": 8.0,
+      "amount": 301.28
+    },
+    {
+      "name": "Letsatsi",
+      "fileNo": "013-1904",
+      "day": "3.Friday",
+      "task": "Road Maintenance",
+      "hours": 8.0,
+      "amount": 301.28
+    },
+    {
+      "name": "Letsatsi",
+      "fileNo": "013-1904",
+      "day": "6.Monday",
+      "task": "Unpaid Leave",
+      "hours": 0.0,
+      "amount": 0.0
+    },
+    {
+      "name": "Letsatsi",
+      "fileNo": "013-1904",
+      "day": "7.Tuesday",
+      "task": "Road Maintenance",
+      "hours": 8.0,
+      "amount": 301.28
+    },
+    {
+      "name": "Takavadiyi",
+      "fileNo": "013-1921",
+      "day": "1.Wednesday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Takavadiyi",
+      "fileNo": "013-1921",
+      "day": "2.Thursday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Takavadiyi",
+      "fileNo": "013-1921",
+      "day": "3.Friday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Takavadiyi",
+      "fileNo": "013-1921",
+      "day": "6.Monday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Takavadiyi",
+      "fileNo": "013-1921",
+      "day": "7.Tuesday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Kafula",
+      "fileNo": "013-1967",
+      "day": "1.Wednesday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Kafula",
+      "fileNo": "013-1967",
+      "day": "2.Thursday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Kafula",
+      "fileNo": "013-1967",
+      "day": "3.Friday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Kafula",
+      "fileNo": "013-1967",
+      "day": "6.Monday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    },
+    {
+      "name": "Kafula",
+      "fileNo": "013-1967",
+      "day": "7.Tuesday",
+      "task": "Admin Assistant",
+      "hours": 8.0,
+      "amount": 424.0
+    }
+  ],
+  "corrections": [
+    {
+      "name": "Matolengwe",
+      "fileNo": "013-1992",
+      "detail": "Medical Aid",
+      "amount": -76.09,
+      "journalEntry": "JE 01 038.1"
+    },
+    {
+      "name": "Januarie",
+      "fileNo": "013-1751",
+      "detail": "Medical Aid",
+      "amount": -76.09,
+      "journalEntry": "JE 01 001.1"
+    },
+    {
+      "name": "Jonas",
+      "fileNo": "013-2047",
+      "detail": "Medical Aid",
+      "amount": -76.09,
+      "journalEntry": "JE 01 007.1"
+    },
+    {
+      "name": "Jonas",
+      "fileNo": "013-2047",
+      "detail": "Training Fund Deduction - Asanda Jonas for Payroll 070",
+      "amount": -10.0,
+      "journalEntry": "JE 01 043.1"
+    },
+    {
+      "name": "Matolengwe",
+      "fileNo": "013-1992",
+      "detail": "Training Fund Deduction - Mkhululi Matolongwe for Payroll 070",
+      "amount": -10.0,
+      "journalEntry": "JE 01 036.1"
+    },
+    {
+      "name": "Kafula",
+      "fileNo": "013-1967",
+      "detail": "Staff Loan Repayment - Vincent Kafula for Payroll 070",
+      "amount": -350.0,
+      "journalEntry": "JE 01 033.1"
+    },
+    {
+      "name": "Letsatsi",
+      "fileNo": "013-1904",
+      "detail": "Medical Aid",
+      "amount": -76.09,
+      "journalEntry": "JE 01 044.1"
+    }
+  ]
+}

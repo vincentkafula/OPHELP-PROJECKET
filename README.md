@@ -149,6 +149,45 @@ git branch -M main
 git push -u origin main
 ```
 
+## Payroll (Operation Office)
+
+The **Payroll** tab under the Operation Office role manages Straatwerk-style
+paysheet runs — periods, daily paysheet lines, corrections/deductions
+(medical aid, staff loans, training fund, etc.), and a payroll roster
+(file number, name, ABSA beneficiary number, payroll code).
+
+Data model (four new generic entities, same JSONB pattern as everything
+else — see `backend/server.js` / `backend/routes/bootstrap.js`):
+
+- `payroll_periods` — one payroll run (number + label, e.g. "71 — 25 Feb - 03 Mar 2026")
+- `payroll_roster` — one payee per file number, optionally linked to a `Participant`
+- `payroll_entries` — one line per person/day/task (hours + amount)
+- `payroll_corrections` — one line per deduction/addition against a person for a period
+
+The dashboard screen (`frontend/src/components/PayrollPanel.tsx`) lets
+Operation Office create a new period, add entries/corrections by hand, see
+a per-person payslip summary (hours, gross, corrections, net payable),
+and export that summary as CSV for the bank run.
+
+**Importing a Paybook (.mdb) export.** The old Access paybooks
+(`Paybook_0NN_<period>.mdb`) aren't readable by Node directly. On a
+machine with `mdbtools` installed, export each table (`tblPayrollPeriode`,
+`tblNames`, `tblDays`, `tblDetail`, `tblPaysheet`, `tblCorrections`) to CSV
+and join them into the flat JSON shape documented at the top of
+`backend/scripts/import-payroll.js`. `backend/scripts/data/paybook-071.json`
+is a worked example (Payroll 71, 25 Feb – 03 Mar 2026) produced this way.
+Then run:
+
+```
+railway run npm run import:payroll --prefix backend -- backend/scripts/data/paybook-071.json
+```
+
+(or `npm run import:payroll --prefix backend -- <path-to-json>` locally,
+with `DATABASE_URL` pointed at the target database). The import is
+idempotent per period number — re-running it replaces that period's
+entries/corrections instead of duplicating them, and it links roster rows
+to existing `Participant` profiles where the names match.
+
 ## Known limitations / follow-ups
 
 - The admin **"Add User"** screen in the dashboard (`Dashboard.tsx`) still
@@ -168,3 +207,9 @@ git push -u origin main
 - CORS is wide open (`cors()` with no options) since frontend and backend
   ship as one Railway service. If you ever split them into two services,
   lock this down to the frontend's origin.
+- Payroll roster matching (`backend/scripts/import-payroll.js`) links a
+  roster row to a `Participant` by exact-normalized name match only. Do a
+  manual review pass after each import — nicknames, initials, or spelling
+  differences between the Paybook and the participant register won't
+  auto-link, and will just show as "Unmatched" in the Payroll tab until
+  reconciled by hand.
