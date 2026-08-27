@@ -461,6 +461,68 @@ also documented as a comment on the `Jobsheet` type in
   spec's own formula, not a bug; reconcile the difference with the Extra
   field per Jobsheet.
 
+## Quotation Request Approval Chain (Partner → Operation Management →
+## Operation Office → Manager)
+
+Partner submits a request (§3.1: worker/foreman/operation-supervisor
+counts, task details, location) → instantly visible to Operation
+Management, Operation Office, and Manager (`project_manager` role) →
+each approves in sequence (feasibility → amount → final) → Partner sees
+**Approved**. Any stage can decline with a reason. For monthly-terms
+requests, Manager gets a separate **Approve/Decline Monthly Terms**
+action (§3.4) alongside the main approval chain.
+
+- **Partner** → `QuotationRequestPanel.tsx` — submit + track status
+- **Operation Management** / **Operation Office** / **Manager** → one
+  shared `RequestApprovalPanel.tsx` (a `stage` prop switches the review
+  form: feasibility notes / approved-amount override / stream assignment)
+
+**Flagged assumptions:**
+- The spec calls for three separate Operation Management dashboards
+  (Pre-School / School / Technical Services). Rather than build three
+  roles, a `stream` field lets the single existing `operation_management`
+  role's queue be filtered/routed logically — a scoping simplification,
+  not a full implementation of separate dashboards.
+- Operation-supervisor rate has no figure in the spec (only
+  foreman/worker do, matching the Jobsheet's qualified base rates); it
+  defaults to R200, editable in code (`DEFAULT_RATES` in
+  `QuotationRequestPanel.tsx`) until a real figure is confirmed.
+- §3.4's "invoice must be paid before service" upfront-payment gate
+  isn't wired to a real payment/collections step — Manager approval is
+  the only gate before a request can be pulled into scheduling.
+
+## Field Ops Flow (Scheduling → Team Booking → Roll Call → Store)
+
+Once Manager approves a request, Operation Office pulls it into
+**Scheduling** (confirms the account name, approves — same account-name
+concept as Jobsheets §4.5), which makes it visible to **Team Booking**
+(the `team` role books 1 foreman + 2 workers for a 07:30/12:30 roll-call
+session), which **Day Admin**'s **Roll Call** panel deploys — including
+a no-show replacement action that swaps a booked member out and logs it.
+**Store**'s **Shift Slips** tab is a read-only rollup of the bags/gloves
+issued/returned/used figures foremen record on each Jobsheet (§3.8/3.11).
+
+- **Operation Office** → `SchedulingPanel.tsx`
+- **Team** → `TeamBookingPanel.tsx`
+- **Day Admin** → `RollCallPanel.tsx`
+- **Store** → `StoreShiftSlipsPanel.tsx`
+
+**Flagged assumptions:**
+- This models scheduling/booking as new lightweight entities
+  (`scheduled_jobs`, `team_bookings`) rather than the app's existing
+  `Shift`/`Participant` model, which is oriented around individual
+  participant shift tracking for a different (pre-existing) system —
+  forcing this flow through it would have meant awkward participant
+  records for free-text team names. Team/foreman/worker names here are
+  free text, same as the Jobsheet entry form.
+  the `team` role in this app already represents an individual
+  logged-in participant (`My Shifts` etc.) — Team Booking is additive to
+  that, not a replacement.
+- Foreman's Task Sheet (mentioned alongside the Jobsheet in §3.8) isn't
+  digitized here — the existing static print-form components
+  (`GrandParadeTaskSheet.tsx`, `CityDepotShiftSlip.tsx`) still serve that
+  role; only the Jobsheet's money side is backed by real data.
+
 ## Known limitations / follow-ups
 
 - The admin **"Add User"** screen in the dashboard (`Dashboard.tsx`) still

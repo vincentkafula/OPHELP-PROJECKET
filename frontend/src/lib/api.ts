@@ -9,7 +9,7 @@ import {
   Equipments, Inventory, Incidents, Notifications, Messages, AuditLogs,
   PayrollPeriods, PayrollRoster, PayrollEntries, PayrollCorrections,
   PaymentAuthorisations, WeeklyRegisters, OasysChecks, DepotSchedules, Quotations, Invoices,
-  Jobsheets, MonthlyInvoices,
+  Jobsheets, MonthlyInvoices, QuotationRequests, ScheduledJobs, TeamBookings,
   now, uid,
 } from './db'
 import type {
@@ -19,6 +19,7 @@ import type {
   DashboardStats, ApiResult, PayrollPeriod, PayrollRosterEntry, PayrollEntry,
   PayrollCorrection, PaymentAuthorisation, WeeklyRegister, OasysCheck,
   DepotSchedule, Quotation, Invoice, Jobsheet, JobsheetPayment, MonthlyInvoice,
+  QuotationRequest, ScheduledJob, TeamBooking, TeamBookingReplacement,
 } from './types'
 
 // ── Participants ──────────────────────────────────────────────────────────────
@@ -895,5 +896,123 @@ export const MonthlyInvoiceApi = {
       finalizedAt: now(), finalizedBy, createdAt: now(),
     })
     return { success: true, data: inv }
+  },
+}
+
+// ── Quotation Requests — Partner -> Operation Management -> Operation Office
+// -> Manager approval chain (§3.1-3.4 of the field-services spec). ────────────
+export const QuotationRequestApi = {
+  list(): QuotationRequest[] { return QuotationRequests.all().sort((a, b) => b.createdAt.localeCompare(a.createdAt)) },
+  get(id: string): QuotationRequest | undefined { return QuotationRequests.findById(id) },
+  byPartner(partnerShopId: string): QuotationRequest[] { return QuotationRequests.where(q => q.partnerShopId === partnerShopId) },
+  byStream(stream: QuotationRequest['stream']): QuotationRequest[] { return QuotationRequests.where(q => q.stream === stream) },
+  pendingManagement(): QuotationRequest[] { return QuotationRequests.where(q => q.status === 'submitted') },
+  pendingOffice(): QuotationRequest[] { return QuotationRequests.where(q => q.status === 'management_approved') },
+  pendingManager(): QuotationRequest[] { return QuotationRequests.where(q => q.status === 'office_approved') },
+  approved(): QuotationRequest[] { return QuotationRequests.where(q => q.status === 'approved') },
+
+  create(data: {
+    partnerShopId: string; requestedBy: string; numWorkers: number; numForemen: number; numSupervisors: number;
+    workerRate: number; foremanRate: number; supervisorRate: number; taskDetails: string;
+    locationLat?: number; locationLng?: number; locationAddress: string; stream: QuotationRequest['stream'];
+    paymentTerms: QuotationRequest['paymentTerms'];
+  }): ApiResult<QuotationRequest> {
+    const quotedAmount = data.numWorkers * data.workerRate + data.numForemen * data.foremanRate + data.numSupervisors * data.supervisorRate
+    const q = QuotationRequests.insert({
+      ...data, quotedAmount, status: 'submitted',
+      monthlyTermsDecision: data.paymentTerms === 'monthly' ? 'pending' : undefined,
+      createdAt: now(),
+    })
+    return { success: true, data: q }
+  },
+
+  approveManagement(id: string, by: string, notes?: string): ApiResult<QuotationRequest> {
+    const q = QuotationRequests.update(id, { status: 'management_approved', managementApprovedBy: by, managementApprovedAt: now(), managementNotes: notes })
+    return q ? { success: true, data: q } : { success: false, error: 'Quotation request not found' }
+  },
+  approveOffice(id: string, by: string, approvedAmount: number, notes?: string): ApiResult<QuotationRequest> {
+    const q = QuotationRequests.update(id, { status: 'office_approved', officeApprovedAmount: approvedAmount, officeApprovedBy: by, officeApprovedAt: now(), officeNotes: notes })
+    return q ? { success: true, data: q } : { success: false, error: 'Quotation request not found' }
+  },
+  approveManager(id: string, by: string, assignedStream: QuotationRequest['stream'], notes?: string): ApiResult<QuotationRequest> {
+    const q = QuotationRequests.update(id, { status: 'approved', managerApprovedBy: by, managerApprovedAt: now(), managerAssignedStream: assignedStream, managerNotes: notes })
+    return q ? { success: true, data: q } : { success: false, error: 'Quotation request not found' }
+  },
+  decline(id: string, by: string, reason: string): ApiResult<QuotationRequest> {
+    const q = QuotationRequests.update(id, { status: 'declined', declinedBy: by, declinedAt: now(), declinedReason: reason })
+    return q ? { success: true, data: q } : { success: false, error: 'Quotation request not found' }
+  },
+  decideMonthlyTerms(id: string, by: string, decision: 'approved' | 'declined'): ApiResult<QuotationRequest> {
+    const q = QuotationRequests.update(id, { monthlyTermsDecision: decision, monthlyTermsDecisionBy: by, monthlyTermsDecisionAt: now() })
+    return q ? { success: true, data: q } : { success: false, error: 'Quotation request not found' }
+  },
+}
+
+// ── Scheduling & Team Booking — field ops flow (§3.5-3.8) ──────────────────────
+export const ScheduledJobApi = {
+  list(): ScheduledJob[] { return ScheduledJobs.all().sort((a, b) => b.createdAt.localeCompare(a.createdAt)) },
+  get(id: string): ScheduledJob | undefined { return ScheduledJobs.findById(id) },
+  byStream(stream: ScheduledJob['stream']): ScheduledJob[] { return ScheduledJobs.where(j => j.stream === stream) },
+  approved(): ScheduledJob[] { return ScheduledJobs.where(j => j.status === 'schedule_approved') },
+  pendingSchedule(): ScheduledJob[] { return ScheduledJobs.where(j => j.status === 'pending_schedule') },
+  byQuotationRequest(id: string): ScheduledJob | undefined { return ScheduledJobs.findOne(j => j.quotationRequestId === id) },
+
+  /** Operation Office pulls an approved Quotation Request into Shift
+   * Scheduling. §3.4's "must be paid before service" upfront-payment gate
+   * isn't wired to a real payment step in this build — flagged in the
+   * README — so this can be called as soon as a request is approved. */
+  createFromRequest(request: QuotationRequest, scheduledDate: string): ApiResult<ScheduledJob> {
+    if (request.status !== 'approved') return { success: false, error: 'Quotation request is not approved yet' }
+    const existing = this.byQuotationRequest(request.id)
+    if (existing) return { success: false, error: 'A scheduled job already exists for this request' }
+    const job = ScheduledJobs.insert({
+      quotationRequestId: request.id, partnerShopId: request.partnerShopId,
+      stream: request.managerAssignedStream ?? request.stream, accountName: '',
+      scheduledDate, status: 'pending_schedule', createdAt: now(),
+    })
+    return { success: true, data: job }
+  },
+  /** Scheduling Management confirms the account name and approves — the
+   * schedule becomes visible to Teams once approved. */
+  approveSchedule(id: string, accountName: string, approvedBy: string): ApiResult<ScheduledJob> {
+    const job = ScheduledJobs.update(id, { accountName, status: 'schedule_approved', approvedBy, approvedAt: now() })
+    return job ? { success: true, data: job } : { success: false, error: 'Scheduled job not found' }
+  },
+}
+
+export const TeamBookingApi = {
+  list(): TeamBooking[] { return TeamBookings.all().sort((a, b) => b.createdAt.localeCompare(a.createdAt)) },
+  get(id: string): TeamBooking | undefined { return TeamBookings.findById(id) },
+  byScheduledJob(scheduledJobId: string): TeamBooking[] { return TeamBookings.where(b => b.scheduledJobId === scheduledJobId) },
+  byStatus(status: TeamBooking['status']): TeamBooking[] { return TeamBookings.where(b => b.status === status) },
+  bySession(session: TeamBooking['rollCallSession']): TeamBooking[] { return TeamBookings.where(b => b.rollCallSession === session) },
+
+  book(data: Omit<TeamBooking, 'id' | 'createdAt' | 'status' | 'noShowNames' | 'replacements'>): ApiResult<TeamBooking> {
+    const b = TeamBookings.insert({ ...data, status: 'booked', noShowNames: [], replacements: [], createdAt: now() })
+    return { success: true, data: b }
+  },
+  /** Day Admin deploys a booked team at roll call. */
+  deploy(id: string, deployedBy: string): ApiResult<TeamBooking> {
+    const b = TeamBookings.update(id, { status: 'deployed', deployedBy, deployedAt: now() })
+    return b ? { success: true, data: b } : { success: false, error: 'Team booking not found' }
+  },
+  /** No-show replacement via the queue: swaps whichever slot (foreman/
+   * worker1/worker2) currently holds `originalName` for `replacementName`. */
+  replaceMember(id: string, originalName: string, replacementName: string, reason: string): ApiResult<TeamBooking> {
+    const b = TeamBookings.findById(id)
+    if (!b) return { success: false, error: 'Team booking not found' }
+    const patch: Partial<TeamBooking> = {
+      noShowNames: [...b.noShowNames, originalName],
+      replacements: [...b.replacements, { originalName, replacementName, reason, at: now() } as TeamBookingReplacement],
+    }
+    if (b.foremanName === originalName) patch.foremanName = replacementName
+    else if (b.worker1Name === originalName) patch.worker1Name = replacementName
+    else if (b.worker2Name === originalName) patch.worker2Name = replacementName
+    const updated = TeamBookings.update(id, patch)
+    return updated ? { success: true, data: updated } : { success: false, error: 'Could not replace member' }
+  },
+  complete(id: string): ApiResult<TeamBooking> {
+    const b = TeamBookings.update(id, { status: 'completed' })
+    return b ? { success: true, data: b } : { success: false, error: 'Team booking not found' }
   },
 }

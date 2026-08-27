@@ -628,6 +628,7 @@ export interface Jobsheet {
   date: string
   jobDetail: string
   partnerShopId?: string
+  teamBookingId?: string
   accountName: string
   qualified: boolean
   shiftHours: 4 | 8
@@ -660,6 +661,100 @@ export interface MonthlyInvoice {
   totalAmount: number
   finalizedAt: string
   finalizedBy?: string
+  createdAt: string
+}
+
+// ── Quotation Requests (Partner → Operation Management → Operation Office →
+// Manager approval chain). Per the spec, "operation management" has three
+// streams (Pre-School / School / Technical Services) — rather than build
+// three separate roles, this uses a `stream` field so the single existing
+// `operation_management` role can filter to the stream it owns, flagged
+// here as a scoping simplification. ────────────────────────────────────────
+export type OperationStream = 'pre_school' | 'school' | 'technical_services'
+export type PaymentTerms = 'upfront' | 'monthly'
+export type QuotationRequestStatus =
+  | 'submitted' | 'management_approved' | 'office_approved' | 'approved' | 'declined'
+export type MonthlyTermsDecision = 'pending' | 'approved' | 'declined'
+
+export interface QuotationRequest {
+  id: string
+  partnerShopId: string
+  requestedBy: string
+  numWorkers: number
+  numForemen: number
+  numSupervisors: number
+  workerRate: number
+  foremanRate: number
+  supervisorRate: number
+  taskDetails: string
+  locationLat?: number
+  locationLng?: number
+  locationAddress: string
+  stream: OperationStream
+  quotedAmount: number
+  paymentTerms: PaymentTerms
+  status: QuotationRequestStatus
+  managementApprovedBy?: string
+  managementApprovedAt?: string
+  managementNotes?: string
+  officeApprovedAmount?: number
+  officeApprovedBy?: string
+  officeApprovedAt?: string
+  officeNotes?: string
+  managerApprovedBy?: string
+  managerApprovedAt?: string
+  managerAssignedStream?: OperationStream
+  managerNotes?: string
+  declinedBy?: string
+  declinedAt?: string
+  declinedReason?: string
+  monthlyTermsDecision?: MonthlyTermsDecision
+  monthlyTermsDecisionBy?: string
+  monthlyTermsDecisionAt?: string
+  createdAt: string
+}
+
+// ── Scheduling & Team Booking (field ops flow) ──────────────────────────────
+export type ScheduledJobStatus = 'pending_schedule' | 'schedule_approved'
+
+export interface ScheduledJob {
+  id: string
+  quotationRequestId: string
+  partnerShopId: string
+  stream: OperationStream
+  accountName: string
+  scheduledDate: string
+  status: ScheduledJobStatus
+  approvedBy?: string
+  approvedAt?: string
+  createdAt: string
+}
+
+export type RollCallSession = '07:30' | '12:30'
+export type TeamBookingStatus = 'booked' | 'deployed' | 'completed'
+
+export interface TeamBookingReplacement {
+  originalName: string
+  replacementName: string
+  reason: string
+  at: string
+}
+
+export interface TeamBooking {
+  id: string
+  scheduledJobId: string
+  teamId?: string
+  teamName: string
+  foremanName: string
+  worker1Name: string
+  worker2Name: string
+  rollCallSession: RollCallSession
+  status: TeamBookingStatus
+  noShowNames: string[]
+  replacements: TeamBookingReplacement[]
+  deployedBy?: string
+  deployedAt?: string
+  bookedBy?: string
   createdAt: string
 }
 

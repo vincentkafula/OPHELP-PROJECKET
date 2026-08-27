@@ -24,6 +24,7 @@ import type {
   Notification, Message, PayrollPeriod, PayrollRosterEntry, PayrollEntry,
   PayrollCorrection, PaymentAuthorisation, WeeklyRegister, OasysCheck,
   DepotSchedule, Quotation, Invoice, Jobsheet, MonthlyInvoice,
+  QuotationRequest, ScheduledJob, TeamBooking,
 } from './types'
 
 // -- Helpers ------------------------------------------------------------
@@ -77,6 +78,9 @@ const ENDPOINTS: Record<string, string> = {
   invoices: 'invoices',
   jobsheets: 'jobsheets',
   monthly_invoices: 'monthly-invoices',
+  quotation_requests: 'quotation-requests',
+  scheduled_jobs: 'scheduled-jobs',
+  team_bookings: 'team-bookings',
 }
 
 // -- In-memory cache, hydrated once by bootstrap() ------------------------
@@ -239,6 +243,9 @@ export const Quotations = new Collection<Quotation>('ophelp_quotations', 'quotat
 export const Invoices = new Collection<Invoice>('ophelp_invoices', 'invoices')
 export const Jobsheets = new Collection<Jobsheet>('ophelp_jobsheets', 'jobsheets')
 export const MonthlyInvoices = new Collection<MonthlyInvoice>('ophelp_monthly_invoices', 'monthly_invoices')
+export const QuotationRequests = new Collection<QuotationRequest>('ophelp_quotation_requests', 'quotation_requests')
+export const ScheduledJobs = new Collection<ScheduledJob>('ophelp_scheduled_jobs', 'scheduled_jobs')
+export const TeamBookings = new Collection<TeamBooking>('ophelp_team_bookings', 'team_bookings')
 
 /**
  * The original app called this synchronously at module load to seed

@@ -13,6 +13,7 @@ const ENTITIES = [
   'quotations',
   'invoices',
   'jobsheets', 'monthly_invoices',
+  'quotation_requests', 'scheduled_jobs', 'team_bookings',
 ]
 
 // The whole app (marketing pages + dashboard) reads through one in-memory

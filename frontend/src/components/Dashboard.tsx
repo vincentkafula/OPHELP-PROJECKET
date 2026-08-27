@@ -22,6 +22,12 @@ import InvoicesPanel from './InvoicesPanel'
 import JobsheetsPanel from './JobsheetsPanel'
 import AccountingLedgerPanel from './AccountingLedgerPanel'
 import MonthlyInvoicePanel from './MonthlyInvoicePanel'
+import QuotationRequestPanel from './QuotationRequestPanel'
+import RequestApprovalPanel from './RequestApprovalPanel'
+import SchedulingPanel from './SchedulingPanel'
+import TeamBookingPanel from './TeamBookingPanel'
+import RollCallPanel from './RollCallPanel'
+import StoreShiftSlipsPanel from './StoreShiftSlipsPanel'
 import {
   ReportApi, ParticipantApi, ShiftApi, PaymentApi, CardApi,
   UserApi, SiteApi, PartnerShopApi, ProjectApi, AuditApi,
@@ -64,6 +70,7 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '🙋', label: 'Participants' }, { icon: '📄', label: 'Daily Reports' },
     { icon: '🧾', label: 'Cash Voucher' }, { icon: '📒', label: 'Field Ledger' },
     { icon: '⚠️', label: 'Incident Log' }, { icon: '📚', label: 'Sheets Library' },
+    { icon: '📢', label: 'Roll Call' },
   ],
   operation_office: [
     { icon: '🏠', label: 'Overview' }, { icon: '🏗️', label: 'Sites' },
@@ -76,20 +83,22 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '🧾', label: 'Invoices' },
     { icon: '💵', label: 'Jobsheet Review' }, { icon: '📒', label: 'OpHelp Ledger' },
     { icon: '📅', label: 'Monthly Invoices' },
+    { icon: '📝', label: 'Quotation Approvals' }, { icon: '🗓️', label: 'Scheduling' },
   ],
   operation_management: [
     { icon: '🏠', label: 'Overview' }, { icon: '🏗️', label: 'Sites' },
     { icon: '👥', label: 'Workforce' }, { icon: '📊', label: 'Performance' },
-    { icon: '⚠️', label: 'Incidents' },
+    { icon: '⚠️', label: 'Incidents' }, { icon: '📝', label: 'Quotation Requests' },
   ],
   ophelp_store: [
     { icon: '🏠', label: 'Overview' }, { icon: '💳', label: 'Cards' },
     { icon: '💰', label: 'Payments' }, { icon: '📦', label: 'Inventory' },
+    { icon: '🧤', label: 'Shift Slips' },
   ],
   project_manager: [
     { icon: '🏠', label: 'Overview' }, { icon: '📁', label: 'Projects' },
     { icon: '🏗️', label: 'Sites' }, { icon: '📊', label: 'Progress' },
-    { icon: '📒', label: 'OpHelp Ledger' },
+    { icon: '📒', label: 'OpHelp Ledger' }, { icon: '✅', label: 'Final Approvals' },
   ],
   head_office: [
     { icon: '🏠', label: 'Overview' }, { icon: '📊', label: 'Executive KPIs' },
@@ -99,11 +108,12 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '🏠', label: 'Overview' }, { icon: '💳', label: 'Transactions' },
     { icon: '📄', label: 'My Contract' }, { icon: '📊', label: 'Reports' },
     { icon: '📐', label: 'Quotations' }, { icon: '🧾', label: 'Invoices' },
-    { icon: '💵', label: 'Monthly Invoice' },
+    { icon: '💵', label: 'Monthly Invoice' }, { icon: '📝', label: 'Quotation Requests' },
   ],
   team: [
     { icon: '🏠', label: 'Overview' }, { icon: '📅', label: 'My Shifts' },
     { icon: '💳', label: 'My Card' }, { icon: '🏆', label: 'My Skills' },
+    { icon: '👷', label: 'Team Booking' },
   ],
 }
 
@@ -1161,6 +1171,7 @@ function DayAdminDashboard({ user, activeIdx }: { user: AuthUser; activeIdx: num
   if (activeIdx === 5) return <FieldOperationsLedger />
   if (activeIdx === 6) return <IncidentLog />
   if (activeIdx === 7) return <SheetsLibrary />
+  if (activeIdx === 8) return <RollCallPanel currentUserName={user.name} />
 
   function createShift() {
     if (!form.participantId || !form.siteId || !form.task) return
@@ -1288,6 +1299,8 @@ function OperationOfficeDashboard({ user, activeIdx }: { user: AuthUser; activeI
   if (activeIdx === 15) return <JobsheetsPanel mode="office" currentUserName={user.name} />
   if (activeIdx === 16) return <AccountingLedgerPanel />
   if (activeIdx === 17) return <MonthlyInvoicePanel mode="office" currentUserName={user.name} />
+  if (activeIdx === 18) return <RequestApprovalPanel stage="office" currentUserName={user.name} />
+  if (activeIdx === 19) return <SchedulingPanel currentUserName={user.name} />
 
   if (activeIdx === 1) return <SitesMgmtPanel color="#1565C0" />
   if (activeIdx === 2) return <ShiftsMgmtPanel userId={user.id} />
@@ -1337,6 +1350,7 @@ function OperationManagementDashboard({ user, activeIdx }: { user: AuthUser; act
   if (activeIdx === 2) return <ParticipantsPanel color="#2E7D32" />
   if (activeIdx === 3) return <AnalyticsPanel color="#2E7D32" />
   if (activeIdx === 4) return <IncidentsMgmtPanel userId={user.id} />
+  if (activeIdx === 5) return <RequestApprovalPanel stage="management" currentUserName={user.name} />
 
   return (
     <div className="space-y-6">
@@ -1380,6 +1394,7 @@ function OphelpStoreDashboard({ user, activeIdx }: { user: AuthUser; activeIdx: 
   if (activeIdx === 1) return <CardsPanel userId={user.id} />
   if (activeIdx === 2) return <PaymentsPanel userId={user.id} />
   if (activeIdx === 3) return <InventoryPanel />
+  if (activeIdx === 4) return <StoreShiftSlipsPanel />
 
   return (
     <div className="space-y-6">
@@ -1433,6 +1448,7 @@ function ProjectManagerDashboard({ user, activeIdx }: { user: AuthUser; activeId
   if (activeIdx === 1) return <ProjectsPanel userId={user.id} />
   if (activeIdx === 2) return <SitesMgmtPanel color="#AD1457" />
   if (activeIdx === 4) return <AccountingLedgerPanel />
+  if (activeIdx === 5) return <RequestApprovalPanel stage="manager" currentUserName={user.name} />
 
   if (activeIdx === 3) return (
     <div className="space-y-6">
@@ -1627,6 +1643,7 @@ function PartnerDashboard({ user, activeIdx }: { user: AuthUser; activeIdx: numb
   if (activeIdx === 4) return <QuotationsPanel readOnly clientFilter={myShop?.name} />
   if (activeIdx === 5) return <InvoicesPanel clientFilter={myShop?.name} />
   if (activeIdx === 6) return <MonthlyInvoicePanel mode="partner" partnerShopId={myShop?.id} />
+  if (activeIdx === 7) return <QuotationRequestPanel partnerShopId={myShop?.id} requestedBy={user.name} />
 
   if (activeIdx === 2 && myShop) return (
     <div className="space-y-6">
@@ -1739,6 +1756,8 @@ function TeamDashboard({ user, activeIdx }: { user: AuthUser; activeIdx: number 
   const [myTransactions] = useDbData(() => myCard ? CardApi.transactions(myCard.id) : [])
   const [skills] = useDbData(() => myParticipant ? SkillApi.assessments(myParticipant.id) : [])
   const allSkills = SkillApi.list()
+
+  if (activeIdx === 4) return <TeamBookingPanel teamName={user.name} />
 
   const approved = myShifts.filter(s => s.status === 'approved').length
   const thisWeekShifts = myShifts.filter(s => { const d = new Date(s.date); const now = new Date(); const weekStart = new Date(now); weekStart.setDate(now.getDate() - now.getDay()); return d >= weekStart })
