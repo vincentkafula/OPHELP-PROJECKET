@@ -529,6 +529,7 @@ export default function OASys() {
     if (toImport.length === 0) { alert('No new confirmed Jobsheets to import.'); return }
 
     let imported = 0
+    let skippedNoClientName = 0
     update(prev => {
       let clients = [...prev.clients]
       const findOrCreateClient = (name: string) => {
@@ -546,9 +547,12 @@ export default function OASys() {
       for (const j of toImport) {
         const d = j.data
         const [yyyy, mm, dd] = (d.meta.date || '').split('-')
+        const client2Name = d.consumables.glove.client2?.trim()
+        const acc2HasData = [d.accounts.acc2.c, d.accounts.acc2.e, d.accounts.acc2.xtra, d.accounts.acc2.rewrd, d.accounts.acc2.transport, d.accounts.acc2.material, d.accounts.acc2.other, d.accounts.acc2.adminfee].some(v => num(v) !== 0)
+        if (acc2HasData && !client2Name) skippedNoClientName++
         const accounts: { name: string; acc: typeof d.accounts.acc1 }[] = [
           { name: 'OPHELP Salaries', acc: d.accounts.acc1 },
-          { name: d.consumables.glove.client2?.trim() || 'Unnamed Client', acc: d.accounts.acc2 },
+          ...(client2Name ? [{ name: client2Name, acc: d.accounts.acc2 }] : []),
         ]
         for (const { name, acc } of accounts) {
           const hasData = [acc.c, acc.e, acc.xtra, acc.rewrd, acc.transport, acc.material, acc.other, acc.adminfee].some(v => num(v) !== 0)
@@ -579,7 +583,8 @@ export default function OASys() {
       }
       return { ...prev, clients }
     })
-    alert(`Imported ${imported} entr${imported === 1 ? 'y' : 'ies'} from ${toImport.length} confirmed Jobsheet(s).`)
+    const skipMsg = skippedNoClientName ? ` ${skippedNoClientName} Account 2 entr${skippedNoClientName === 1 ? 'y was' : 'ies were'} skipped — no "Client 2" name was filled in on the form, and this never invents one.` : ''
+    alert(`Imported ${imported} entr${imported === 1 ? 'y' : 'ies'} from ${toImport.length} confirmed Jobsheet(s).${skipMsg}`)
   }
 
   const clientTotals = activeClient ? sumClient(activeClient) : null

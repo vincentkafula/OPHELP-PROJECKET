@@ -26,6 +26,7 @@ import RequestApprovalPanel from './RequestApprovalPanel'
 import SchedulingPanel from './SchedulingPanel'
 import TeamBookingPanel from './TeamBookingPanel'
 import RollCallPanel from './RollCallPanel'
+import DocumentLibraryPanel from './DocumentLibraryPanel'
 import StoreShiftSlipsPanel from './StoreShiftSlipsPanel'
 import {
   ReportApi, ParticipantApi, ShiftApi, PaymentApi, CardApi,
@@ -69,7 +70,7 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '🙋', label: 'Participants' }, { icon: '📄', label: 'Daily Reports' },
     { icon: '🧾', label: 'Cash Voucher' }, { icon: '📒', label: 'Field Ledger' },
     { icon: '⚠️', label: 'Incident Log' }, { icon: '📚', label: 'Sheets Library' },
-    { icon: '📢', label: 'Roll Call' },
+    { icon: '📢', label: 'Roll Call' }, { icon: '📚', label: 'Document Library' },
   ],
   operation_office: [
     { icon: '🏠', label: 'Overview' }, { icon: '🏗️', label: 'Sites' },
@@ -1171,6 +1172,7 @@ function DayAdminDashboard({ user, activeIdx }: { user: AuthUser; activeIdx: num
   if (activeIdx === 6) return <IncidentLog />
   if (activeIdx === 7) return <SheetsLibrary />
   if (activeIdx === 8) return <RollCallPanel currentUserName={user.name} />
+  if (activeIdx === 9) return <DocumentLibraryPanel currentUserName={user.name} />
 
   function createShift() {
     if (!form.participantId || !form.siteId || !form.task) return

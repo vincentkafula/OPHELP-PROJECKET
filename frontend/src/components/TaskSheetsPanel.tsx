@@ -37,36 +37,27 @@ function Btn({ onClick, children, variant = 'ghost' }: { onClick: () => void; ch
   return <button onClick={onClick} className={`${cls} px-3 py-1.5 text-xs rounded-lg font-medium transition-colors`}>{children}</button>
 }
 
-/** Foreman's real Grand Parade Task Sheet (list + the actual print form).
- * This is the one recurring shift type the document covers — not a
- * general task sheet for every job. */
+/** Foreman's real Grand Parade Task Sheet — only ones Day Admin has
+ * issued to this person via the Document Library appear here; a foreman
+ * cannot create their own. */
 export default function TaskSheetsPanel({ currentUserName }: { currentUserName: string }) {
   const all = useLive(() => TaskSheetApi.list())
-  const mine = all.filter(t => t.createdBy === currentUserName)
+  const mine = all.filter(t => t.issuedTo === currentUserName)
 
-  const [creating, setCreating] = useState(false)
   const [openId, setOpenId] = useState<string | null>(null)
-  const open = openId ? all.find(t => t.id === openId) : null
+  const open = openId ? mine.find(t => t.id === openId) : null
 
   function handleSave(data: TaskSheetData) {
-    if (creating) {
-      const res = TaskSheetApi.create({ data, createdBy: currentUserName })
-      if (res.success && res.data) { setCreating(false); setOpenId(res.data.id) }
-    } else if (open) {
-      TaskSheetApi.saveData(open.id, data)
-    }
+    if (open) TaskSheetApi.saveData(open.id, data)
   }
   function submit(id: string) { TaskSheetApi.submit(id); setOpenId(null) }
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-lg font-semibold text-gray-800">Grand Parade Task Sheets</h2>
-        <Btn onClick={() => setCreating(true)} variant="primary">+ New Task Sheet</Btn>
-      </div>
+      <h2 className="text-lg font-semibold text-gray-800">Grand Parade Task Sheets</h2>
 
       <div className="grid grid-cols-2 gap-4">
-        <StatCard label="My Task Sheets" value={mine.length} />
+        <StatCard label="Issued To Me" value={mine.length} />
         <StatCard label="Submitted" value={mine.filter(t => t.status === 'submitted').length} color="#2E7D32" />
       </div>
 
@@ -75,6 +66,7 @@ export default function TaskSheetsPanel({ currentUserName }: { currentUserName: 
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <div className="text-5xl mb-3">🏛️</div>
             <p className="font-semibold text-gray-600">No Task Sheets yet</p>
+            <p className="text-sm text-gray-400 mt-1">Day Admin issues a Task Sheet to you from the Document Library.</p>
           </div>
         ) : (
           <DataTable columns={[
@@ -92,13 +84,6 @@ export default function TaskSheetsPanel({ currentUserName }: { currentUserName: 
         )}
       </SectionCard>
 
-      {creating && (
-        <div className="fixed inset-0 z-40 bg-black/40 flex items-start justify-center overflow-y-auto py-8" onClick={e => { if (e.target === e.currentTarget) setCreating(false) }}>
-          <div className="bg-white rounded-2xl shadow-2xl max-w-6xl w-[95%] p-4">
-            <GrandParadeTaskSheet onSave={handleSave} />
-          </div>
-        </div>
-      )}
       {open && (
         <div className="fixed inset-0 z-40 bg-black/40 flex items-start justify-center overflow-y-auto py-8" onClick={e => { if (e.target === e.currentTarget) setOpenId(null) }}>
           <div className="bg-white rounded-2xl shadow-2xl max-w-6xl w-[95%] p-4">

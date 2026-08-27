@@ -633,6 +633,11 @@ export interface Jobsheet {
   teamBookingId?: string
   status: JobsheetStatus
   serialNumber?: string
+  /** Foremen don't create Jobsheets themselves — Day Admin issues a blank
+   * one to a named foreman via the Document Library, and the foreman only
+   * fills in the sheet issued to them. */
+  issuedTo?: string
+  issuedBy?: string
   createdBy?: string
   confirmedBy?: string
   confirmedAt?: string
@@ -772,6 +777,10 @@ export interface TaskSheet {
   id: string
   data: TaskSheetData
   status: TaskSheetStatus
+  /** Foremen don't create Task Sheets themselves — Day Admin issues a
+   * blank one to a named foreman via the Document Library. */
+  issuedTo?: string
+  issuedBy?: string
   createdBy?: string
   createdAt: string
 }

@@ -840,13 +840,16 @@ export const JobsheetApi = {
   get(id: string): Jobsheet | undefined { return Jobsheets.findById(id) },
   byStatus(status: Jobsheet['status']): Jobsheet[] { return Jobsheets.where(j => j.status === status) },
   byCreator(createdBy: string): Jobsheet[] { return Jobsheets.where(j => j.createdBy === createdBy) },
+  issuedTo(name: string): Jobsheet[] { return Jobsheets.where(j => j.issuedTo === name) },
   byPartner(partnerShopId: string): Jobsheet[] { return Jobsheets.where(j => j.partnerShopId === partnerShopId) },
   confirmed(): Jobsheet[] { return Jobsheets.where(j => j.status === 'confirmed') },
 
   totals(js: Jobsheet): JobsheetTotals { return deriveJobsheetTotals(js.data) },
 
   /** Foreman saves a draft (or first save) of the real Jobsheet form. */
-  create(input: { data: JobSheetData; partnerShopId?: string; teamBookingId?: string; createdBy?: string }): ApiResult<Jobsheet> {
+  /** Only Day Admin's Document Library calls this — see the note on
+   * `issuedTo` in lib/types.ts. */
+  create(input: { data: JobSheetData; partnerShopId?: string; teamBookingId?: string; issuedTo: string; issuedBy: string }): ApiResult<Jobsheet> {
     const j = Jobsheets.insert({ ...input, status: 'draft', createdAt: now() })
     return { success: true, data: j }
   },
@@ -1065,8 +1068,11 @@ export const TaskSheetApi = {
   list(): TaskSheet[] { return TaskSheets.all().sort((a, b) => b.createdAt.localeCompare(a.createdAt)) },
   get(id: string): TaskSheet | undefined { return TaskSheets.findById(id) },
   byCreator(createdBy: string): TaskSheet[] { return TaskSheets.where(t => t.createdBy === createdBy) },
+  issuedTo(name: string): TaskSheet[] { return TaskSheets.where(t => t.issuedTo === name) },
 
-  create(input: { data: TaskSheetData; createdBy?: string }): ApiResult<TaskSheet> {
+  /** Only Day Admin's Document Library calls this — see the note on
+   * `issuedTo` in lib/types.ts. */
+  create(input: { data: TaskSheetData; issuedTo: string; issuedBy: string }): ApiResult<TaskSheet> {
     const t = TaskSheets.insert({ ...input, status: 'draft', createdAt: now() })
     return { success: true, data: t }
   },

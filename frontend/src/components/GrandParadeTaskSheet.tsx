@@ -19,7 +19,7 @@ type Materials = TaskSheetData['materials']
 type SheetState = TaskSheetData
 
 function blankTask(): RatedTask { return { slight: false, dirty: false, veryDirty: false, comment: '', bags: '', minutes: '' } }
-function blankState(): SheetState {
+export function blankState(): SheetState {
   const today = new Date()
   const yyyy = today.getFullYear(), mm = String(today.getMonth() + 1).padStart(2, '0'), dd = String(today.getDate()).padStart(2, '0')
   const dayName = today.toLocaleDateString('en-ZA', { weekday: 'long' })

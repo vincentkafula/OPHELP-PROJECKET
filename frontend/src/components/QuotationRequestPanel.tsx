@@ -50,13 +50,9 @@ function Btn({ onClick, children, variant = 'ghost' }: { onClick: () => void; ch
   return <button onClick={onClick} className={`${cls} px-3 py-1.5 text-xs rounded-lg font-medium transition-colors`}>{children}</button>
 }
 
-// Default per-role rates — the spec says each role "has its own rate" but
-// doesn't give a supervisor figure; worker/foreman match the Jobsheet
-// qualified base rates (§4.1), supervisor is a flagged placeholder.
-const DEFAULT_RATES = { worker: 110, foreman: 165, supervisor: 200 }
-
 const emptyForm = {
-  numWorkers: '2', numForemen: '1', numSupervisors: '0',
+  numWorkers: '', numForemen: '', numSupervisors: '',
+  workerRate: '', foremanRate: '', supervisorRate: '',
   taskDetails: '', locationAddress: '', locationLat: '', locationLng: '',
   stream: 'school' as OperationStream, paymentTerms: 'upfront' as PaymentTerms,
 }
@@ -70,16 +66,16 @@ export default function QuotationRequestPanel({ partnerShopId, requestedBy }: Qu
   const [detail, setDetail] = useState<QuotationRequest | null>(null)
 
   const quotedPreview =
-    Number(form.numWorkers) * DEFAULT_RATES.worker +
-    Number(form.numForemen) * DEFAULT_RATES.foreman +
-    Number(form.numSupervisors) * DEFAULT_RATES.supervisor
+    Number(form.numWorkers || 0) * Number(form.workerRate || 0) +
+    Number(form.numForemen || 0) * Number(form.foremanRate || 0) +
+    Number(form.numSupervisors || 0) * Number(form.supervisorRate || 0)
 
   function submitRequest() {
     if (!partnerShopId || !form.taskDetails || !form.locationAddress) return
     QuotationRequestApi.create({
       partnerShopId, requestedBy,
       numWorkers: Number(form.numWorkers) || 0, numForemen: Number(form.numForemen) || 0, numSupervisors: Number(form.numSupervisors) || 0,
-      workerRate: DEFAULT_RATES.worker, foremanRate: DEFAULT_RATES.foreman, supervisorRate: DEFAULT_RATES.supervisor,
+      workerRate: Number(form.workerRate) || 0, foremanRate: Number(form.foremanRate) || 0, supervisorRate: Number(form.supervisorRate) || 0,
       taskDetails: form.taskDetails, locationAddress: form.locationAddress,
       locationLat: form.locationLat ? Number(form.locationLat) : undefined,
       locationLng: form.locationLng ? Number(form.locationLng) : undefined,
@@ -134,9 +130,12 @@ export default function QuotationRequestPanel({ partnerShopId, requestedBy }: Qu
       <Modal open={createModal} onClose={() => setCreateModal(false)} title="Request a Quotation" size="lg"
         footer={<><Btn onClick={() => setCreateModal(false)}>Cancel</Btn><Btn onClick={submitRequest} variant="primary">Submit Request</Btn></>}>
         <div className="grid grid-cols-2 gap-4">
-          <Input label="Workers" type="number" value={form.numWorkers} onChange={e => setForm(f => ({ ...f, numWorkers: e.target.value }))} hint={`R${DEFAULT_RATES.worker}/worker`} />
-          <Input label="Foremen" type="number" value={form.numForemen} onChange={e => setForm(f => ({ ...f, numForemen: e.target.value }))} hint={`R${DEFAULT_RATES.foreman}/foreman`} />
-          <Input label="Operation Supervisors" type="number" value={form.numSupervisors} onChange={e => setForm(f => ({ ...f, numSupervisors: e.target.value }))} hint={`R${DEFAULT_RATES.supervisor}/supervisor`} />
+          <Input label="Workers" type="number" value={form.numWorkers} onChange={e => setForm(f => ({ ...f, numWorkers: e.target.value }))} />
+          <Input label="Worker Rate (R)" type="number" value={form.workerRate} onChange={e => setForm(f => ({ ...f, workerRate: e.target.value }))} placeholder="Rate per worker" />
+          <Input label="Foremen" type="number" value={form.numForemen} onChange={e => setForm(f => ({ ...f, numForemen: e.target.value }))} />
+          <Input label="Foreman Rate (R)" type="number" value={form.foremanRate} onChange={e => setForm(f => ({ ...f, foremanRate: e.target.value }))} placeholder="Rate per foreman" />
+          <Input label="Operation Supervisors" type="number" value={form.numSupervisors} onChange={e => setForm(f => ({ ...f, numSupervisors: e.target.value }))} />
+          <Input label="Supervisor Rate (R)" type="number" value={form.supervisorRate} onChange={e => setForm(f => ({ ...f, supervisorRate: e.target.value }))} placeholder="Rate per supervisor" />
           <Select label="Stream" value={form.stream} onChange={e => setForm(f => ({ ...f, stream: e.target.value as OperationStream }))}
             options={Object.entries(STREAM_LABELS).map(([value, label]) => ({ value, label }))} />
           <div className="col-span-2">

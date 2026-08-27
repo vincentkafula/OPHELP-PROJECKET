@@ -1,12 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
-import { JobsheetApi, deriveJobsheetTotals, PartnerShopApi } from '@/lib/api'
+import { JobsheetApi, deriveJobsheetTotals } from '@/lib/api'
 import { dbBus } from '@/lib/events'
 import { DataTable } from './shared/DataTable'
-import { Modal } from './shared/Modal'
-import { Select } from './shared/FormField'
 import { Badge } from './shared/Badge'
 import JobSheet from './JobSheet'
-import type { Jobsheet, JobSheetData, PartnerShop } from '@/lib/types'
+import type { Jobsheet, JobSheetData } from '@/lib/types'
 
 function useLive<T>(loader: () => T): T {
   const [data, setData] = useState<T>(loader)
@@ -49,47 +47,35 @@ function Btn({ onClick, children, variant = 'ghost' }: { onClick: () => void; ch
 }
 
 interface JobsheetsPanelProps {
+  /** 'foreman': only Jobsheets Day Admin has issued to this person, no
+   * creation. 'office': every Jobsheet, for review/confirm — also no
+   * creation, Jobsheets always originate from the Document Library. */
   mode: 'foreman' | 'office'
   currentUserName: string
 }
 
 export default function JobsheetsPanel({ mode, currentUserName }: JobsheetsPanelProps) {
   const all = useLive(() => JobsheetApi.list())
-  const partnerShops = useLive(() => PartnerShopApi.list())
-  const jobsheets = mode === 'foreman' ? all.filter(j => j.createdBy === currentUserName) : all
+  const jobsheets = mode === 'foreman' ? all.filter(j => j.issuedTo === currentUserName) : all
 
-  const [creating, setCreating] = useState(false)
-  const [newPartnerId, setNewPartnerId] = useState('')
   const [openId, setOpenId] = useState<string | null>(null)
-
   const open = openId ? all.find(j => j.id === openId) : null
 
-  function startNew() { setCreating(true); setNewPartnerId('') }
-
   function handleSave(data: JobSheetData) {
-    if (creating) {
-      const res = JobsheetApi.create({ data, partnerShopId: newPartnerId || undefined, createdBy: currentUserName })
-      if (res.success && res.data) { setCreating(false); setOpenId(res.data.id) }
-    } else if (open) {
-      JobsheetApi.saveData(open.id, data)
-    }
+    if (open) JobsheetApi.saveData(open.id, data)
   }
 
   function submit(id: string) { JobsheetApi.submit(id); setOpenId(null) }
   function confirm(id: string) { JobsheetApi.confirm(id, currentUserName); setOpenId(null) }
 
-  const partnerOptions = partnerShops.map((p: PartnerShop) => ({ value: p.id, label: p.name }))
   const totalInvoiceValue = jobsheets.filter(j => j.status === 'confirmed').reduce((s, j) => s + deriveJobsheetTotals(j.data).invoiceAmount, 0)
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-lg font-semibold text-gray-800">{mode === 'foreman' ? 'My Jobsheets' : 'Jobsheet Review'}</h2>
-        {mode === 'foreman' && <Btn onClick={startNew} variant="primary">+ New Jobsheet</Btn>}
-      </div>
+      <h2 className="text-lg font-semibold text-gray-800">{mode === 'foreman' ? 'My Jobsheets' : 'Jobsheet Review'}</h2>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label={mode === 'foreman' ? 'My Jobsheets' : 'Total Jobsheets'} value={jobsheets.length} />
+        <StatCard label={mode === 'foreman' ? 'Issued To Me' : 'Total Jobsheets'} value={jobsheets.length} />
         <StatCard label="Awaiting Review" value={jobsheets.filter(j => j.status === 'submitted').length} color="#C48A00" />
         <StatCard label="Confirmed" value={jobsheets.filter(j => j.status === 'confirmed').length} color="#2E7D32" />
         <StatCard label="Total Invoice Value" value={fmtMoney(totalInvoiceValue)} color="#1565C0" />
@@ -100,18 +86,19 @@ export default function JobsheetsPanel({ mode, currentUserName }: JobsheetsPanel
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <div className="text-5xl mb-3">📋</div>
             <p className="font-semibold text-gray-600">No Jobsheets yet</p>
-            {mode === 'foreman' && <p className="text-sm text-gray-400 mt-1">Fill in the real Jobsheet form after a shift is complete.</p>}
+            {mode === 'foreman' && <p className="text-sm text-gray-400 mt-1">Day Admin issues a Jobsheet to you from the Document Library before a shift.</p>}
           </div>
         ) : (
           <DataTable columns={[
             { key: 'date', header: 'Date', render: (j: Jobsheet) => j.data.meta.date || '—', sortable: true },
             { key: 'task', header: 'Task', render: (j: Jobsheet) => j.data.task || j.data.area || '—' },
+            { key: 'issuedTo', header: 'Issued To', render: (j: Jobsheet) => j.issuedTo || '—' },
             { key: 'account', header: 'Accounts', render: (j: Jobsheet) => [j.data.accounts.acc1.total, j.data.accounts.acc2.total].filter(Boolean).join(' / ') || '—' },
             { key: 'invoice', header: 'Invoice Amount', render: (j: Jobsheet) => fmtMoney(deriveJobsheetTotals(j.data).invoiceAmount) },
             { key: 'serialNumber', header: 'Serial No.', render: (j: Jobsheet) => j.serialNumber || '—' },
             { key: 'status', header: 'Status', render: (j: Jobsheet) => <Badge label={STATUS_LABELS[j.status]} variant={STATUS_VARIANTS[j.status]} dot /> },
           ]} data={jobsheets} searchable
-            searchFn={(j: Jobsheet, q: string) => `${j.data.task} ${j.data.area} ${j.serialNumber ?? ''}`.toLowerCase().includes(q)}
+            searchFn={(j: Jobsheet, q: string) => `${j.data.task} ${j.data.area} ${j.issuedTo ?? ''} ${j.serialNumber ?? ''}`.toLowerCase().includes(q)}
             pageSize={10}
             actions={(j: Jobsheet) => (
               <div className="flex gap-1">
@@ -123,26 +110,15 @@ export default function JobsheetsPanel({ mode, currentUserName }: JobsheetsPanel
         )}
       </SectionCard>
 
-      {/* ── New Jobsheet: pick a partner first, then the real form ── */}
-      <Modal open={creating} onClose={() => setCreating(false)} title="New Jobsheet — Select Partner" size="md"
-        footer={<><Btn onClick={() => setCreating(false)}>Cancel</Btn><Btn onClick={() => setCreating(false)} variant="primary">Skip / No Partner</Btn></>}>
-        <Select label="Partner (optional)" value={newPartnerId} onChange={e => setNewPartnerId(e.target.value)} options={partnerOptions} placeholder="Select a partner…" />
-        <p className="text-xs text-gray-400 mt-2">The real Jobsheet form opens next — fill it in the same way as the printed sheet, then Save.</p>
-      </Modal>
-      {creating && (
-        <div className="fixed inset-0 z-40 bg-black/40 flex items-start justify-center overflow-y-auto py-8" onClick={e => { if (e.target === e.currentTarget) setCreating(false) }}>
-          <div className="bg-white rounded-2xl shadow-2xl max-w-6xl w-[95%] p-4">
-            <JobSheet onSave={handleSave} />
-          </div>
-        </div>
-      )}
-
-      {/* ── Open an existing Jobsheet: real form, read-only once confirmed ── */}
+      {/* ── Open an issued Jobsheet: real form, read-only once confirmed ── */}
       {open && (
         <div className="fixed inset-0 z-40 bg-black/40 flex items-start justify-center overflow-y-auto py-8" onClick={e => { if (e.target === e.currentTarget) setOpenId(null) }}>
           <div className="bg-white rounded-2xl shadow-2xl max-w-6xl w-[95%] p-4">
             <div className="flex items-center justify-between px-2 pb-2">
-              <Badge label={STATUS_LABELS[open.status]} variant={STATUS_VARIANTS[open.status]} dot />
+              <div className="flex items-center gap-2">
+                <Badge label={STATUS_LABELS[open.status]} variant={STATUS_VARIANTS[open.status]} dot />
+                {open.issuedTo && <span className="text-xs text-gray-400">Issued to {open.issuedTo}</span>}
+              </div>
               <button onClick={() => setOpenId(null)} className="text-gray-400 hover:text-gray-600 text-sm">Close ✕</button>
             </div>
             <JobSheet

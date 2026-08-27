@@ -19,6 +19,27 @@ function mkPRow(): ParticipantRow { return { id: mkId(), name: '', adv: '', ret:
 function mkFixed(): FixedRow { return { adv: '', ret: '', num: '', paid: '', foreman: '', paymaster: '' } }
 function mkAcc(): AccRow { return { total: '', c: '', e: '', xtra: '', rewrd: '', transport: '', material: '', other: '', adminfee: '' } }
 
+/** A blank JobSheetData record — the same shape Day Admin's Document
+ * Library issues to a foreman before they fill it in. */
+export function blankJobSheetData(): JobSheetData {
+  const today = new Date()
+  const dayNamesLocal = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  return {
+    meta: { day: dayNamesLocal[today.getDay()], date: today.toISOString().slice(0, 10), timeSlot: '07:00-11:00', details: '', partner: 'OPHELP' },
+    refLeft: ['', '', ''], refRight: ['', '', '', '', '', ''],
+    fixedRows: { taxi: mkFixed(), other: mkFixed(), otherDetails: '' },
+    taonga: { adv: '', ret: '', team: '', paid: '110', foreman: '', worker: '' },
+    participantRows: [mkPRow(), mkPRow(), mkPRow(), mkPRow()],
+    payments: { cashPaid: '', cashBy: '', eft: '' },
+    accounts: { acc1: mkAcc(), acc2: mkAcc() },
+    area: '', task: '', ceSubtotal: '', invoiceTotal: '', invoices: '',
+    consumables: {
+      bag: { issued: '', returned: '', used: '', others: '', total: '' },
+      glove: { issued: '', returned: '', used: '', total: '', client2: '' },
+    },
+  }
+}
+
 const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 // ── Shared cell input ─────────────────────────────────────────────────────────

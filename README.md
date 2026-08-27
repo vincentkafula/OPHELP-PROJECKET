@@ -460,6 +460,28 @@ task sheet for any job — it hasn't been forced into the wider field-ops
 flow (scheduling / team booking / roll call), since that would misrepresent
 what the real document actually covers.
 
+**Correction (this section was itself revised):** Jobsheets and Task
+Sheets are not something a Foreman creates. Day Admin issues a blank
+Jobsheet or Task Sheet to a specific foreman from a new **Document
+Library** tab (`DocumentLibraryPanel.tsx`), picking that foreman from
+the system's real registered foreman accounts (`UserApi.list().filter(u
+=> u.role === 'foreman')`) — never a typed-in name. The foreman's
+**Jobsheets**/**Tasksheet** tabs now only show documents issued to them
+(`issuedTo === currentUserName`) and no longer have a "create new"
+button; they open, fill in, save, and submit what Day Admin issued.
+`Jobsheet`/`TaskSheet` both carry `issuedTo`/`issuedBy` fields for this.
+Operation Office's review flow is unaffected — it never created
+Jobsheets either, only confirmed submitted ones.
+
+Two other invented values were removed at the same time: the Quotation
+Request form no longer defaults worker/foreman/supervisor rates to
+made-up figures (R110/R165/R200) — rate fields are now blank inputs the
+person filling out the request must supply. And OASys's "Import
+Confirmed Jobsheets" no longer labels an Account 2 entry "Unnamed
+Client" when the real form's own "Client 2" field was left blank — it
+skips that entry and reports how many were skipped, rather than
+inventing a name for the ledger.
+
 ## Quotation Request Approval Chain (Partner → Operation Management →
 ## Operation Office → Manager)
 
