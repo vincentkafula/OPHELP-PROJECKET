@@ -501,6 +501,37 @@ export interface OasysCheck {
   createdAt: string
 }
 
+// ── Depot Schedules (daily shift + office roster board, e.g. Maintenance
+// Depot Day Schedule) ────────────────────────────────────────────────────
+export interface DepotScheduleShift {
+  title: string
+  hours: string
+  at?: string
+  foreman?: string
+  workers: string[]
+  confirmed?: boolean
+  reported?: boolean
+  sms?: boolean
+}
+
+export interface DepotRosterEntry {
+  role: string
+  morning?: string
+  afternoonRole?: string
+  afternoon?: string
+}
+
+export interface DepotSchedule {
+  id: string
+  depotName: string
+  date: string
+  dateLabel: string
+  shifts: DepotScheduleShift[]
+  roster: DepotRosterEntry[]
+  sourceFile?: string
+  createdAt: string
+}
+
 // ── Auth ──────────────────────────────────────────────────────────────────────
 export interface AuthToken {
   token: string

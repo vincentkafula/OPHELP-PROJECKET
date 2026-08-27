@@ -303,6 +303,37 @@ railway run npm run import:oasys-checks --prefix backend -- backend/scripts/data
 Idempotent per (source file, sheet, week start date) — safe to re-run
 after the source workbook gets new months appended.
 
+## Depot Schedules (Operation Office)
+
+Daily depot schedule documents (e.g. `Maintenance_Depot_Day_Schedule_24_Aug_26.docx`)
+are Word docs, not spreadsheets, but the same "read the source format
+directly" approach applies: `backend/scripts/import-depot-schedule.js`
+renders the doc to HTML with `mammoth` (which — unlike a plain text
+extraction — preserves table structure, including a nested table used
+for each shift's foreman/confirmation columns) and walks it with
+`cheerio`.
+
+Each document has two tables:
+- **Shifts** — one row per task (title, scheduled hours, foreman, and the
+  list of booked participants), each with Confirmed/Reported/SMS flags
+- **Depot office roster** — Morning/Afternoon assignment per role (Ops
+  Supervisor, Administrator, Data Processor, Stock Controllers, etc.)
+
+Both land in one `depot_schedules` entity per (depot name, date), shown
+on the **Depot Schedules** tab (`frontend/src/components/DepotSchedulesPanel.tsx`) —
+a schedule picker, stat cards, the shift table with booked-participant
+badges, and the office roster table.
+
+```
+railway run npm run import:depot-schedule --prefix backend -- backend/scripts/data/Maintenance_Depot_Day_Schedule_24_Aug_26.docx
+```
+
+Idempotent per (depot name, date) — re-importing an updated version of
+the same day's schedule replaces that record. Note: cheerio's HTML
+parser wraps bare table rows in an implicit `<tbody>`, which the parser
+accounts for — worth remembering if this importer is ever extended for
+other docx table formats.
+
 ## Known limitations / follow-ups
 
 - The admin **"Add User"** screen in the dashboard (`Dashboard.tsx`) still

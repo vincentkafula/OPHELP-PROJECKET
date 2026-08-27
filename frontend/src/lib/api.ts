@@ -8,7 +8,7 @@ import {
   Cards, Payments, Transactions, PartnerShops, AtmLocations, Projects,
   Equipments, Inventory, Incidents, Notifications, Messages, AuditLogs,
   PayrollPeriods, PayrollRoster, PayrollEntries, PayrollCorrections,
-  PaymentAuthorisations, WeeklyRegisters, OasysChecks,
+  PaymentAuthorisations, WeeklyRegisters, OasysChecks, DepotSchedules,
   now, uid,
 } from './db'
 import type {
@@ -17,6 +17,7 @@ import type {
   Equipment, InventoryItem, Incident, Notification, Message, AuditLog,
   DashboardStats, ApiResult, PayrollPeriod, PayrollRosterEntry, PayrollEntry,
   PayrollCorrection, PaymentAuthorisation, WeeklyRegister, OasysCheck,
+  DepotSchedule,
 } from './types'
 
 // ── Participants ──────────────────────────────────────────────────────────────
@@ -727,5 +728,18 @@ export const OasysCheckApi = {
       unbalancedWeeks: unbalanced.length,
       totalDifference: unbalanced.reduce((s, c) => s + c.dailyChecks.reduce((s2, d) => s2 + d.difference, 0), 0),
     }
+  },
+}
+
+// ── Depot Schedules (daily shift + office roster board) ─────────────────────
+export const DepotScheduleApi = {
+  list(): DepotSchedule[] {
+    return DepotSchedules.all().sort((a, b) => b.date.localeCompare(a.date))
+  },
+  get(id: string): DepotSchedule | undefined { return DepotSchedules.findById(id) },
+  latest(): DepotSchedule | undefined { return this.list()[0] },
+  byDepot(depotName: string): DepotSchedule[] { return DepotSchedules.where(s => s.depotName === depotName) },
+  delete(id: string): ApiResult {
+    return DepotSchedules.delete(id) ? { success: true } : { success: false, error: 'Schedule not found' }
   },
 }

@@ -16,6 +16,7 @@ import PayrollPanel from './PayrollPanel'
 import PaymentAuthorisationsPanel from './PaymentAuthorisationsPanel'
 import WeeklyRegistersPanel from './WeeklyRegistersPanel'
 import OasysChecksPanel from './OasysChecksPanel'
+import DepotSchedulesPanel from './DepotSchedulesPanel'
 import {
   ReportApi, ParticipantApi, ShiftApi, PaymentApi, CardApi,
   UserApi, SiteApi, PartnerShopApi, ProjectApi, AuditApi,
@@ -65,6 +66,7 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '🏫', label: 'Pre-School Deploy' }, { icon: '🗓️', label: 'Leave Register' },
     { icon: '💰', label: 'Payroll' }, { icon: '🧾', label: 'Payment Authorisations' },
     { icon: '📋', label: 'Weekly Registers' }, { icon: '🔍', label: 'OASys Reconciliation' },
+    { icon: '🗓️', label: 'Depot Schedules' },
   ],
   operation_management: [
     { icon: '🏠', label: 'Overview' }, { icon: '🏗️', label: 'Sites' },
@@ -1267,6 +1269,7 @@ function OperationOfficeDashboard({ user, activeIdx }: { user: AuthUser; activeI
   if (activeIdx === 9) return <PaymentAuthorisationsPanel />
   if (activeIdx === 10) return <WeeklyRegistersPanel />
   if (activeIdx === 11) return <OasysChecksPanel />
+  if (activeIdx === 12) return <DepotSchedulesPanel />
 
   if (activeIdx === 1) return <SitesMgmtPanel color="#1565C0" />
   if (activeIdx === 2) return <ShiftsMgmtPanel userId={user.id} />
