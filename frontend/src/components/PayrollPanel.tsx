@@ -241,6 +241,8 @@ export default function PayrollPanel() {
               { key: 'fileNo', header: 'File No' },
               { key: 'absaBeneficiaryNumber', header: 'ABSA Beneficiary #' },
               { key: 'payrollCode', header: 'Payroll Code' },
+              { key: 'department', header: 'Department', render: (r: PayrollRosterEntry) => r.department ? <Badge label={r.department} variant="blue" /> : '—' },
+              { key: 'glCode', header: 'GL Code', render: (r: PayrollRosterEntry) => r.glCode || '—' },
               { key: 'participantId', header: 'Profile', render: (r: PayrollRosterEntry) => r.participantId
                 ? <Badge label="Linked" variant="green" dot />
                 : <Badge label="Unmatched" variant="gray" dot /> },

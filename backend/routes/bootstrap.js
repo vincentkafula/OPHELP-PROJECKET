@@ -9,7 +9,7 @@ const ENTITIES = [
   'atm_locations', 'projects', 'equipment', 'inventory', 'incidents',
   'notifications', 'messages', 'audit_logs',
   'payroll_periods', 'payroll_roster', 'payroll_entries', 'payroll_corrections',
-  'payment_authorisations',
+  'payment_authorisations', 'weekly_registers',
 ]
 
 // The whole app (marketing pages + dashboard) reads through one in-memory

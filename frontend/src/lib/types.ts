@@ -358,6 +358,8 @@ export interface PayrollRosterEntry {
   name: string
   absaBeneficiaryNumber: string
   payrollCode: string
+  department?: string
+  glCode?: string
   participantId?: string | null
   createdAt: string
 }
@@ -430,6 +432,49 @@ export interface PaymentAuthorisation {
   invoice: PaymentAuthorisationInvoice
   status: PaymentAuthorisationStatus
   sourceFile?: string
+  createdAt: string
+}
+
+// ── Weekly Registers (Ops Office / Coaching Leadership / Leave Register /
+// Payroll Register cover sheets — all one family of weekly sign-off sheet
+// that ties hours/amounts through to OASys invoicing) ──────────────────────
+export type WeeklyRegisterType =
+  | 'ops_office' | 'coaching_leadership' | 'leave_register' | 'payroll_register' | 'other'
+
+export interface WeeklyRegisterLine {
+  clientNo?: string
+  label: string
+  hoursByDay: (number | null)[]
+  amountByDay: (number | null)[]
+  total: number
+}
+
+export interface WeeklyRegisterOasysLine {
+  clientNo?: string
+  account: string
+  pay: number
+  extra: number
+  subTotal: number
+  adminFeePct?: number
+  invoiceValue: number
+}
+
+export interface WeeklyRegister {
+  id: string
+  type: WeeklyRegisterType
+  title: string
+  periodFrom: string
+  periodTo: string
+  payrollNo: string
+  preparedBy?: string
+  checkedBy?: string
+  signedOffBy?: string
+  days: string[]
+  lines: WeeklyRegisterLine[]
+  oasys: WeeklyRegisterOasysLine[]
+  totalInvoiceValue: number
+  sourceFile?: string
+  sourceSheet?: string
   createdAt: string
 }
 

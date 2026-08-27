@@ -223,6 +223,55 @@ small row/column shifts between one PA slip and the next as long as the
 labels stay the same. It's idempotent per PA number — re-running it with
 the same file updates that record instead of duplicating it.
 
+## Weekly Registers & Accsys GL Export (Operation Office)
+
+Three more source documents feed the Operation Office dashboard, all
+handled without any conversion step (both are plain `.xlsx`, parsed
+directly with the `xlsx` package):
+
+**Weekly Registers.** OPS Office / Coaching Leadership / Leave Register /
+Payroll Register cover sheets are one family of weekly sign-off sheet —
+a header (period, payroll number, prepared/checked/signed-off by), a run
+of lines (either one row per person with Hours + Rate sub-rows, or one
+flat row per category), and an "OASys Details" section that turns the
+week's totals into OASys invoicing accounts (Pay / Extra / Sub-Total /
+Admin Fee / Invoice Value). They're stored as one new entity,
+`weekly_registers`, and shown on the **Weekly Registers** tab
+(`frontend/src/components/WeeklyRegistersPanel.tsx`) with a type filter,
+a detail view (day-by-day grid + OASys breakdown), and CSV export.
+
+Import with `backend/scripts/import-weekly-register.js` — it reads every
+sheet in a workbook (or just one, if you pass a sheet name) and creates
+one register per sheet:
+
+```
+railway run npm run import:weekly-register --prefix backend -- backend/scripts/data/Coaching_Leadership_and_Coaching_Administration_1.xlsx
+railway run npm run import:weekly-register --prefix backend -- backend/scripts/data/Payroll_Register_097__26_August_-_01__September__2026.xlsx
+```
+
+The parser locates the day columns and the TOTAL column by content (not
+fixed positions), since the exact column layout drifts a little between
+sheets — e.g. some have an "Hrs Quota" column and some don't. It's
+idempotent per (source file, sheet name).
+
+**Accsys GL Export.** `qryAccsysExport_*.xlsx` is the department/GL-code
+grouped report OPHELP pushes into their Accsys accounting system —
+one row per payee, grouped under department headings, with a GL code per
+department. `backend/scripts/import-accsys-export.js` reads it and:
+sets `department` + `glCode` on the matching `payroll_roster` entries
+(now shown as columns on the Payroll tab's roster table), creates/updates
+the corresponding Payroll Period, and records any non-zero "Medical Aid"
+/ "Training Fund/Loan Repayment" figures as `payroll_corrections` — the
+same correction shape the Paybook importer uses.
+
+```
+railway run npm run import:accsys-export --prefix backend -- backend/scripts/data/qryAccsysExport_Payroll_Template.xlsx
+```
+
+It deliberately doesn't create `payroll_entries` — this report has
+per-person totals only, no day/task detail, so hours/gross pay still come
+from the Paybook (`import-payroll.js`).
+
 ## Known limitations / follow-ups
 
 - The admin **"Add User"** screen in the dashboard (`Dashboard.tsx`) still
@@ -248,3 +297,11 @@ the same file updates that record instead of duplicating it.
   differences between the Paybook and the participant register won't
   auto-link, and will just show as "Unmatched" in the Payroll tab until
   reconciled by hand.
+- The weekly-register parser (`backend/scripts/import-weekly-register.js`)
+  is label/position-driven, not a fixed template, so it copes with the
+  small layout drift seen between sheets — but a sheet that renames
+  "Hours"/"Rate"/"TOTAL"/"OASys Details" to something else, or drops the
+  day-of-week header row entirely, won't be recognised and will just be
+  skipped with a console message rather than silently importing wrong
+  numbers. Spot-check a newly-imported register against its source sheet
+  once before relying on it.

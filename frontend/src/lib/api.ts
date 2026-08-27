@@ -8,7 +8,7 @@ import {
   Cards, Payments, Transactions, PartnerShops, AtmLocations, Projects,
   Equipments, Inventory, Incidents, Notifications, Messages, AuditLogs,
   PayrollPeriods, PayrollRoster, PayrollEntries, PayrollCorrections,
-  PaymentAuthorisations,
+  PaymentAuthorisations, WeeklyRegisters,
   now, uid,
 } from './db'
 import type {
@@ -16,7 +16,7 @@ import type {
   OphelpCard, Payment, CardTransaction, PartnerShop, AtmLocation, Project,
   Equipment, InventoryItem, Incident, Notification, Message, AuditLog,
   DashboardStats, ApiResult, PayrollPeriod, PayrollRosterEntry, PayrollEntry,
-  PayrollCorrection, PaymentAuthorisation,
+  PayrollCorrection, PaymentAuthorisation, WeeklyRegister,
 } from './types'
 
 // ── Participants ──────────────────────────────────────────────────────────────
@@ -693,5 +693,20 @@ export const PaymentAuthorisationApi = {
       const d = new Date(p.date)
       return d.getMonth() === now_.getMonth() && d.getFullYear() === now_.getFullYear()
     }).reduce((sum, p) => sum + p.amount, 0)
+  },
+}
+
+// ── Weekly Registers (OPS Office / Coaching Leadership / Leave Register /
+// Payroll Register cover sheets) ────────────────────────────────────────────
+export const WeeklyRegisterApi = {
+  list(): WeeklyRegister[] {
+    return WeeklyRegisters.all().sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+  },
+  get(id: string): WeeklyRegister | undefined { return WeeklyRegisters.findById(id) },
+  byType(type: WeeklyRegister['type']): WeeklyRegister[] {
+    return WeeklyRegisters.where(r => r.type === type)
+  },
+  delete(id: string): ApiResult {
+    return WeeklyRegisters.delete(id) ? { success: true } : { success: false, error: 'Register not found' }
   },
 }
