@@ -390,6 +390,49 @@ export interface PayrollCorrection {
   createdAt: string
 }
 
+// ── Payment Authorisations (Operation Office expense/payment sign-off) ───────
+export type PaymentAuthorisationStatus = 'captured' | 'authorised' | 'paid'
+
+export interface PaymentAuthorisationBank {
+  bank: string
+  branchCode: string
+  accountType: string
+  accountNo: string
+}
+
+export interface PaymentAuthorisationInvoice {
+  pay: number
+  transport: number
+  material: number
+  admin: number
+  other: number
+  fee: number
+}
+
+// One "PA slip" — a payment authorisation for a one-off or recurring
+// expense (direct debit, supplier invoice, etc.), separate from
+// participant wage Payments.
+export interface PaymentAuthorisation {
+  id: string
+  paNumber: string
+  date: string
+  compiler: string
+  payee: string
+  bank: PaymentAuthorisationBank
+  amount: number
+  details: string
+  authorisation: string
+  capturedBy?: string
+  expenseAccount: string
+  expenseColumn: string
+  caption: string
+  client: string
+  invoice: PaymentAuthorisationInvoice
+  status: PaymentAuthorisationStatus
+  sourceFile?: string
+  createdAt: string
+}
+
 // ── Auth ──────────────────────────────────────────────────────────────────────
 export interface AuthToken {
   token: string

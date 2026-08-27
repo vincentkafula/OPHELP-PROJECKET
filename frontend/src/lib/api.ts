@@ -8,6 +8,7 @@ import {
   Cards, Payments, Transactions, PartnerShops, AtmLocations, Projects,
   Equipments, Inventory, Incidents, Notifications, Messages, AuditLogs,
   PayrollPeriods, PayrollRoster, PayrollEntries, PayrollCorrections,
+  PaymentAuthorisations,
   now, uid,
 } from './db'
 import type {
@@ -15,7 +16,7 @@ import type {
   OphelpCard, Payment, CardTransaction, PartnerShop, AtmLocation, Project,
   Equipment, InventoryItem, Incident, Notification, Message, AuditLog,
   DashboardStats, ApiResult, PayrollPeriod, PayrollRosterEntry, PayrollEntry,
-  PayrollCorrection,
+  PayrollCorrection, PaymentAuthorisation,
 } from './types'
 
 // ── Participants ──────────────────────────────────────────────────────────────
@@ -660,5 +661,37 @@ export const PayrollApi = {
       corrections: acc.corrections + r.corrections,
       net: acc.net + r.net,
     }), { people: 0, hours: 0, gross: 0, corrections: 0, net: 0 })
+  },
+}
+
+// ── Payment Authorisations (Operation Office expense sign-off) ─────────────────
+export const PaymentAuthorisationApi = {
+  list(): PaymentAuthorisation[] {
+    return PaymentAuthorisations.all().sort((a, b) => b.date.localeCompare(a.date))
+  },
+  get(id: string): PaymentAuthorisation | undefined { return PaymentAuthorisations.findById(id) },
+  create(data: Omit<PaymentAuthorisation, 'id' | 'createdAt' | 'status'> & { status?: PaymentAuthorisation['status'] }): ApiResult<PaymentAuthorisation> {
+    if (PaymentAuthorisations.findOne(p => p.paNumber === data.paNumber)) {
+      return { success: false, error: `PA ${data.paNumber} already exists` }
+    }
+    const p = PaymentAuthorisations.insert({ ...data, status: data.status ?? 'captured', createdAt: now() })
+    return { success: true, data: p }
+  },
+  update(id: string, patch: Partial<PaymentAuthorisation>): ApiResult<PaymentAuthorisation> {
+    const p = PaymentAuthorisations.update(id, patch)
+    return p ? { success: true, data: p } : { success: false, error: 'Payment authorisation not found' }
+  },
+  delete(id: string): ApiResult {
+    return PaymentAuthorisations.delete(id) ? { success: true } : { success: false, error: 'Payment authorisation not found' }
+  },
+  byClient(client: string): PaymentAuthorisation[] {
+    return PaymentAuthorisations.where(p => p.client === client)
+  },
+  monthlyTotal(): number {
+    const now_ = new Date()
+    return PaymentAuthorisations.where(p => {
+      const d = new Date(p.date)
+      return d.getMonth() === now_.getMonth() && d.getFullYear() === now_.getFullYear()
+    }).reduce((sum, p) => sum + p.amount, 0)
   },
 }

@@ -188,6 +188,41 @@ idempotent per period number — re-running it replaces that period's
 entries/corrections instead of duplicating them, and it links roster rows
 to existing `Participant` profiles where the names match.
 
+## Payment Authorisations (Operation Office)
+
+The **Payment Authorisations** tab covers OPHELP's "PA slip" workflow —
+one-off or recurring expense sign-offs (direct debits, supplier invoices,
+etc.), each identified by a PA number (e.g. "01 001"). This is a separate
+concept from [Payroll](#payroll-operation-office): payroll is participant
+wages for a period, a PA is a single authorised payment to a payee (a
+supplier, a medical scheme, etc.) against an expense account/column.
+
+Data model: one new generic entity, `payment_authorisations` — PA number,
+date, compiler, payee, bank details, amount, details, authorisation
+type, expense account/column, caption, client, an invoice breakdown
+(pay/transport/material/admin/other/fee), and a status
+(`captured` → `authorised` → `paid`).
+
+The dashboard screen (`frontend/src/components/PaymentAuthorisationsPanel.tsx`)
+lists all authorisations with search, a monthly-total/awaiting-payment/paid
+summary, a "New Authorisation" form, a detail view with status buttons,
+and CSV export.
+
+**Importing a PA slip (.xlsx).** Unlike the Access paybooks, these are
+plain spreadsheets, so `backend/scripts/import-payment-authorisation.js`
+parses one directly with the `xlsx` package — no conversion step needed:
+
+```
+railway run npm run import:payment-authorisation --prefix backend -- backend/scripts/data/PA_01_001_HEALTH4ME_Payment_March_2026.xlsx
+```
+
+(or run it locally with `DATABASE_URL` pointed at the target database).
+The parser is label-driven (it looks for cells like `Amount:`, `Compiler:`,
+`Caption:` and reads the next real value in that row) so it tolerates the
+small row/column shifts between one PA slip and the next as long as the
+labels stay the same. It's idempotent per PA number — re-running it with
+the same file updates that record instead of duplicating it.
+
 ## Known limitations / follow-ups
 
 - The admin **"Add User"** screen in the dashboard (`Dashboard.tsx`) still

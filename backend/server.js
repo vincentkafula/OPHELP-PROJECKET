@@ -56,6 +56,7 @@ const ENTITY_ROUTES = {
   'payroll-roster': 'payroll_roster',
   'payroll-entries': 'payroll_entries',
   'payroll-corrections': 'payroll_corrections',
+  'payment-authorisations': 'payment_authorisations',
 }
 
 for (const [urlSegment, entityName] of Object.entries(ENTITY_ROUTES)) {
