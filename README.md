@@ -366,6 +366,39 @@ shared between two roles:
 
 Idempotent per (source file, sheet name).
 
+## Invoices (Operation Office + Partners)
+
+`1787833848051_2019_03-04_March_and_April_Invoices_A.pdf` is a "Copy Tax
+Invoice" register — the actual invoices issued to partners/clients (CIDs,
+hotels, churches, property managers, etc.), one page per invoice.
+
+Node doesn't have a good position-aware PDF text reader (unlike Python's
+`pdfplumber`, which gives per-word x/y coordinates), and that matters
+here: the "To" and "Deliver to" address blocks sit side by side and
+collide in a plain text dump whenever the client name is long enough to
+run into the second column's position. So, like the Payroll `.mdb`
+importer, this is a convert-then-import flow:
+
+```
+pip install pdfplumber
+python3 backend/scripts/convert-invoices-pdf.py <path-to.pdf>   # writes invoices.json next to it
+railway run npm run import:invoices --prefix backend -- <path-to-invoices.json>
+```
+
+`backend/scripts/data/invoices-2020-03-04.json` is the worked example
+from the uploaded register — verified against the source PDF: 57
+invoices, all document numbers unique, dates spanning 2 Mar – 21 Apr
+2020, R879,960.16 total across 43 distinct clients.
+
+Each invoice becomes one `invoices` entity (document number, date,
+account code, client name/address, delivery address, line items,
+subtotal/discount/tax/total). Idempotent per document number.
+
+The **Invoices** tab (`frontend/src/components/InvoicesPanel.tsx`) is
+shared between roles the same way [Quotations](#quotations-operation-office--partners)
+is: Operation Office sees the full register with CSV export; Partner
+sees only invoices whose `client` field matches their `PartnerShop.name`.
+
 ## Known limitations / follow-ups
 
 - The admin **"Add User"** screen in the dashboard (`Dashboard.tsx`) still
@@ -409,3 +442,11 @@ Idempotent per (source file, sheet name).
   label or an odd week-end date — the discrepancy figure itself is still
   reliable, just double-check the label/dates for that one week before
   citing it.
+- The invoice PDF converter (`backend/scripts/convert-invoices-pdf.py`)
+  splits the account line into code / reference / tax-exempt flag by
+  scanning tokens for a standalone "Y" or "N". On the rare invoice whose
+  reference text itself starts with "Y" or "N" (e.g. a reference like "N
+  MSILA"), that token gets read as the tax-exempt flag instead of part of
+  the reference, so the reference field comes out short for that one
+  invoice — the financial figures are unaffected, only that one text
+  field.

@@ -8,7 +8,7 @@ import {
   Cards, Payments, Transactions, PartnerShops, AtmLocations, Projects,
   Equipments, Inventory, Incidents, Notifications, Messages, AuditLogs,
   PayrollPeriods, PayrollRoster, PayrollEntries, PayrollCorrections,
-  PaymentAuthorisations, WeeklyRegisters, OasysChecks, DepotSchedules, Quotations,
+  PaymentAuthorisations, WeeklyRegisters, OasysChecks, DepotSchedules, Quotations, Invoices,
   now, uid,
 } from './db'
 import type {
@@ -17,7 +17,7 @@ import type {
   Equipment, InventoryItem, Incident, Notification, Message, AuditLog,
   DashboardStats, ApiResult, PayrollPeriod, PayrollRosterEntry, PayrollEntry,
   PayrollCorrection, PaymentAuthorisation, WeeklyRegister, OasysCheck,
-  DepotSchedule, Quotation,
+  DepotSchedule, Quotation, Invoice,
 } from './types'
 
 // ── Participants ──────────────────────────────────────────────────────────────
@@ -764,5 +764,24 @@ export const QuotationApi = {
   setStatus(id: string, status: Quotation['status']): ApiResult<Quotation> { return this.update(id, { status }) },
   delete(id: string): ApiResult {
     return Quotations.delete(id) ? { success: true } : { success: false, error: 'Quotation not found' }
+  },
+}
+
+// ── Invoices (issued tax invoices to partners/clients) ──────────────────────
+export const InvoiceApi = {
+  list(): Invoice[] {
+    return Invoices.all().sort((a, b) => b.date.localeCompare(a.date))
+  },
+  get(id: string): Invoice | undefined { return Invoices.findById(id) },
+  byClient(client: string): Invoice[] { return Invoices.where(i => i.client === client) },
+  monthlyTotal(): number {
+    const now_ = new Date()
+    return Invoices.where(i => {
+      const d = new Date(i.date)
+      return d.getMonth() === now_.getMonth() && d.getFullYear() === now_.getFullYear()
+    }).reduce((sum, i) => sum + i.total, 0)
+  },
+  totals(list: Invoice[]): { count: number; total: number; clients: number } {
+    return { count: list.length, total: list.reduce((s, i) => s + i.total, 0), clients: new Set(list.map(i => i.client)).size }
   },
 }

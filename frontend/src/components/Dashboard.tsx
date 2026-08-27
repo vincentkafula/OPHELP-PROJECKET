@@ -18,6 +18,7 @@ import WeeklyRegistersPanel from './WeeklyRegistersPanel'
 import OasysChecksPanel from './OasysChecksPanel'
 import DepotSchedulesPanel from './DepotSchedulesPanel'
 import QuotationsPanel from './QuotationsPanel'
+import InvoicesPanel from './InvoicesPanel'
 import {
   ReportApi, ParticipantApi, ShiftApi, PaymentApi, CardApi,
   UserApi, SiteApi, PartnerShopApi, ProjectApi, AuditApi,
@@ -68,6 +69,7 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '💰', label: 'Payroll' }, { icon: '🧾', label: 'Payment Authorisations' },
     { icon: '📋', label: 'Weekly Registers' }, { icon: '🔍', label: 'OASys Reconciliation' },
     { icon: '🗓️', label: 'Depot Schedules' }, { icon: '📐', label: 'Quotations' },
+    { icon: '🧾', label: 'Invoices' },
   ],
   operation_management: [
     { icon: '🏠', label: 'Overview' }, { icon: '🏗️', label: 'Sites' },
@@ -89,7 +91,7 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
   partner: [
     { icon: '🏠', label: 'Overview' }, { icon: '💳', label: 'Transactions' },
     { icon: '📄', label: 'My Contract' }, { icon: '📊', label: 'Reports' },
-    { icon: '📐', label: 'Quotations' },
+    { icon: '📐', label: 'Quotations' }, { icon: '🧾', label: 'Invoices' },
   ],
   team: [
     { icon: '🏠', label: 'Overview' }, { icon: '📅', label: 'My Shifts' },
@@ -1273,6 +1275,7 @@ function OperationOfficeDashboard({ user, activeIdx }: { user: AuthUser; activeI
   if (activeIdx === 11) return <OasysChecksPanel />
   if (activeIdx === 12) return <DepotSchedulesPanel />
   if (activeIdx === 13) return <QuotationsPanel />
+  if (activeIdx === 14) return <InvoicesPanel />
 
   if (activeIdx === 1) return <SitesMgmtPanel color="#1565C0" />
   if (activeIdx === 2) return <ShiftsMgmtPanel userId={user.id} />
@@ -1609,6 +1612,7 @@ function PartnerDashboard({ user, activeIdx }: { user: AuthUser; activeIdx: numb
   )
 
   if (activeIdx === 4) return <QuotationsPanel readOnly clientFilter={myShop?.name} />
+  if (activeIdx === 5) return <InvoicesPanel clientFilter={myShop?.name} />
 
   if (activeIdx === 2 && myShop) return (
     <div className="space-y-6">

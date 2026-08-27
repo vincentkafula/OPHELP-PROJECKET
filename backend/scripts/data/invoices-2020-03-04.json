@@ -1,0 +1,3006 @@
+{
+ "sourceFile": "1787833848051_2019_03-04_March_and_April_Invoices_A.pdf",
+ "invoices": [
+  {
+   "documentNo": "IN103575",
+   "date": "2020-03-13",
+   "account": "BTWCSH",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Best Western Cape Suites Hotel",
+   "clientAddress": [
+    "P O Box 51085",
+    "WATERFRONT",
+    "8002",
+    "deputy.gm@capesuites.co.za"
+   ],
+   "deliverTo": [
+    "C/O Constitution & De Villiers",
+    "ZONNEBLOEM",
+    "7925"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "02/03/20 Cleaningn Hotel field",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 600.0
+    },
+    {
+     "code": "2000100",
+     "description": "Material",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 41.7
+    },
+    {
+     "code": "2000200",
+     "description": "Truck hire",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 150.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 197.93
+    }
+   ],
+   "subtotal": 989.63,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 989.63,
+   "tax": 0.0,
+   "total": 989.63
+  },
+  {
+   "documentNo": "IN103576",
+   "date": "2020-03-13",
+   "account": "BTWCSH",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Best Western Cape Suites Hotel",
+   "clientAddress": [
+    "P O Box 51085",
+    "WATERFRONT",
+    "8002",
+    "deputy.gm@capesuites.co.za"
+   ],
+   "deliverTo": [
+    "C/O Constitution & De Villiers",
+    "ZONNEBLOEM",
+    "7925"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "09/03/20 Cleaning Hotel field",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 600.0
+    },
+    {
+     "code": "2000100",
+     "description": "Material",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 64.5
+    },
+    {
+     "code": "2000200",
+     "description": "Truck hire",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 150.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 203.63
+    }
+   ],
+   "subtotal": 1018.13,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 1018.13,
+   "tax": 0.0,
+   "total": 1018.13
+  },
+  {
+   "documentNo": "IN103577",
+   "date": "2020-03-16",
+   "account": "STGEOR",
+   "yourReference": "TOILET JANITORS 05 MARCH",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "St Georges Cathedral",
+   "clientAddress": [
+    "5 Wale street",
+    "CAPE TOWN",
+    "8001"
+   ],
+   "deliverTo": [
+    "5 Wale street",
+    "CAPE TOWN",
+    "8001"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 281.25
+    },
+    {
+     "code": "2000100",
+     "description": "Material",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 24.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 76.31
+    }
+   ],
+   "subtotal": 381.56,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 381.56,
+   "tax": 0.0,
+   "total": 381.56
+  },
+  {
+   "documentNo": "IN103578",
+   "date": "2020-03-16",
+   "account": "GSCIDC",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Groote Schuur Community Improvement Dist",
+   "clientAddress": [
+    "93 Main Road",
+    "Mowbray",
+    "7935",
+    "VAT # 4010257618"
+   ],
+   "deliverTo": [
+    "93 Main Road",
+    "Mowbray",
+    "7935",
+    "VAT # 4010257618"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 75904.58
+    },
+    {
+     "code": "2000100",
+     "description": "Material",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 7800.0
+    },
+    {
+     "code": "2000200",
+     "description": "Transport",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 4800.0
+    },
+    {
+     "code": "1000300",
+     "description": "Management Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 23500.0
+    }
+   ],
+   "subtotal": 112004.58,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 112004.58,
+   "tax": 0.0,
+   "total": 112004.58
+  },
+  {
+   "documentNo": "IN103579",
+   "date": "2020-03-17",
+   "account": "DAATLA",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Democratic Alliance -Atlantic Seaboard",
+   "clientAddress": [
+    "PO Box 189",
+    "SEA POINT",
+    "8060",
+    "Treasurer: Mark Burke"
+   ],
+   "deliverTo": [
+    "PO Box 189",
+    "SEA POINT",
+    "8060"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs up to 14/03/2020",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 430.0
+    },
+    {
+     "code": "2000100",
+     "description": "Material",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 22.2
+    },
+    {
+     "code": "2000200",
+     "description": "Taxi fare",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 90.0
+    },
+    {
+     "code": "3850000",
+     "description": "Insurance contribution 1% pro-rata",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 24.92
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 135.55
+    }
+   ],
+   "subtotal": 702.67,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 702.67,
+   "tax": 0.0,
+   "total": 702.67
+  },
+  {
+   "documentNo": "IN103580",
+   "date": "2020-03-24",
+   "account": "LMRIDE",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Little Mowbray & Rosebank Improv CID",
+   "clientAddress": [
+    "15 Lancaster Road",
+    "Littel Mowbray",
+    "7700",
+    "VAT# 4250275015"
+   ],
+   "deliverTo": [
+    "15 Lancaster Road",
+    "Littel Mowbray",
+    "7700",
+    "VAT# 4250275015"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 12979.22
+    },
+    {
+     "code": "2000100",
+     "description": "Material",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1191.0
+    },
+    {
+     "code": "3850000",
+     "description": "Insurance",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 153.7
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 3345.25
+    }
+   ],
+   "subtotal": 17669.17,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 17669.17,
+   "tax": 0.0,
+   "total": 17669.17
+  },
+  {
+   "documentNo": "IN103581",
+   "date": "2020-03-24",
+   "account": "OBSIDN",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "The Observatory Improvement District NPC",
+   "clientAddress": [
+    "13 A St Michael's Office Park",
+    "St Michael's Road",
+    "OBSERVATORY",
+    "7925",
+    "VAT# 4910253865"
+   ],
+   "deliverTo": [
+    "13 A St Michael's Office Park",
+    "St Michael's Road",
+    "OBSERVATORY",
+    "7925",
+    "VAT# 4910253865"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 2970.0
+    },
+    {
+     "code": "2000300",
+     "description": "Employement benefit 1/17",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 174.71
+    },
+    {
+     "code": "3850000",
+     "description": "Insurance contribution",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 38.43
+    },
+    {
+     "code": "2000100",
+     "description": "Material",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1977.4
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1280.53
+    }
+   ],
+   "subtotal": 6441.07,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 6441.07,
+   "tax": 0.0,
+   "total": 6441.07
+  },
+  {
+   "documentNo": "IN103582",
+   "date": "2020-03-24",
+   "account": "SERVES",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Servest",
+   "clientAddress": [
+    "PO Box 2378",
+    "NORTHCLIFF",
+    "2115",
+    "VAT Ref # 4110174762"
+   ],
+   "deliverTo": [
+    "PO Box 2378",
+    "NORTHCLIFF",
+    "2115",
+    "VAT Ref # 4110174762"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 3900.0
+    },
+    {
+     "code": "2000100",
+     "description": "Material",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1105.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1251.25
+    }
+   ],
+   "subtotal": 6256.25,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 6256.25,
+   "tax": 0.0,
+   "total": 6256.25
+  },
+  {
+   "documentNo": "IN103583",
+   "date": "2020-03-24",
+   "account": "CCIDMA",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CCID DIGNITY Management Team",
+   "clientAddress": [
+    "PO Box 7517",
+    "ROGGEBAAI",
+    "8012",
+    "VAT Ref # 4010190603"
+   ],
+   "deliverTo": [
+    "1 Thibault Sqaure",
+    "13th Floor",
+    "Cnr Long st & Hans Strydom Ave",
+    "CAPE TOWN 8001"
+   ],
+   "lineItems": [
+    {
+     "code": "4401001",
+     "description": "Salaries Management Team",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 53943.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 13485.75
+    }
+   ],
+   "subtotal": 67428.75,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 67428.75,
+   "tax": 0.0,
+   "total": 67428.75
+  },
+  {
+   "documentNo": "IN103584",
+   "date": "2020-03-24",
+   "account": "CCID-S",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CCID School of Tech Service",
+   "clientAddress": [
+    "PO Box 7517",
+    "ROGGEBAAI",
+    "8012",
+    "8000",
+    "VAT # 4010190603"
+   ],
+   "deliverTo": [
+    "1 Thibualt Square",
+    "13th Floor",
+    "Cnr Long st & Hans Strydom Ave",
+    "CAPE TOWN 8001",
+    "VAT # 4010190603"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 37407.04
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 9351.76
+    }
+   ],
+   "subtotal": 46758.8,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 46758.8,
+   "tax": 0.0,
+   "total": 46758.8
+  },
+  {
+   "documentNo": "IN103585",
+   "date": "2020-03-24",
+   "account": "CCIDMG",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CCID School of Road Maintenance",
+   "clientAddress": [
+    "PO Box 7517",
+    "ROGGEBAAI",
+    "8012",
+    "VAT # 4010190603"
+   ],
+   "deliverTo": [
+    "1 Thibault Square",
+    "13 th Floor",
+    "Cnr Long Str & Hans Strydom Av",
+    "CAPE TOWN",
+    "8001"
+   ],
+   "lineItems": [
+    {
+     "code": "4401001",
+     "description": "Salaries Road Maintenance Team",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 34848.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 8712.0
+    }
+   ],
+   "subtotal": 43560.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 43560.0,
+   "tax": 0.0,
+   "total": 43560.0
+  },
+  {
+   "documentNo": "IN103586",
+   "date": "2020-03-24",
+   "account": "SSUNCL",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Reshub (Pty) Ltd SS The Cullinan",
+   "clientAddress": [
+    "1 Cullinan Street",
+    "Watefront",
+    "CAPE TOWN",
+    "8001",
+    "VAT # 4950199705"
+   ],
+   "deliverTo": [
+    "1 Cullinan Street",
+    "Watefront",
+    "CAPE TOWN",
+    "8001",
+    "VAT # 4950199705"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 7215.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1803.75
+    }
+   ],
+   "subtotal": 9018.75,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 9018.75,
+   "tax": 0.0,
+   "total": 9018.75
+  },
+  {
+   "documentNo": "IN103587",
+   "date": "2020-03-24",
+   "account": "SSUNWF",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Reshub (Pty) Ltd t/a Southern Sun WFront",
+   "clientAddress": [
+    "Private Bag X3",
+    "WATERFRONT",
+    "8002",
+    "VAT # 4950199705"
+   ],
+   "deliverTo": [
+    "1 Lower Buitengracht Street",
+    "CAPE TOWN",
+    "8002",
+    "VAT # 4950199705"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 7215.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1803.75
+    }
+   ],
+   "subtotal": 9018.75,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 9018.75,
+   "tax": 0.0,
+   "total": 9018.75
+  },
+  {
+   "documentNo": "IN103588",
+   "date": "2020-03-02",
+   "account": "STANDF",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "St Andrews Flat - Isaac Marimbire",
+   "clientAddress": [
+    "St Andrews Church",
+    "GREEN POINT",
+    "8005"
+   ],
+   "deliverTo": [
+    "St Andrews Church",
+    "GREEN POINT",
+    "8005"
+   ],
+   "lineItems": [
+    {
+     "code": "1000302",
+     "description": "Rental Income - Flat",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 2929.0
+    }
+   ],
+   "subtotal": 2929.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 2929.0,
+   "tax": 0.0,
+   "total": 2929.0
+  },
+  {
+   "documentNo": "IN103589",
+   "date": "2020-03-25",
+   "account": "ADMAKE",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Admakers International (Pty) Ltd",
+   "clientAddress": [
+    "Unit 26 Admakers House",
+    "The Waverley",
+    "CRN Kotzee- &Weymouth Street",
+    "MOWBRAY 7700",
+    "Vat Reg # 4050196874"
+   ],
+   "deliverTo": [
+    "Unit 26 Admakers House",
+    "The Waverley",
+    "CRN Kotzee- &Weymouth Street",
+    "MOWBRAY 7700",
+    "Vat Reg # 4050196874"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 10540.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 2635.0
+    }
+   ],
+   "subtotal": 13175.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 13175.0,
+   "tax": 0.0,
+   "total": 13175.0
+  },
+  {
+   "documentNo": "IN103590",
+   "date": "2020-03-25",
+   "account": "BLOKUR",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "BLOK Urban Living (PTY) Ltd",
+   "clientAddress": [
+    "51 Regent Road",
+    "SEA POINT",
+    "8005",
+    "VAT # 4310270535"
+   ],
+   "deliverTo": [
+    "51 Regent Road",
+    "SEA POINT",
+    "8005",
+    "VAT # 4310270535"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 2000.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 500.0
+    }
+   ],
+   "subtotal": 2500.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 2500.0,
+   "tax": 0.0,
+   "total": 2500.0
+  },
+  {
+   "documentNo": "IN103591",
+   "date": "2020-03-25",
+   "account": "CCIDAD",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CCID - Ad Hoc",
+   "clientAddress": [
+    "PO BOX 7517",
+    "ROGGEBAAI",
+    "8001",
+    "VAT # 4010190603"
+   ],
+   "deliverTo": [
+    "1 Thibault Square",
+    "13th Floor",
+    "Crn Long & Hans Strydom Avenue",
+    "CAPE TOWN 8001",
+    "VAT # 4010190603"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 2653.13
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 663.28
+    }
+   ],
+   "subtotal": 3316.41,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 3316.41,
+   "tax": 0.0,
+   "total": 3316.41
+  },
+  {
+   "documentNo": "IN103592",
+   "date": "2020-03-25",
+   "account": "CCIDFS",
+   "yourReference": "XTRA HOTSPOTS CLEANING",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CCID Festive Season Hotspots",
+   "clientAddress": [
+    "PO Box 7517",
+    "ROGGEBAAI",
+    "8012",
+    "VAT # 4010190603"
+   ],
+   "deliverTo": [
+    "PO Box 7517",
+    "ROGGEBAAI",
+    "8012",
+    "VAT # 4010190603"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs Weekdays",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 5695.24
+    },
+    {
+     "code": "2000300",
+     "description": "Labour costs Weekends",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 2174.54
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1967.45
+    }
+   ],
+   "subtotal": 9837.23,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 9837.23,
+   "tax": 0.0,
+   "total": 9837.23
+  },
+  {
+   "documentNo": "IN103593",
+   "date": "2020-03-25",
+   "account": "CCIDAH",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CCID Festive Season",
+   "clientAddress": [
+    "PO Box 7517",
+    "ROGGEBAAI",
+    "8012",
+    "VAT # 4010190603"
+   ],
+   "deliverTo": [
+    "1 Thibault Square",
+    "13th Floor",
+    "Cnr Long st & Hans Strydom Ave",
+    "CAPE TOWN 8001",
+    "VAT # 4010190603"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "GreenMrkt Sqr 11h00-15h00",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 2340.0
+    },
+    {
+     "code": "2000300",
+     "description": "Heerengracht Str 11h00-15h00",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 2250.0
+    },
+    {
+     "code": "2000300",
+     "description": "Burger King-Hans Strijdom 11h00-15h00",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 2250.0
+    },
+    {
+     "code": "2000300",
+     "description": "Plein/Darling/Strand st 8h00-12h00",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 2340.0
+    },
+    {
+     "code": "2000300",
+     "description": "Plein/Darling/Strand st 12h00-16h00",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1940.0
+    },
+    {
+     "code": "2000300",
+     "description": "Junior Ops Supervisor 8h00-12h00",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1000.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 3030.0
+    }
+   ],
+   "subtotal": 15150.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 15150.0,
+   "tax": 0.0,
+   "total": 15150.0
+  },
+  {
+   "documentNo": "IN103594",
+   "date": "2020-03-25",
+   "account": "CCID-I",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CCID-Impact Cleaning",
+   "clientAddress": [
+    "PO Box 7517",
+    "ROGGEBAAI",
+    "8012",
+    "VAT Reg # 4010190603"
+   ],
+   "deliverTo": [
+    "1 Thibault Square",
+    "13th Floor",
+    "Crn Long Str & Hans Strydom Av",
+    "CAPE TOWN",
+    "8000"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour cost",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 3674.54
+    },
+    {
+     "code": "1000100",
+     "description": "Admin fee",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 918.64
+    }
+   ],
+   "subtotal": 4593.18,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 4593.18,
+   "tax": 0.0,
+   "total": 4593.18
+  },
+  {
+   "documentNo": "IN103595",
+   "date": "2020-03-25",
+   "account": "CCIDLI",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CCID Liability Insurance",
+   "clientAddress": [
+    "PO Box 7517",
+    "ROGGEBAAI",
+    "8012",
+    "VAT # 4010190603"
+   ],
+   "deliverTo": [
+    "PO Box 7517",
+    "ROGGEBAAI",
+    "8012",
+    "VAT # 4010190603"
+   ],
+   "lineItems": [
+    {
+     "code": "3850000",
+     "description": "Insurance contribution",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1600.0
+    }
+   ],
+   "subtotal": 1600.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 1600.0,
+   "tax": 0.0,
+   "total": 1600.0
+  },
+  {
+   "documentNo": "IN103596",
+   "date": "2020-03-25",
+   "account": "CCID-O",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CCID-Opruim Serv",
+   "clientAddress": [
+    "PO Box 7517",
+    "ROGGEBAAI",
+    "8012",
+    "VAT # 4010190603"
+   ],
+   "deliverTo": [
+    "1 Thibualt Square",
+    "13th Floor",
+    "Crn Long st & Hans Strydom Ave",
+    "CAPE TOWN 8001",
+    "VAT # 4010190603"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 68076.66
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 17019.17
+    }
+   ],
+   "subtotal": 85095.83,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 85095.83,
+   "tax": 0.0,
+   "total": 85095.83
+  },
+  {
+   "documentNo": "IN103597",
+   "date": "2020-03-25",
+   "account": "CCID-P",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CCID-Precincts",
+   "clientAddress": [
+    "PO Box 7517",
+    "ROGGEBAAI",
+    "8012",
+    "VAT Reg # 4010190603"
+   ],
+   "deliverTo": [
+    "1 Thibault Square",
+    "13th Floor",
+    "Cnr Long str & Hans Strydom Av",
+    "CAPE TOWN 8000",
+    "VAT Reg # 4010190603"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 520.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 130.0
+    }
+   ],
+   "subtotal": 650.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 650.0,
+   "tax": 0.0,
+   "total": 650.0
+  },
+  {
+   "documentNo": "IN103598",
+   "date": "2020-03-25",
+   "account": "CPRC",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Cape Peninsula Reformed Church",
+   "clientAddress": [],
+   "deliverTo": [],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 705.6
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 176.4
+    }
+   ],
+   "subtotal": 882.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 882.0,
+   "tax": 0.0,
+   "total": 882.0
+  },
+  {
+   "documentNo": "IN103599",
+   "date": "2020-03-25",
+   "account": "DEWAAL",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Friends of De Waal Park",
+   "clientAddress": [
+    "De Waal Park",
+    "CAPE TOWN",
+    "8000",
+    "Mike Bosazza: 082 902 006",
+    "Mike Bosazza:021423 7360 (w)"
+   ],
+   "deliverTo": [
+    "De Waal Park",
+    "CAPE TOWN",
+    "8000"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 4400.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1100.0
+    }
+   ],
+   "subtotal": 5500.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 5500.0,
+   "tax": 0.0,
+   "total": 5500.0
+  },
+  {
+   "documentNo": "IN103600",
+   "date": "2020-03-26",
+   "account": "GPCID",
+   "yourReference": "FAN WALK",
+   "taxExempt": false,
+   "taxType": "Exclusive",
+   "client": "Green Point City Improvement District",
+   "clientAddress": [
+    "PO Box 505",
+    "GREEN POINT",
+    "8051",
+    "VAT Reg # 4740197936"
+   ],
+   "deliverTo": [
+    "PO Box 505",
+    "GREEN POINT",
+    "8051",
+    "VAT Reg # 4740197936"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 4320.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1080.0
+    }
+   ],
+   "subtotal": 5400.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 5400.0,
+   "tax": 0.0,
+   "total": 5400.0
+  },
+  {
+   "documentNo": "IN103601",
+   "date": "2020-03-26",
+   "account": "GPCIDC",
+   "yourReference": "UPPER STRAND",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Green Point CID- Cleaning Services",
+   "clientAddress": [
+    "PO Box 505",
+    "GREEN POINT",
+    "8051",
+    "VAT Ref # 4740197935"
+   ],
+   "deliverTo": [
+    "PO Box 505",
+    "GREEN POINT",
+    "8051",
+    "VAT Ref # 4740197935"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 2000.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 500.0
+    }
+   ],
+   "subtotal": 2500.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 2500.0,
+   "tax": 0.0,
+   "total": 2500.0
+  },
+  {
+   "documentNo": "IN103602",
+   "date": "2020-03-26",
+   "account": "JANMUT",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Jan Mutton & Friends",
+   "clientAddress": [],
+   "deliverTo": [],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 2720.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 680.0
+    }
+   ],
+   "subtotal": 3400.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 3400.0,
+   "tax": 0.0,
+   "total": 3400.0
+  },
+  {
+   "documentNo": "IN103603",
+   "date": "2020-03-26",
+   "account": "CASH",
+   "yourReference": "MOREEN BABANDAL",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CASH",
+   "clientAddress": [
+    "Straatwerk - Ophelp Projekte",
+    "Posbus 910",
+    "Parow",
+    "7449"
+   ],
+   "deliverTo": [
+    "Straatwerk - Ophelp Projekte",
+    "Posbus 910",
+    "Parow",
+    "7449"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 60.0
+    }
+   ],
+   "subtotal": 60.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 60.0,
+   "tax": 0.0,
+   "total": 60.0
+  },
+  {
+   "documentNo": "IN103604",
+   "date": "2020-03-26",
+   "account": "CASH",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CASH",
+   "clientAddress": [
+    "Straatwerk - Ophelp Projekte",
+    "Posbus 910",
+    "Parow",
+    "7449"
+   ],
+   "deliverTo": [
+    "Straatwerk - Ophelp Projekte",
+    "Posbus 910",
+    "Parow",
+    "7449"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 30.0
+    }
+   ],
+   "subtotal": 30.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 30.0,
+   "tax": 0.0,
+   "total": 30.0
+  },
+  {
+   "documentNo": "IN103605",
+   "date": "2020-03-26",
+   "account": "PFLINT",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Exclusive",
+   "client": "Peter Flint",
+   "clientAddress": [
+    "1 Ocean View Drive",
+    "GREEN POINT",
+    "8005"
+   ],
+   "deliverTo": [
+    "1 Ocean View Drive",
+    "GREEN POINT",
+    "8005"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 95.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 23.75
+    }
+   ],
+   "subtotal": 118.75,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 118.75,
+   "tax": 0.0,
+   "total": 118.75
+  },
+  {
+   "documentNo": "IN103606",
+   "date": "2020-03-26",
+   "account": "STGEOR",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "St Georges Cathedral",
+   "clientAddress": [
+    "5 Wale street",
+    "CAPE TOWN",
+    "8001"
+   ],
+   "deliverTo": [
+    "5 Wale street",
+    "CAPE TOWN",
+    "8001"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 305.25
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 76.31
+    }
+   ],
+   "subtotal": 381.56,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 381.56,
+   "tax": 0.0,
+   "total": 381.56
+  },
+  {
+   "documentNo": "IN103607",
+   "date": "2020-03-26",
+   "account": "SPKAPR",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Spitzkop Karoo Properties",
+   "clientAddress": [
+    "90 Kloof Street",
+    "Gardens",
+    "8001",
+    "VAT #"
+   ],
+   "deliverTo": [
+    "90 Kloof Street",
+    "Gardens",
+    "8001",
+    "VAT #"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 343.34
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 85.84
+    }
+   ],
+   "subtotal": 429.18,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 429.18,
+   "tax": 0.0,
+   "total": 429.18
+  },
+  {
+   "documentNo": "IN103608",
+   "date": "2020-03-26",
+   "account": "CASH",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CASH",
+   "clientAddress": [
+    "Straatwerk - Ophelp Projekte",
+    "Posbus 910",
+    "Parow",
+    "7449"
+   ],
+   "deliverTo": [
+    "Straatwerk - Ophelp Projekte",
+    "Posbus 910",
+    "Parow",
+    "7449"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Wendy Tana",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 30.0
+    },
+    {
+     "code": "2000300",
+     "description": "Taonga Kusure",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 30.0
+    }
+   ],
+   "subtotal": 60.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 60.0,
+   "tax": 0.0,
+   "total": 60.0
+  },
+  {
+   "documentNo": "IN103609",
+   "date": "2020-03-26",
+   "account": "MPRPA",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Mouille Point Rate Payers Association",
+   "clientAddress": [
+    "PO Box 949",
+    "SEA POINT",
+    "8060"
+   ],
+   "deliverTo": [
+    "1 Gibraltar House",
+    "St Andrews Road",
+    "SEA POINT",
+    "8005"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 14800.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 3700.0
+    }
+   ],
+   "subtotal": 18500.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 18500.0,
+   "tax": 0.0,
+   "total": 18500.0
+  },
+  {
+   "documentNo": "IN103610",
+   "date": "2020-03-26",
+   "account": "MPRPA",
+   "yourReference": "SOCAIL INTERVENTION",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Mouille Point Rate Payers Association",
+   "clientAddress": [
+    "PO Box 949",
+    "SEA POINT",
+    "8060"
+   ],
+   "deliverTo": [
+    "1 Gibraltar House",
+    "St Andrews Road",
+    "SEA POINT",
+    "8005"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 3280.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 820.0
+    }
+   ],
+   "subtotal": 4100.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 4100.0,
+   "tax": 0.0,
+   "total": 4100.0
+  },
+  {
+   "documentNo": "IN103611",
+   "date": "2020-03-26",
+   "account": "OKLCID",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Oranje Kloof - City Improvement District",
+   "clientAddress": [
+    "PO Box 505",
+    "GREEN POINT",
+    "8051",
+    "VAT Reg # 449 020 1177"
+   ],
+   "deliverTo": [
+    "PO Box 505",
+    "GREEN POINT",
+    "8051",
+    "VAT Reg # 449 020 1177"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 7200.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1800.0
+    }
+   ],
+   "subtotal": 9000.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 9000.0,
+   "tax": 0.0,
+   "total": 9000.0
+  },
+  {
+   "documentNo": "IN103612",
+   "date": "2020-03-26",
+   "account": "MEDCON",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Medical Aid Contrib - Letitia",
+   "clientAddress": [
+    "STRAATWERK",
+    "CAPE TOWN",
+    "8000"
+   ],
+   "deliverTo": [
+    "STRAATWERK",
+    "CAPE TOWN",
+    "8000"
+   ],
+   "lineItems": [
+    {
+     "code": "4402000",
+     "description": "Medical Contributions",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 332.4
+    }
+   ],
+   "subtotal": 332.4,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 332.4,
+   "tax": 0.0,
+   "total": 332.4
+  },
+  {
+   "documentNo": "IN103613",
+   "date": "2020-03-26",
+   "account": "MEDICA",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Medical Aid Contrib -Cila",
+   "clientAddress": [
+    "C/OFF Fourie Truter",
+    "McIntery Road",
+    "PAROW",
+    "7500"
+   ],
+   "deliverTo": [
+    "C/OFF Fourie Truter",
+    "McIntery Road",
+    "PAROW",
+    "7500"
+   ],
+   "lineItems": [
+    {
+     "code": "4402000",
+     "description": "Medical Contributions",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 332.4
+    }
+   ],
+   "subtotal": 332.4,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 332.4,
+   "tax": 0.0,
+   "total": 332.4
+  },
+  {
+   "documentNo": "IN103614",
+   "date": "2020-03-26",
+   "account": "PPPROP",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Prime Point Properties",
+   "clientAddress": [
+    "51 Regent Road",
+    "SEA POINT",
+    "8005"
+   ],
+   "deliverTo": [
+    "51 Regent Road",
+    "SEA POINT",
+    "8005"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 3520.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 880.0
+    }
+   ],
+   "subtotal": 4400.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 4400.0,
+   "tax": 0.0,
+   "total": 4400.0
+  },
+  {
+   "documentNo": "IN103615",
+   "date": "2020-03-26",
+   "account": "REMAXL",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Exclusive",
+   "client": "REMAX Living",
+   "clientAddress": [
+    "PO Box 21595",
+    "Kloof street",
+    "CAPE TOWN 8000",
+    "VAT # 4870236637"
+   ],
+   "deliverTo": [
+    "PO Box 21595",
+    "Kloof street",
+    "CAPE TOWN 8000",
+    "VAT # 4870236637"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1920.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 480.0
+    }
+   ],
+   "subtotal": 2400.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 2400.0,
+   "tax": 0.0,
+   "total": 2400.0
+  },
+  {
+   "documentNo": "IN103616",
+   "date": "2020-03-26",
+   "account": "SPTRPA",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Sea Point Fresnaye Bantry Bay Rate Payer",
+   "clientAddress": [],
+   "deliverTo": [],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 26400.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 6600.0
+    }
+   ],
+   "subtotal": 33000.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 33000.0,
+   "tax": 0.0,
+   "total": 33000.0
+  },
+  {
+   "documentNo": "IN103617",
+   "date": "2020-03-26",
+   "account": "STCYPR",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "St Cyprians School",
+   "clientAddress": [
+    "Gorge Road",
+    "ORANJEZICHT",
+    "8001",
+    "NPO - 039-811"
+   ],
+   "deliverTo": [
+    "Gorge Road",
+    "ORANJEZICHT",
+    "8001",
+    "NPO - 039-811"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 8560.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 2140.0
+    }
+   ],
+   "subtotal": 10700.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 10700.0,
+   "tax": 0.0,
+   "total": 10700.0
+  },
+  {
+   "documentNo": "IN103618",
+   "date": "2020-03-26",
+   "account": "STSTEP",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "NGK St Stephens Church c/o Anneberg Prop",
+   "clientAddress": [
+    "PO Box 562",
+    "CAPE TOWN",
+    "8000"
+   ],
+   "deliverTo": [
+    "110 Bree Street",
+    "CAPE TOWN",
+    "8000"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1280.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 320.0
+    }
+   ],
+   "subtotal": 1600.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 1600.0,
+   "tax": 0.0,
+   "total": 1600.0
+  },
+  {
+   "documentNo": "IN103619",
+   "date": "2020-03-26",
+   "account": "STRURD",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Strubens Road Account",
+   "clientAddress": [
+    "27 Strubens Road",
+    "MOWBRAY",
+    "CAPE TOWN",
+    "8000"
+   ],
+   "deliverTo": [
+    "27 Strubens Road",
+    "MOWBRAY",
+    "CAPE TOWN",
+    "8000"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 500.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 125.13
+    }
+   ],
+   "subtotal": 625.13,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 625.13,
+   "tax": 0.0,
+   "total": 625.13
+  },
+  {
+   "documentNo": "IN103620",
+   "date": "2020-03-26",
+   "account": "PRLETS",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "The Woodstock Hub (Pty) Ltd",
+   "clientAddress": [
+    "PO Box 44",
+    "GREEN POINT",
+    "8051",
+    "VAT # 4800263495"
+   ],
+   "deliverTo": [
+    "1 ST Floor",
+    "The Hudson",
+    "30 Hudson Street",
+    "DEWATERKANT CAPE TOWN",
+    "8001"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 6880.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1720.0
+    }
+   ],
+   "subtotal": 8600.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 8600.0,
+   "tax": 0.0,
+   "total": 8600.0
+  },
+  {
+   "documentNo": "IN103621",
+   "date": "2020-03-26",
+   "account": "WPRUGB",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "K2016223694 (South Afirca) PTY LTD",
+   "clientAddress": [
+    "5th Floor",
+    "Newlands Terraces",
+    "NEWLANDS 7700"
+   ],
+   "deliverTo": [
+    "5th Floor",
+    "Newlands Terraces",
+    "NEWLANDS 7700"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 784.5
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 196.13
+    }
+   ],
+   "subtotal": 980.63,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 980.63,
+   "tax": 0.0,
+   "total": 980.63
+  },
+  {
+   "documentNo": "IN103622",
+   "date": "2020-03-26",
+   "account": "BTWCSH",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Best Western Cape Suites Hotel",
+   "clientAddress": [
+    "P O Box 51085",
+    "WATERFRONT",
+    "8002",
+    "deputy.gm@capesuites.co.za"
+   ],
+   "deliverTo": [
+    "C/O Constitution & De Villiers",
+    "ZONNEBLOEM",
+    "7925"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "16/03 Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 600.0
+    },
+    {
+     "code": "2000100",
+     "description": "Material",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 100.5
+    },
+    {
+     "code": "2000200",
+     "description": "Truck hire",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 150.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 212.63
+    }
+   ],
+   "subtotal": 1063.13,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 1063.13,
+   "tax": 0.0,
+   "total": 1063.13
+  },
+  {
+   "documentNo": "IN103623",
+   "date": "2020-03-26",
+   "account": "CMTIDC",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Claremont Improvement District Company",
+   "clientAddress": [
+    "Shop 11",
+    "Stadium on Main Building",
+    "Main road",
+    "CLAREMONT 7700",
+    "VAT Reg # 4240191850"
+   ],
+   "deliverTo": [
+    "Shop 11",
+    "Stadium on Main Building",
+    "Main road",
+    "CLAREMONT 7700",
+    "VAT Reg # 4240191850"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 3520.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 880.0
+    }
+   ],
+   "subtotal": 4400.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 4400.0,
+   "tax": 0.0,
+   "total": 4400.0
+  },
+  {
+   "documentNo": "IN103624",
+   "date": "2020-04-21",
+   "account": "CCIDMG",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CCID School of Road Maintenance",
+   "clientAddress": [
+    "PO Box 7517",
+    "ROGGEBAAI",
+    "8012",
+    "VAT # 4010190603"
+   ],
+   "deliverTo": [
+    "1 Thibault Square",
+    "13 th Floor",
+    "Cnr Long Str & Hans Strydom Av",
+    "CAPE TOWN",
+    "8001"
+   ],
+   "lineItems": [
+    {
+     "code": "4401001",
+     "description": "Salaries Road Maintenance Team",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 34848.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 8712.0
+    }
+   ],
+   "subtotal": 43560.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 43560.0,
+   "tax": 0.0,
+   "total": 43560.0
+  },
+  {
+   "documentNo": "IN103625",
+   "date": "2020-04-21",
+   "account": "CCID-S",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CCID School of Tech Service",
+   "clientAddress": [
+    "PO Box 7517",
+    "ROGGEBAAI",
+    "8012",
+    "8000",
+    "VAT # 4010190603"
+   ],
+   "deliverTo": [
+    "1 Thibualt Square",
+    "13th Floor",
+    "Cnr Long st & Hans Strydom Ave",
+    "CAPE TOWN 8001",
+    "VAT # 4010190603"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 37407.04
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 9351.76
+    }
+   ],
+   "subtotal": 46758.8,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 46758.8,
+   "tax": 0.0,
+   "total": 46758.8
+  },
+  {
+   "documentNo": "IN103626",
+   "date": "2020-04-21",
+   "account": "GSCIDC",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Groote Schuur Community Improvement Dist",
+   "clientAddress": [
+    "93 Main Road",
+    "Mowbray",
+    "7935",
+    "VAT # 4010257618"
+   ],
+   "deliverTo": [
+    "93 Main Road",
+    "Mowbray",
+    "7935",
+    "VAT # 4010257618"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 75904.58
+    },
+    {
+     "code": "2000100",
+     "description": "Material",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 7800.0
+    },
+    {
+     "code": "2000200",
+     "description": "Transport",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 4800.0
+    },
+    {
+     "code": "1000300",
+     "description": "Management Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 23500.0
+    }
+   ],
+   "subtotal": 112004.58,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 112004.58,
+   "tax": 0.0,
+   "total": 112004.58
+  },
+  {
+   "documentNo": "IN103627",
+   "date": "2020-04-21",
+   "account": "LMRIDE",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Little Mowbray & Rosebank Improv CID",
+   "clientAddress": [
+    "15 Lancaster Road",
+    "Littel Mowbray",
+    "7700",
+    "VAT# 4250275015"
+   ],
+   "deliverTo": [
+    "15 Lancaster Road",
+    "Littel Mowbray",
+    "7700",
+    "VAT# 4250275015"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 12979.22
+    },
+    {
+     "code": "2000100",
+     "description": "Material",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1191.0
+    },
+    {
+     "code": "3850000",
+     "description": "Insurance",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 153.7
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 3345.25
+    }
+   ],
+   "subtotal": 17669.17,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 17669.17,
+   "tax": 0.0,
+   "total": 17669.17
+  },
+  {
+   "documentNo": "IN103628",
+   "date": "2020-04-21",
+   "account": "CCIDMA",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "CCID DIGNITY Management Team",
+   "clientAddress": [
+    "PO Box 7517",
+    "ROGGEBAAI",
+    "8012",
+    "VAT Ref # 4010190603"
+   ],
+   "deliverTo": [
+    "1 Thibault Sqaure",
+    "13th Floor",
+    "Cnr Long st & Hans Strydom Ave",
+    "CAPE TOWN 8001"
+   ],
+   "lineItems": [
+    {
+     "code": "4401001",
+     "description": "Salaries Management Team",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 53943.0
+    },
+    {
+     "code": "1000300",
+     "description": "Management Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 13485.75
+    }
+   ],
+   "subtotal": 67428.75,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 67428.75,
+   "tax": 0.0,
+   "total": 67428.75
+  },
+  {
+   "documentNo": "IN103629",
+   "date": "2020-04-01",
+   "account": "STANDF",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "St Andrews Flat - Isaac Marimbire",
+   "clientAddress": [
+    "St Andrews Church",
+    "GREEN POINT",
+    "8005"
+   ],
+   "deliverTo": [
+    "St Andrews Church",
+    "GREEN POINT",
+    "8005"
+   ],
+   "lineItems": [
+    {
+     "code": "1000302",
+     "description": "Rental Income - Flat",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 2929.0
+    }
+   ],
+   "subtotal": 2929.0,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 2929.0,
+   "tax": 0.0,
+   "total": 2929.0
+  },
+  {
+   "documentNo": "IN103630",
+   "date": "2020-04-21",
+   "account": "SERVES",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "Servest",
+   "clientAddress": [
+    "PO Box 2378",
+    "NORTHCLIFF",
+    "2115",
+    "VAT Ref # 4110174762"
+   ],
+   "deliverTo": [
+    "PO Box 2378",
+    "NORTHCLIFF",
+    "2115",
+    "VAT Ref # 4110174762"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 3900.0
+    },
+    {
+     "code": "2000100",
+     "description": "Material",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1105.0
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1251.25
+    }
+   ],
+   "subtotal": 6256.25,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 6256.25,
+   "tax": 0.0,
+   "total": 6256.25
+  },
+  {
+   "documentNo": "IN103631",
+   "date": "2020-04-21",
+   "account": "OBSIDN",
+   "yourReference": "",
+   "taxExempt": false,
+   "taxType": "Inclusive",
+   "client": "The Observatory Improvement District NPC",
+   "clientAddress": [
+    "13 A St Michael's Office Park",
+    "St Michael's Road",
+    "OBSERVATORY",
+    "7925",
+    "VAT# 4910253865"
+   ],
+   "deliverTo": [
+    "13 A St Michael's Office Park",
+    "St Michael's Road",
+    "OBSERVATORY",
+    "7925",
+    "VAT# 4910253865"
+   ],
+   "lineItems": [
+    {
+     "code": "2000300",
+     "description": "Labour costs",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 2970.0
+    },
+    {
+     "code": "2000300",
+     "description": "Employement benefit 1/17",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 174.71
+    },
+    {
+     "code": "3850000",
+     "description": "Insurance",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 38.43
+    },
+    {
+     "code": "1000100",
+     "description": "Admin Fees",
+     "quantity": null,
+     "unit": null,
+     "unitPrice": null,
+     "discPct": null,
+     "tax": 0.0,
+     "nettPrice": 1280.53
+    }
+   ],
+   "subtotal": 4463.67,
+   "discountPct": 0.0,
+   "discountAmount": 0.0,
+   "amountExclTax": 4463.67,
+   "tax": 0.0,
+   "total": 4463.67
+  }
+ ]
+}

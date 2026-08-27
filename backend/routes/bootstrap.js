@@ -11,6 +11,7 @@ const ENTITIES = [
   'payroll_periods', 'payroll_roster', 'payroll_entries', 'payroll_corrections',
   'payment_authorisations', 'weekly_registers', 'oasys_checks', 'depot_schedules',
   'quotations',
+  'invoices',
 ]
 
 // The whole app (marketing pages + dashboard) reads through one in-memory

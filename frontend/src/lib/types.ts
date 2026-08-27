@@ -558,6 +558,36 @@ export interface Quotation {
   createdAt: string
 }
 
+// ── Invoices (issued tax invoices to partners/clients) ──────────────────────
+export interface InvoiceLineItem {
+  code: string
+  description: string
+  tax: number
+  nettPrice: number
+}
+
+export interface Invoice {
+  id: string
+  documentNo: string
+  date: string
+  account: string
+  yourReference: string
+  taxExempt: boolean
+  taxType: 'Inclusive' | 'Exclusive'
+  client: string
+  clientAddress: string[]
+  deliverTo: string[]
+  lineItems: InvoiceLineItem[]
+  subtotal: number
+  discountPct: number
+  discountAmount: number
+  amountExclTax: number
+  tax: number
+  total: number
+  sourceFile?: string
+  createdAt: string
+}
+
 // ── Auth ──────────────────────────────────────────────────────────────────────
 export interface AuthToken {
   token: string
