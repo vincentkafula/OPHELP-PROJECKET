@@ -334,6 +334,38 @@ parser wraps bare table rows in an implicit `<tbody>`, which the parser
 accounts for — worth remembering if this importer is ever extended for
 other docx table formats.
 
+## Quotations (Operation Office + Partners)
+
+`QUOTATION_CHECK_-_CIDC.xlsx` is a job-costing template used to quote
+work before it starts (as opposed to [OASys](#weekly-registers--accsys-gl-export-operation-office),
+which invoices work already done) — line items grouped by Supervision /
+Labour / Materials / Transport, rolling up to a Subtotal, a 25% Admin
+Fee, an optional Management Fee, and a Quotation Total. Every sheet in
+the workbook is a separate quote; the sheet name becomes the quotation's
+title (`backend/scripts/import-quotations.js`, one `quotations` entity
+per sheet, only line items with a non-zero amount are kept — the
+template's many blank placeholder rows are skipped). Verified against
+the real workbook: 6 quotations across 6 sheets (a 7th, empty, sheet is
+skipped) with totals matching the source exactly, e.g. CIDC R9,147.95,
+Harrington Park Tarring R29,785.73.
+
+```
+railway run npm run import:quotations --prefix backend -- backend/scripts/data/QUOTATION_CHECK_-_CIDC.xlsx
+```
+
+The **Quotations** tab (`frontend/src/components/QuotationsPanel.tsx`) is
+shared between two roles:
+- **Operation Office** gets full management — assign a client, move a
+  quotation through draft → sent → approved/rejected, and see every
+  quotation.
+- **Partner** gets a read-only view scoped to their own shop
+  (`clientFilter` matched against the partner's `PartnerShop.name` — a
+  quotation only shows up for a partner once Operation Office has typed
+  their shop name into the quotation's Client field, since the import
+  itself has no client information to go on).
+
+Idempotent per (source file, sheet name).
+
 ## Known limitations / follow-ups
 
 - The admin **"Add User"** screen in the dashboard (`Dashboard.tsx`) still

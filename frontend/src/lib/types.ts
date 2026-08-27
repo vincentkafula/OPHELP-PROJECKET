@@ -532,6 +532,32 @@ export interface DepotSchedule {
   createdAt: string
 }
 
+// ── Quotations (job cost estimates for partners/clients) ────────────────────
+export type QuotationStatus = 'draft' | 'sent' | 'approved' | 'rejected'
+
+export interface QuotationLineItem {
+  category: string
+  description: string
+  unitCost: number | null
+  units: number | null
+  amount: number
+}
+
+export interface Quotation {
+  id: string
+  title: string
+  client: string
+  status: QuotationStatus
+  lineItems: QuotationLineItem[]
+  subtotal: number
+  adminFee: number
+  managementFee: number
+  total: number
+  sourceFile?: string
+  sourceSheet?: string
+  createdAt: string
+}
+
 // ── Auth ──────────────────────────────────────────────────────────────────────
 export interface AuthToken {
   token: string

@@ -8,7 +8,7 @@ import {
   Cards, Payments, Transactions, PartnerShops, AtmLocations, Projects,
   Equipments, Inventory, Incidents, Notifications, Messages, AuditLogs,
   PayrollPeriods, PayrollRoster, PayrollEntries, PayrollCorrections,
-  PaymentAuthorisations, WeeklyRegisters, OasysChecks, DepotSchedules,
+  PaymentAuthorisations, WeeklyRegisters, OasysChecks, DepotSchedules, Quotations,
   now, uid,
 } from './db'
 import type {
@@ -17,7 +17,7 @@ import type {
   Equipment, InventoryItem, Incident, Notification, Message, AuditLog,
   DashboardStats, ApiResult, PayrollPeriod, PayrollRosterEntry, PayrollEntry,
   PayrollCorrection, PaymentAuthorisation, WeeklyRegister, OasysCheck,
-  DepotSchedule,
+  DepotSchedule, Quotation,
 } from './types'
 
 // ── Participants ──────────────────────────────────────────────────────────────
@@ -741,5 +741,28 @@ export const DepotScheduleApi = {
   byDepot(depotName: string): DepotSchedule[] { return DepotSchedules.where(s => s.depotName === depotName) },
   delete(id: string): ApiResult {
     return DepotSchedules.delete(id) ? { success: true } : { success: false, error: 'Schedule not found' }
+  },
+}
+
+// ── Quotations (job cost estimates for partners/clients) ────────────────────
+export const QuotationApi = {
+  list(): Quotation[] {
+    return Quotations.all().sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+  },
+  get(id: string): Quotation | undefined { return Quotations.findById(id) },
+  byStatus(status: Quotation['status']): Quotation[] { return Quotations.where(q => q.status === status) },
+  byClient(client: string): Quotation[] { return Quotations.where(q => q.client === client) },
+  create(data: Omit<Quotation, 'id' | 'createdAt' | 'status'> & { status?: Quotation['status'] }): ApiResult<Quotation> {
+    const q = Quotations.insert({ ...data, status: data.status ?? 'draft', createdAt: now() })
+    return { success: true, data: q }
+  },
+  update(id: string, patch: Partial<Quotation>): ApiResult<Quotation> {
+    const q = Quotations.update(id, patch)
+    return q ? { success: true, data: q } : { success: false, error: 'Quotation not found' }
+  },
+  setClient(id: string, client: string): ApiResult<Quotation> { return this.update(id, { client }) },
+  setStatus(id: string, status: Quotation['status']): ApiResult<Quotation> { return this.update(id, { status }) },
+  delete(id: string): ApiResult {
+    return Quotations.delete(id) ? { success: true } : { success: false, error: 'Quotation not found' }
   },
 }

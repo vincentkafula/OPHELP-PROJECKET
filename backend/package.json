@@ -16,7 +16,8 @@
     "import:weekly-register": "node scripts/import-weekly-register.js",
     "import:accsys-export": "node scripts/import-accsys-export.js",
     "import:oasys-checks": "node scripts/import-oasys-checks.js",
-    "import:depot-schedule": "node scripts/import-depot-schedule.js"
+    "import:depot-schedule": "node scripts/import-depot-schedule.js",
+    "import:quotations": "node scripts/import-quotations.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
