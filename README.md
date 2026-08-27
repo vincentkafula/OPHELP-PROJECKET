@@ -472,6 +472,27 @@ requests, Manager gets a separate **Approve/Decline Monthly Terms**
 action (§3.4) alongside the main approval chain.
 
 - **Partner** → `QuotationRequestPanel.tsx` — submit + track status
+
+**Connects to the real Quotations/Invoices tabs, not a parallel system.**
+The Partner dashboard's **Quotations** and **Invoices** tabs already held
+real data (a job-costing template import and a historical tax-invoice
+register import, respectively) before any of this workflow existed —
+those are the actual documents partners see, so the workflow generates
+into them rather than adding a third, disconnected place to look:
+- When Manager approves a request, `QuotationRequestApi.approveManager`
+  creates a real `Quotation` record (line items for foreman/workers/
+  supervisors, status `approved`, total = the Office-approved amount if
+  one was set) with `client` set to the partner's name — it appears
+  immediately on the partner's existing **Quotations** tab alongside any
+  imported quotes, and the request keeps a `quotationId` back-reference.
+- When Operation Office finalizes a partner's Monthly Invoice,
+  `MonthlyInvoiceApi.finalize` creates a real `Invoice` record (one line
+  per confirmed Jobsheet, `client` set to the partner's name) — it
+  appears on the partner's existing **Invoices** tab alongside any
+  imported historical invoices, and the `MonthlyInvoice` record keeps an
+  `invoiceId` back-reference for the audit trail of which Jobsheets it
+  covered.
+
 - **Operation Management** / **Operation Office** / **Manager** → one
   shared `RequestApprovalPanel.tsx` (a `stage` prop switches the review
   form: feasibility notes / approved-amount override / stream assignment)
@@ -489,6 +510,11 @@ action (§3.4) alongside the main approval chain.
 - §3.4's "invoice must be paid before service" upfront-payment gate
   isn't wired to a real payment/collections step — Manager approval is
   the only gate before a request can be pulled into scheduling.
+- The generated Quotation's admin fee is back-solved as
+  `total - subtotal` (since the request only carries one final quoted
+  amount, not a separate fee-rate figure) rather than a stated 25% —
+  matching whatever the Office actually approved rather than
+  recalculating it.
 
 ## Field Ops Flow (Scheduling → Team Booking → Roll Call → Store)
 

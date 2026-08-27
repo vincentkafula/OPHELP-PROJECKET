@@ -647,6 +647,10 @@ export interface MonthlyInvoice {
   totalAmount: number
   finalizedAt: string
   finalizedBy?: string
+  /** The real Invoice record (same Invoice type/tab used for the imported
+   * tax invoice register) created for this batch of Jobsheets — see
+   * MonthlyInvoiceApi.finalize(). */
+  invoiceId?: string
   createdAt: string
 }
 
@@ -697,6 +701,10 @@ export interface QuotationRequest {
   monthlyTermsDecision?: MonthlyTermsDecision
   monthlyTermsDecisionBy?: string
   monthlyTermsDecisionAt?: string
+  /** Set once Manager approval creates the real Quotation record (the
+   * same Quotation type/tab used for imported cost-estimate documents —
+   * see QuotationRequestApi.approveManager). */
+  quotationId?: string
   createdAt: string
 }
 

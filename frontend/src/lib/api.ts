@@ -18,7 +18,7 @@ import type {
   Equipment, InventoryItem, Incident, Notification, Message, AuditLog,
   DashboardStats, ApiResult, PayrollPeriod, PayrollRosterEntry, PayrollEntry,
   PayrollCorrection, PaymentAuthorisation, WeeklyRegister, OasysCheck,
-  DepotSchedule, Quotation, Invoice, Jobsheet, JobSheetData, JobSheetAccRow, MonthlyInvoice,
+  DepotSchedule, Quotation, QuotationLineItem, Invoice, InvoiceLineItem, Jobsheet, JobSheetData, JobSheetAccRow, MonthlyInvoice,
   QuotationRequest, ScheduledJob, TeamBooking, TeamBookingReplacement, TaskSheet, TaskSheetData,
 } from './types'
 
@@ -786,6 +786,13 @@ export const InvoiceApi = {
   totals(list: Invoice[]): { count: number; total: number; clients: number } {
     return { count: list.length, total: list.reduce((s, i) => s + i.total, 0), clients: new Set(list.map(i => i.client)).size }
   },
+  /** System-generated invoice (e.g. a partner's finalized Monthly Invoice
+   * from confirmed Jobsheets) — same Invoice shape/tab as the imported tax
+   * invoice register, so it shows up alongside real historical invoices. */
+  create(data: Omit<Invoice, 'id' | 'createdAt'>): ApiResult<Invoice> {
+    const inv = Invoices.insert({ ...data, createdAt: now() })
+    return { success: true, data: inv }
+  },
 }
 
 // ── Jobsheets — wraps the real JobSheet.tsx print-form data with the
@@ -885,9 +892,26 @@ export const MonthlyInvoiceApi = {
   finalize(partnerShopId: string, month: string, finalizedBy?: string): ApiResult<MonthlyInvoice> {
     const { jobsheets, total } = this.pendingForMonth(partnerShopId, month)
     if (!jobsheets.length) return { success: false, error: 'No confirmed Jobsheets to invoice for this month' }
+
+    // Creates the real Invoice record (same type/tab as the imported tax
+    // invoice register) so the partner sees one consistent Invoices list.
+    const partner = PartnerShops.findById(partnerShopId)
+    const lineItems: InvoiceLineItem[] = jobsheets.map(j => ({
+      code: j.serialNumber ?? '', description: j.data.task || j.data.area || 'Jobsheet',
+      tax: 0, nettPrice: deriveJobsheetTotals(j.data).invoiceAmount,
+    }))
+    const invoiceRes = InvoiceApi.create({
+      documentNo: `MI-${month}-${partnerShopId.slice(0, 6).toUpperCase()}`,
+      date: now(), account: partner?.name ?? '', yourReference: `Monthly Invoice — ${month}`,
+      taxExempt: false, taxType: 'Inclusive', client: partner?.name ?? '',
+      clientAddress: [], deliverTo: [], lineItems,
+      subtotal: total, discountPct: 0, discountAmount: 0, amountExclTax: total, tax: 0, total,
+      sourceFile: 'Generated from confirmed Jobsheets',
+    })
+
     const inv = MonthlyInvoices.insert({
       partnerShopId, month, jobsheetIds: jobsheets.map(j => j.id), totalAmount: total,
-      finalizedAt: now(), finalizedBy, createdAt: now(),
+      finalizedAt: now(), finalizedBy, invoiceId: invoiceRes.data?.id, createdAt: now(),
     })
     return { success: true, data: inv }
   },
@@ -929,7 +953,30 @@ export const QuotationRequestApi = {
     return q ? { success: true, data: q } : { success: false, error: 'Quotation request not found' }
   },
   approveManager(id: string, by: string, assignedStream: QuotationRequest['stream'], notes?: string): ApiResult<QuotationRequest> {
-    const q = QuotationRequests.update(id, { status: 'approved', managerApprovedBy: by, managerApprovedAt: now(), managerAssignedStream: assignedStream, managerNotes: notes })
+    const req = QuotationRequests.findById(id)
+    if (!req) return { success: false, error: 'Quotation request not found' }
+
+    // Creates the real Quotation record (same type/tab as imported
+    // cost-estimate documents) so the partner sees one consistent
+    // Quotations list, rather than a separate approval-only record.
+    const partner = PartnerShops.findById(req.partnerShopId)
+    const lineItems: QuotationLineItem[] = []
+    if (req.numForemen) lineItems.push({ category: 'Supervision', description: 'Foreman', unitCost: req.foremanRate, units: req.numForemen, amount: req.foremanRate * req.numForemen })
+    if (req.numWorkers) lineItems.push({ category: 'Labour', description: 'Workers', unitCost: req.workerRate, units: req.numWorkers, amount: req.workerRate * req.numWorkers })
+    if (req.numSupervisors) lineItems.push({ category: 'Supervision', description: 'Operation Supervisors', unitCost: req.supervisorRate, units: req.numSupervisors, amount: req.supervisorRate * req.numSupervisors })
+    const subtotal = lineItems.reduce((s, li) => s + li.amount, 0)
+    const total = req.officeApprovedAmount ?? req.quotedAmount
+
+    const quotation = Quotations.insert({
+      title: req.taskDetails, client: partner?.name ?? '', status: 'approved',
+      lineItems, subtotal, adminFee: total - subtotal, managementFee: 0, total,
+      createdAt: now(),
+    })
+
+    const q = QuotationRequests.update(id, {
+      status: 'approved', managerApprovedBy: by, managerApprovedAt: now(),
+      managerAssignedStream: assignedStream, managerNotes: notes, quotationId: quotation.id,
+    })
     return q ? { success: true, data: q } : { success: false, error: 'Quotation request not found' }
   },
   decline(id: string, by: string, reason: string): ApiResult<QuotationRequest> {
