@@ -18,7 +18,8 @@
     "import:oasys-checks": "node scripts/import-oasys-checks.js",
     "import:depot-schedule": "node scripts/import-depot-schedule.js",
     "import:quotations": "node scripts/import-quotations.js",
-    "import:invoices": "node scripts/import-invoices.js"
+    "import:invoices": "node scripts/import-invoices.js",
+    "fix:team-names": "node scripts/rename-teams.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

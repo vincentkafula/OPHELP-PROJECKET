@@ -571,6 +571,24 @@ issued/returned/used figures foremen record on each Jobsheet (§3.8/3.11).
   Parade shift specifically, so it isn't part of this general
   scheduling/booking flow the way the Jobsheet's money side is.
 
+## Team Names
+
+The seed data's demo teams originally used invented names ("Road Alpha
+Team 1", "Parks Green Team", "Diepsloot Clean Crew"). These are now the
+real team names: **Team 20, Team 13, Team Negotiator, Team Coaching,
+Team 24** (`backend/seed.js`). If a database was already seeded before
+this change, `backend/scripts/rename-teams.js` renames the existing
+records in place — and creates the two teams that didn't exist yet
+(Team Coaching, Team 24), attached to a site/foreman that's already in
+the database, never an invented one:
+
+```
+railway run npm run fix:team-names --prefix backend
+```
+
+Safe to run against a live database — it only touches team names, never
+reseeds or deletes anything else.
+
 ## Known limitations / follow-ups
 
 - The admin **"Add User"** screen in the dashboard (`Dashboard.tsx`) still

@@ -70,9 +70,11 @@ async function seed() {
   const [site1, site2, site3, site4, site5] = seededSites.map((s) => s.id)
 
   // ── Teams ────────────────────────────────────────────────────────────────
-  const team1 = await insertEntity('teams', { id: uid(), name: 'Road Alpha Team 1', siteId: site1, foremanId, memberIds: [], createdAt: dIso(60) })
-  const team2 = await insertEntity('teams', { id: uid(), name: 'Parks Green Team', siteId: site2, foremanId: foreman2Id, memberIds: [], createdAt: dIso(45) })
-  const team3 = await insertEntity('teams', { id: uid(), name: 'Diepsloot Clean Crew', siteId: site3, foremanId: foreman3Id, memberIds: [], createdAt: dIso(30) })
+  const team1 = await insertEntity('teams', { id: uid(), name: 'Team 20', siteId: site1, foremanId, memberIds: [], createdAt: dIso(60) })
+  const team2 = await insertEntity('teams', { id: uid(), name: 'Team 13', siteId: site2, foremanId: foreman2Id, memberIds: [], createdAt: dIso(45) })
+  const team3 = await insertEntity('teams', { id: uid(), name: 'Team Negotiator', siteId: site3, foremanId: foreman3Id, memberIds: [], createdAt: dIso(30) })
+  const team4 = await insertEntity('teams', { id: uid(), name: 'Team Coaching', siteId: site4, foremanId, memberIds: [], createdAt: dIso(20) })
+  const team5 = await insertEntity('teams', { id: uid(), name: 'Team 24', siteId: site5, foremanId: foreman2Id, memberIds: [], createdAt: dIso(10) })
 
   // ── Participants ─────────────────────────────────────────────────────────
   const participantNames = [
