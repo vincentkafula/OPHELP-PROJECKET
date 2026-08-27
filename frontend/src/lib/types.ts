@@ -588,6 +588,81 @@ export interface Invoice {
   createdAt: string
 }
 
+// ── Jobsheets (money engine: shift payout → serial number → OpHelp ledger →
+// partner invoice rollup). Field names and formulas follow the "System
+// Configuration Prompt — Field Services Operations Platform" spec, §4-7.
+//
+// FLAGGED ASSUMPTIONS (spec left these ambiguous — defaulting conservatively,
+// per the spec's own instruction to flag rather than guess):
+//   1. The spec's §4.5 shows two named "accounts" per Jobsheet in the existing
+//      print-form UI, but the §4.4 calculation is written as a single set of
+//      formulas with no per-account split specified. Rather than invent a
+//      split with no basis in the spec, this computes ONE financial result
+//      per Jobsheet (cash/eft/extra/6X/transport/material/other/subtotal/
+//      admin fee/invoice total) and keeps `accountName` as a single
+//      free-text label for record-keeping.
+//   2. "Extra" (pay beyond the contracted R365/R385 team total) is a
+//      separate manual field, not derived by subtraction — the UI warns if
+//      cash+eft+6X-reward doesn't already equal the contracted total.
+//   3. "Other" is not in the §4.4 subtotal formula's listed terms, but is a
+//      ledger column in §6 with its own cash/EFT split — a real cost with
+//      nowhere else to go would make the invoice under-bill, so it's
+//      included in the subtotal here.
+//   4. Serial number format follows the literal "8-digit, DDMMYY + 2-digit
+//      sequence" rule from §5, not the inconsistent "EG260827010" example.
+//   5. Admin fee rate defaults to 25% per §4.4 but is editable per Jobsheet,
+//      since §6 lists "Fee Rate %" as its own ledger column (implying it can
+//      vary by partner/contract).
+export type JobsheetStatus = 'draft' | 'submitted' | 'confirmed'
+export type PaymentMethod = 'cash' | 'eft'
+
+export interface JobsheetPayment {
+  name: string
+  role: 'foreman' | 'worker'
+  method: PaymentMethod
+  amount: number
+}
+
+export interface Jobsheet {
+  id: string
+  date: string
+  jobDetail: string
+  partnerShopId?: string
+  accountName: string
+  qualified: boolean
+  shiftHours: 4 | 8
+  contractedLabourTotal: 365 | 385
+  payments: JobsheetPayment[]
+  extraAmount: number
+  transportAmount: number
+  bagsChargeEnabled: boolean
+  bagsIssued: number
+  bagsReturned: number
+  bagsUsed: number
+  glovesIssued: number
+  glovesReturned: number
+  glovesUsed: number
+  otherAmount: number
+  adminFeeRatePct: number
+  status: JobsheetStatus
+  serialNumber?: string
+  createdBy?: string
+  confirmedBy?: string
+  confirmedAt?: string
+  createdAt: string
+}
+
+export interface MonthlyInvoice {
+  id: string
+  partnerShopId: string
+  month: string // 'YYYY-MM'
+  jobsheetIds: string[]
+  totalAmount: number
+  finalizedAt: string
+  finalizedBy?: string
+  createdAt: string
+}
+
 // ── Auth ──────────────────────────────────────────────────────────────────────
 export interface AuthToken {
   token: string

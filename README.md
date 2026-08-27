@@ -399,6 +399,68 @@ shared between roles the same way [Quotations](#quotations-operation-office--par
 is: Operation Office sees the full register with CSV export; Partner
 sees only invoices whose `client` field matches their `PartnerShop.name`.
 
+## Jobsheets — Money Engine (Foreman → Operation Office → Accounting → Partner)
+
+This implements the financial core of the "Field Services Operations
+Platform" spec: a Jobsheet's exact pay/6X-Reward/material/admin-fee
+calculation, serial numbering, the OpHelp Accounting ledger, and the
+partner monthly invoice rollup. It's a deliberately scoped slice of a
+much larger spec (quotation requests, the 3-stage approval chain,
+scheduling, team booking, and day-admin roll-call/deployment are **not**
+built yet) — this is the piece everything else would eventually feed
+into.
+
+**Flow:** Foreman creates a Jobsheet (**Jobsheets** tab) after a shift,
+entering the team's pay (cash/EFT per person), bags/gloves counts,
+transport, and any extra. It computes live as you type. Foreman submits
+→ Operation Office reviews (**Jobsheet Review** tab) and confirms, which
+assigns the serial number and makes it appear in **OpHelp Ledger**. A
+partner's confirmed Jobsheets roll up into a **Monthly Invoice**
+(Operation Office finalizes it; the partner sees it read-only under
+**Monthly Invoice** on their own dashboard).
+
+**Calculation** (`computeJobsheetFinancials` in `frontend/src/lib/api.ts`
+— the single source of truth used by both the live entry-form preview
+and the ledger):
+1. Cash / EFT = sum of the team's per-person payments by method.
+2. 6X Reward = unqualified team only — R10/member (4h) or R20/member (8h).
+3. Pay Amount = Cash + EFT + 6X Reward — should equal the contracted
+   labour total (R385 or R365, set per Jobsheet); the entry form warns
+   if it doesn't.
+4. Material = (bags used × R1.94) + (gloves used × R7.50), zero if the
+   contract's "client pays direct" toggle is on.
+5. Subtotal = Cash + EFT + Extra + 6X Reward + Transport + Material + Other.
+6. Admin Fee = Subtotal × fee rate (defaults to 25%, editable per Jobsheet).
+7. Invoice Amount = Subtotal + Admin Fee.
+
+**Flagged assumptions** (the source spec left these ambiguous — each is
+also documented as a comment on the `Jobsheet` type in
+`frontend/src/lib/types.ts`):
+- The spec's own print-form UI (`JobSheet.tsx`) shows **two** named
+  accounts per Jobsheet, but the calculation section gives one set of
+  formulas with no per-account split defined. Rather than invent a
+  split, this computes **one** financial result per Jobsheet and keeps
+  `accountName` as a single free-text label.
+- "Extra" (pay beyond the contracted total) is a manual field, not
+  derived by subtraction — matching the spec's own wording that Extra is
+  "recorded separately."
+- "Other" isn't listed in the subtotal formula's terms but does have its
+  own ledger column with a real cost behind it, so it's included in the
+  subtotal — excluding a real cost would under-bill the client.
+- The serial number follows the literal "8-digit, DDMMYY + 2-digit daily
+  sequence" rule, not the spec's own inconsistent `EG260827010` example.
+- Admin fee rate defaults to 25% but is editable per Jobsheet, since the
+  ledger has its own "Fee Rate %" column implying it varies.
+- The OpHelp Accounting ledger tracks Transport/Material/Admin/Other as
+  single amounts rather than cash/EFT pairs — only team labour pay
+  differentiates cash vs EFT per person; the spec doesn't say how the
+  other categories are paid out.
+- For an unqualified team, Cash+EFT+6X-Reward will generally **not**
+  equal R365/R385 (the unqualified base rates sum to R270), which the
+  entry form will flag as a mismatch — this is a literal reading of the
+  spec's own formula, not a bug; reconcile the difference with the Extra
+  field per Jobsheet.
+
 ## Known limitations / follow-ups
 
 - The admin **"Add User"** screen in the dashboard (`Dashboard.tsx`) still

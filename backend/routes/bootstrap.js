@@ -12,6 +12,7 @@ const ENTITIES = [
   'payment_authorisations', 'weekly_registers', 'oasys_checks', 'depot_schedules',
   'quotations',
   'invoices',
+  'jobsheets', 'monthly_invoices',
 ]
 
 // The whole app (marketing pages + dashboard) reads through one in-memory

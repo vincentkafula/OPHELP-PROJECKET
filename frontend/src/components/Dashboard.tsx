@@ -19,6 +19,9 @@ import OasysChecksPanel from './OasysChecksPanel'
 import DepotSchedulesPanel from './DepotSchedulesPanel'
 import QuotationsPanel from './QuotationsPanel'
 import InvoicesPanel from './InvoicesPanel'
+import JobsheetsPanel from './JobsheetsPanel'
+import AccountingLedgerPanel from './AccountingLedgerPanel'
+import MonthlyInvoicePanel from './MonthlyInvoicePanel'
 import {
   ReportApi, ParticipantApi, ShiftApi, PaymentApi, CardApi,
   UserApi, SiteApi, PartnerShopApi, ProjectApi, AuditApi,
@@ -54,6 +57,7 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '✅', label: 'Approvals' }, { icon: '⚠️', label: 'Incidents' },
     { icon: '👷', label: 'My Team' }, { icon: '📋', label: 'Jobsheet' },
     { icon: '🏛️', label: 'Tasksheet' }, { icon: '🏙️', label: 'Shift Slip' },
+    { icon: '💵', label: 'Jobsheets' },
   ],
   day_admin: [
     { icon: '🏠', label: 'Overview' }, { icon: '📅', label: 'Attendance' },
@@ -70,6 +74,8 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '📋', label: 'Weekly Registers' }, { icon: '🔍', label: 'OASys Reconciliation' },
     { icon: '🗓️', label: 'Depot Schedules' }, { icon: '📐', label: 'Quotations' },
     { icon: '🧾', label: 'Invoices' },
+    { icon: '💵', label: 'Jobsheet Review' }, { icon: '📒', label: 'OpHelp Ledger' },
+    { icon: '📅', label: 'Monthly Invoices' },
   ],
   operation_management: [
     { icon: '🏠', label: 'Overview' }, { icon: '🏗️', label: 'Sites' },
@@ -83,6 +89,7 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
   project_manager: [
     { icon: '🏠', label: 'Overview' }, { icon: '📁', label: 'Projects' },
     { icon: '🏗️', label: 'Sites' }, { icon: '📊', label: 'Progress' },
+    { icon: '📒', label: 'OpHelp Ledger' },
   ],
   head_office: [
     { icon: '🏠', label: 'Overview' }, { icon: '📊', label: 'Executive KPIs' },
@@ -92,6 +99,7 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '🏠', label: 'Overview' }, { icon: '💳', label: 'Transactions' },
     { icon: '📄', label: 'My Contract' }, { icon: '📊', label: 'Reports' },
     { icon: '📐', label: 'Quotations' }, { icon: '🧾', label: 'Invoices' },
+    { icon: '💵', label: 'Monthly Invoice' },
   ],
   team: [
     { icon: '🏠', label: 'Overview' }, { icon: '📅', label: 'My Shifts' },
@@ -1026,6 +1034,7 @@ function ForemanDashboard({ user, activeIdx }: { user: AuthUser; activeIdx: numb
   }
   if (activeIdx === 6) return <GrandParadeTaskSheet />
   if (activeIdx === 7) return <CityDepotShiftSlip />
+  if (activeIdx === 8) return <JobsheetsPanel mode="foreman" currentUserName={user.name} />
 
   if (activeIdx === 1) return (
     <SectionCard title={`Today's Shifts — ${today}`}>
@@ -1276,6 +1285,9 @@ function OperationOfficeDashboard({ user, activeIdx }: { user: AuthUser; activeI
   if (activeIdx === 12) return <DepotSchedulesPanel />
   if (activeIdx === 13) return <QuotationsPanel />
   if (activeIdx === 14) return <InvoicesPanel />
+  if (activeIdx === 15) return <JobsheetsPanel mode="office" currentUserName={user.name} />
+  if (activeIdx === 16) return <AccountingLedgerPanel />
+  if (activeIdx === 17) return <MonthlyInvoicePanel mode="office" currentUserName={user.name} />
 
   if (activeIdx === 1) return <SitesMgmtPanel color="#1565C0" />
   if (activeIdx === 2) return <ShiftsMgmtPanel userId={user.id} />
@@ -1420,6 +1432,7 @@ function ProjectManagerDashboard({ user, activeIdx }: { user: AuthUser; activeId
 
   if (activeIdx === 1) return <ProjectsPanel userId={user.id} />
   if (activeIdx === 2) return <SitesMgmtPanel color="#AD1457" />
+  if (activeIdx === 4) return <AccountingLedgerPanel />
 
   if (activeIdx === 3) return (
     <div className="space-y-6">
@@ -1613,6 +1626,7 @@ function PartnerDashboard({ user, activeIdx }: { user: AuthUser; activeIdx: numb
 
   if (activeIdx === 4) return <QuotationsPanel readOnly clientFilter={myShop?.name} />
   if (activeIdx === 5) return <InvoicesPanel clientFilter={myShop?.name} />
+  if (activeIdx === 6) return <MonthlyInvoicePanel mode="partner" partnerShopId={myShop?.id} />
 
   if (activeIdx === 2 && myShop) return (
     <div className="space-y-6">

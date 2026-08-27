@@ -9,6 +9,7 @@ import {
   Equipments, Inventory, Incidents, Notifications, Messages, AuditLogs,
   PayrollPeriods, PayrollRoster, PayrollEntries, PayrollCorrections,
   PaymentAuthorisations, WeeklyRegisters, OasysChecks, DepotSchedules, Quotations, Invoices,
+  Jobsheets, MonthlyInvoices,
   now, uid,
 } from './db'
 import type {
@@ -17,7 +18,7 @@ import type {
   Equipment, InventoryItem, Incident, Notification, Message, AuditLog,
   DashboardStats, ApiResult, PayrollPeriod, PayrollRosterEntry, PayrollEntry,
   PayrollCorrection, PaymentAuthorisation, WeeklyRegister, OasysCheck,
-  DepotSchedule, Quotation, Invoice,
+  DepotSchedule, Quotation, Invoice, Jobsheet, JobsheetPayment, MonthlyInvoice,
 } from './types'
 
 // ── Participants ──────────────────────────────────────────────────────────────
@@ -783,5 +784,116 @@ export const InvoiceApi = {
   },
   totals(list: Invoice[]): { count: number; total: number; clients: number } {
     return { count: list.length, total: list.reduce((s, i) => s + i.total, 0), clients: new Set(list.map(i => i.client)).size }
+  },
+}
+
+// ── Jobsheets — money engine (§4-7 of the field-services platform spec) ────────
+export interface JobsheetFinancials {
+  cashAmount: number
+  eftAmount: number
+  sixXRewardAmount: number
+  payAmount: number
+  payMismatch: boolean // cash+eft+6X should equal the contracted labour total
+  bagsAmount: number
+  glovesAmount: number
+  materialAmount: number
+  subtotal: number
+  adminFee: number
+  invoiceAmount: number
+}
+
+/** Pure calculation engine — used by both the entry form (live preview) and
+ * anything server-side/summary that needs the same numbers, so the math
+ * only lives in one place. */
+export function computeJobsheetFinancials(js: Pick<Jobsheet,
+  'payments' | 'qualified' | 'shiftHours' | 'contractedLabourTotal' | 'extraAmount' |
+  'transportAmount' | 'bagsChargeEnabled' | 'bagsUsed' | 'glovesUsed' | 'otherAmount' | 'adminFeeRatePct'
+>): JobsheetFinancials {
+  const cashAmount = js.payments.filter(p => p.method === 'cash').reduce((s, p) => s + p.amount, 0)
+  const eftAmount = js.payments.filter(p => p.method === 'eft').reduce((s, p) => s + p.amount, 0)
+  const memberCount = js.payments.length || 3
+  const sixXRewardAmount = js.qualified ? 0 : (js.shiftHours === 4 ? 10 : 20) * memberCount
+  const payAmount = cashAmount + eftAmount + sixXRewardAmount
+  const payMismatch = Math.round(payAmount * 100) !== Math.round(js.contractedLabourTotal * 100)
+
+  const bagsAmount = js.bagsChargeEnabled ? js.bagsUsed * 1.94 : 0
+  const glovesAmount = js.bagsChargeEnabled ? js.glovesUsed * 7.50 : 0
+  const materialAmount = bagsAmount + glovesAmount
+
+  const subtotal = cashAmount + eftAmount + js.extraAmount + sixXRewardAmount + js.transportAmount + materialAmount + js.otherAmount
+  const adminFee = subtotal * (js.adminFeeRatePct / 100)
+  const invoiceAmount = subtotal + adminFee
+
+  return { cashAmount, eftAmount, sixXRewardAmount, payAmount, payMismatch, bagsAmount, glovesAmount, materialAmount, subtotal, adminFee, invoiceAmount }
+}
+
+/** 8-digit serial number: 6-digit date (DDMMYY) + 2-digit daily sequence,
+ * per §5's literal rule (the "EG260827010" example doesn't match its own
+ * 8-digit description, so this follows the stated rule, not the example). */
+function nextSerialNumber(date: string, existing: Jobsheet[]): string {
+  const d = new Date(date)
+  const ddmmyy = [d.getDate(), d.getMonth() + 1, d.getFullYear() % 100].map(n => String(n).padStart(2, '0')).join('')
+  const sameDay = existing.filter(j => j.serialNumber?.startsWith(ddmmyy))
+  const seq = sameDay.length + 1
+  return ddmmyy + String(seq).padStart(2, '0')
+}
+
+export const JobsheetApi = {
+  list(): Jobsheet[] { return Jobsheets.all().sort((a, b) => b.date.localeCompare(a.date)) },
+  get(id: string): Jobsheet | undefined { return Jobsheets.findById(id) },
+  byStatus(status: Jobsheet['status']): Jobsheet[] { return Jobsheets.where(j => j.status === status) },
+  byCreator(createdBy: string): Jobsheet[] { return Jobsheets.where(j => j.createdBy === createdBy) },
+  byPartner(partnerShopId: string): Jobsheet[] { return Jobsheets.where(j => j.partnerShopId === partnerShopId) },
+  confirmed(): Jobsheet[] { return Jobsheets.where(j => j.status === 'confirmed') },
+
+  financials(js: Jobsheet): JobsheetFinancials { return computeJobsheetFinancials(js) },
+
+  create(data: Omit<Jobsheet, 'id' | 'createdAt' | 'status' | 'serialNumber'>): ApiResult<Jobsheet> {
+    const j = Jobsheets.insert({ ...data, status: 'draft', createdAt: now() })
+    return { success: true, data: j }
+  },
+  update(id: string, patch: Partial<Jobsheet>): ApiResult<Jobsheet> {
+    const j = Jobsheets.update(id, patch)
+    return j ? { success: true, data: j } : { success: false, error: 'Jobsheet not found' }
+  },
+  submit(id: string): ApiResult<Jobsheet> { return this.update(id, { status: 'submitted' }) },
+
+  /** Operation Office confirms a submitted Jobsheet: assigns its serial
+   * number and makes it appear in the OpHelp Accounting ledger. */
+  confirm(id: string, confirmedBy: string): ApiResult<Jobsheet> {
+    const js = Jobsheets.findById(id)
+    if (!js) return { success: false, error: 'Jobsheet not found' }
+    if (js.status !== 'submitted') return { success: false, error: 'Only submitted Jobsheets can be confirmed' }
+    const serialNumber = nextSerialNumber(js.date, Jobsheets.all())
+    const updated = Jobsheets.update(id, { status: 'confirmed', serialNumber, confirmedBy, confirmedAt: now() })
+    return updated ? { success: true, data: updated } : { success: false, error: 'Could not confirm Jobsheet' }
+  },
+  delete(id: string): ApiResult {
+    return Jobsheets.delete(id) ? { success: true } : { success: false, error: 'Jobsheet not found' }
+  },
+}
+
+// ── Monthly Invoices — partner rollup of confirmed Jobsheets (§7) ──────────────
+export const MonthlyInvoiceApi = {
+  list(): MonthlyInvoice[] { return MonthlyInvoices.all().sort((a, b) => b.month.localeCompare(a.month)) },
+  byPartner(partnerShopId: string): MonthlyInvoice[] { return MonthlyInvoices.where(m => m.partnerShopId === partnerShopId) },
+
+  /** Confirmed Jobsheets for a partner + month that haven't been rolled
+   * into a finalized Monthly Invoice yet, with their running total. */
+  pendingForMonth(partnerShopId: string, month: string): { jobsheets: Jobsheet[]; total: number } {
+    const finalized = new Set(MonthlyInvoices.where(m => m.partnerShopId === partnerShopId && m.month === month).flatMap(m => m.jobsheetIds))
+    const jobsheets = JobsheetApi.confirmed().filter(j => j.partnerShopId === partnerShopId && j.date.startsWith(month) && !finalized.has(j.id))
+    const total = jobsheets.reduce((s, j) => s + computeJobsheetFinancials(j).invoiceAmount, 0)
+    return { jobsheets, total }
+  },
+
+  finalize(partnerShopId: string, month: string, finalizedBy?: string): ApiResult<MonthlyInvoice> {
+    const { jobsheets, total } = this.pendingForMonth(partnerShopId, month)
+    if (!jobsheets.length) return { success: false, error: 'No confirmed Jobsheets to invoice for this month' }
+    const inv = MonthlyInvoices.insert({
+      partnerShopId, month, jobsheetIds: jobsheets.map(j => j.id), totalAmount: total,
+      finalizedAt: now(), finalizedBy, createdAt: now(),
+    })
+    return { success: true, data: inv }
   },
 }
