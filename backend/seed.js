@@ -32,7 +32,7 @@ async function seed() {
 
   // ── System Users ────────────────────────────────────────────────────────
   const userDefs = [
-    { name: 'Thabo Nkosi', email: 'admin@ophelp.org', password: 'Admin@123', role: 'admin', roleLabel: 'System Administrator', avatar: 'TN', phone: '011 555 0001', department: 'Administration', createdAt: dIso(180), lastLogin: dIso(0) },
+    { name: 'Thabo Nkosi', email: 'admin@ophelp.org', password: 'Admin@123', role: 'admin', roleLabel: 'Teams Dashboard', avatar: 'TN', phone: '011 555 0001', department: 'Administration', createdAt: dIso(180), lastLogin: dIso(0) },
     { name: 'Sipho Dlamini', email: 'foreman@ophelp.org', password: 'Foreman@123', role: 'foreman', roleLabel: 'Site Foreman', avatar: 'SD', phone: '011 555 0002', department: 'Operations', createdAt: dIso(120), lastLogin: dIso(1) },
     { name: 'Zanele Mokoena', email: 'dayadmin@ophelp.org', password: 'DayAdmin@123', role: 'day_admin', roleLabel: 'Day Administrator', avatar: 'ZM', phone: '011 555 0003', department: 'Administration', createdAt: dIso(90), lastLogin: dIso(0) },
     { name: 'Lerato Sithole', email: 'opoffice@ophelp.org', password: 'OpOffice@123', role: 'operation_office', roleLabel: 'Operation Office', avatar: 'LS', phone: '011 555 0004', department: 'Operations', createdAt: dIso(90), lastLogin: dIso(2) },

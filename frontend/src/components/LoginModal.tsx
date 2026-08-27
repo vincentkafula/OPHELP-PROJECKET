@@ -15,7 +15,7 @@ export interface AuthUser {
 }
 
 const DEMO_HINTS = [
-  { role: 'Administrator', email: 'admin@ophelp.org', password: 'Admin@123' },
+  { role: 'Teams Dashboard', email: 'admin@ophelp.org', password: 'Admin@123' },
   { role: 'Foreman', email: 'foreman@ophelp.org', password: 'Foreman@123' },
   { role: 'Day Admin', email: 'dayadmin@ophelp.org', password: 'DayAdmin@123' },
   { role: 'Operation Office', email: 'opoffice@ophelp.org', password: 'OpOffice@123' },
