@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
-import { QuotationRequestApi } from '@/lib/api'
+import { QuotationRequestApi, PartnerShopApi } from '@/lib/api'
 import { dbBus } from '@/lib/events'
 import { DataTable } from './shared/DataTable'
 import { Modal } from './shared/Modal'
-import { Input, Select, Textarea } from './shared/FormField'
 import { Badge } from './shared/Badge'
-import type { QuotationRequest, OperationStream, PaymentTerms } from '@/lib/types'
+import QuotationBuilder, { type QuotationBuilderSubmitPayload } from './quotation-builder/QuotationBuilder'
+import type { QuotationRequest, OperationStream } from '@/lib/types'
 
 function useLive<T>(loader: () => T): T {
   const [data, setData] = useState<T>(loader)
@@ -50,39 +50,21 @@ function Btn({ onClick, children, variant = 'ghost' }: { onClick: () => void; ch
   return <button onClick={onClick} className={`${cls} px-3 py-1.5 text-xs rounded-lg font-medium transition-colors`}>{children}</button>
 }
 
-const emptyForm = {
-  numWorkers: '', numForemen: '', numSupervisors: '',
-  workerRate: '', foremanRate: '', supervisorRate: '',
-  taskDetails: '', locationAddress: '', locationLat: '', locationLng: '',
-  stream: 'school' as OperationStream, paymentTerms: 'upfront' as PaymentTerms,
-}
-
 interface QuotationRequestPanelProps { partnerShopId?: string; requestedBy: string }
 
 export default function QuotationRequestPanel({ partnerShopId, requestedBy }: QuotationRequestPanelProps) {
   const all = useLive(() => partnerShopId ? QuotationRequestApi.byPartner(partnerShopId) : [])
-  const [createModal, setCreateModal] = useState(false)
-  const [form, setForm] = useState(emptyForm)
+  const shop = partnerShopId ? PartnerShopApi.get(partnerShopId) : undefined
+  const [builderOpen, setBuilderOpen] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const [detail, setDetail] = useState<QuotationRequest | null>(null)
 
-  const quotedPreview =
-    Number(form.numWorkers || 0) * Number(form.workerRate || 0) +
-    Number(form.numForemen || 0) * Number(form.foremanRate || 0) +
-    Number(form.numSupervisors || 0) * Number(form.supervisorRate || 0)
-
-  function submitRequest() {
-    if (!partnerShopId || !form.taskDetails || !form.locationAddress) return
-    QuotationRequestApi.create({
-      partnerShopId, requestedBy,
-      numWorkers: Number(form.numWorkers) || 0, numForemen: Number(form.numForemen) || 0, numSupervisors: Number(form.numSupervisors) || 0,
-      workerRate: Number(form.workerRate) || 0, foremanRate: Number(form.foremanRate) || 0, supervisorRate: Number(form.supervisorRate) || 0,
-      taskDetails: form.taskDetails, locationAddress: form.locationAddress,
-      locationLat: form.locationLat ? Number(form.locationLat) : undefined,
-      locationLng: form.locationLng ? Number(form.locationLng) : undefined,
-      stream: form.stream, paymentTerms: form.paymentTerms,
-    })
-    setCreateModal(false)
-    setForm(emptyForm)
+  function submitRequest(payload: QuotationBuilderSubmitPayload) {
+    if (!partnerShopId) return
+    setSubmitting(true)
+    QuotationRequestApi.create({ partnerShopId, requestedBy, ...payload })
+    setSubmitting(false)
+    setBuilderOpen(false)
   }
 
   if (!partnerShopId) {
@@ -98,7 +80,7 @@ export default function QuotationRequestPanel({ partnerShopId, requestedBy }: Qu
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-lg font-semibold text-gray-800">Quotation Requests</h2>
-        <Btn onClick={() => setCreateModal(true)} variant="primary">+ Request a Quotation</Btn>
+        <Btn onClick={() => setBuilderOpen(true)} variant="primary">+ Request a Quotation</Btn>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -127,33 +109,14 @@ export default function QuotationRequestPanel({ partnerShopId, requestedBy }: Qu
         )}
       </SectionCard>
 
-      <Modal open={createModal} onClose={() => setCreateModal(false)} title="Request a Quotation" size="lg"
-        footer={<><Btn onClick={() => setCreateModal(false)}>Cancel</Btn><Btn onClick={submitRequest} variant="primary">Submit Request</Btn></>}>
-        <div className="grid grid-cols-2 gap-4">
-          <Input label="Workers" type="number" value={form.numWorkers} onChange={e => setForm(f => ({ ...f, numWorkers: e.target.value }))} />
-          <Input label="Worker Rate (R)" type="number" value={form.workerRate} onChange={e => setForm(f => ({ ...f, workerRate: e.target.value }))} placeholder="Rate per worker" />
-          <Input label="Foremen" type="number" value={form.numForemen} onChange={e => setForm(f => ({ ...f, numForemen: e.target.value }))} />
-          <Input label="Foreman Rate (R)" type="number" value={form.foremanRate} onChange={e => setForm(f => ({ ...f, foremanRate: e.target.value }))} placeholder="Rate per foreman" />
-          <Input label="Operation Supervisors" type="number" value={form.numSupervisors} onChange={e => setForm(f => ({ ...f, numSupervisors: e.target.value }))} />
-          <Input label="Supervisor Rate (R)" type="number" value={form.supervisorRate} onChange={e => setForm(f => ({ ...f, supervisorRate: e.target.value }))} placeholder="Rate per supervisor" />
-          <Select label="Stream" value={form.stream} onChange={e => setForm(f => ({ ...f, stream: e.target.value as OperationStream }))}
-            options={Object.entries(STREAM_LABELS).map(([value, label]) => ({ value, label }))} />
-          <div className="col-span-2">
-            <Textarea label="Task Sheet Details" required value={form.taskDetails} onChange={e => setForm(f => ({ ...f, taskDetails: e.target.value }))} />
-          </div>
-          <div className="col-span-2">
-            <Input label="Location Address" required value={form.locationAddress} onChange={e => setForm(f => ({ ...f, locationAddress: e.target.value }))} placeholder="Site address" />
-          </div>
-          <Input label="Latitude (optional)" value={form.locationLat} onChange={e => setForm(f => ({ ...f, locationLat: e.target.value }))} placeholder="Pin on map" />
-          <Input label="Longitude (optional)" value={form.locationLng} onChange={e => setForm(f => ({ ...f, locationLng: e.target.value }))} />
-          <Select label="Payment Terms" value={form.paymentTerms} onChange={e => setForm(f => ({ ...f, paymentTerms: e.target.value as PaymentTerms }))}
-            options={[{ value: 'upfront', label: 'Upfront' }, { value: 'monthly', label: 'Monthly' }]} />
-          <div className="bg-gray-50 rounded-xl p-3 flex items-center justify-between">
-            <span className="text-sm text-gray-500">Estimated Quote</span>
-            <span className="font-bold text-lg">{fmtMoney(quotedPreview)}</span>
-          </div>
-        </div>
-      </Modal>
+      {builderOpen && (
+        <QuotationBuilder
+          fromName={shop?.name || requestedBy}
+          onSubmit={submitRequest}
+          onCancel={() => setBuilderOpen(false)}
+          submitting={submitting}
+        />
+      )}
 
       <Modal open={!!detail} onClose={() => setDetail(null)} title={detail ? 'Quotation Request' : ''} size="lg" footer={<Btn onClick={() => setDetail(null)}>Close</Btn>}>
         {detail && (
