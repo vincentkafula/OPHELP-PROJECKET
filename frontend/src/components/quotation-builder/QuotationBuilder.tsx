@@ -1,5 +1,8 @@
 import { useMemo, useState } from 'react'
 import TaskSheetModal, { emptyTaskSheet, type TaskSheetFormData } from './TaskSheetModal'
+import JobsheetModal from './JobsheetModal'
+import SummarySheetModal from './SummarySheetModal'
+import InvoiceModal from './InvoiceModal'
 import type { OperationStream, PaymentTerms } from '@/lib/types'
 
 const STREAM_LABELS: Record<OperationStream, string> = { pre_school: 'Pre-School', school: 'School', technical_services: 'Technical Services' }
@@ -35,6 +38,7 @@ const labelStyle = { fontSize: '0.74rem', fontWeight: 500, color: '#48605B', mar
 export default function QuotationBuilder({ fromName, onSubmit, onCancel, submitting }: Props) {
   const [form, setForm] = useState(emptyForm)
   const [taskSheetOpen, setTaskSheetOpen] = useState(false)
+  const [docModal, setDocModal] = useState<'jobsheet' | 'summary' | 'invoice' | null>(null)
   const [taskSheetComplete, setTaskSheetComplete] = useState(false)
   const [taskSheetSummary, setTaskSheetSummary] = useState('')
   const [taskSheetData, setTaskSheetData] = useState<TaskSheetFormData>(emptyTaskSheet())
@@ -113,7 +117,22 @@ export default function QuotationBuilder({ fromName, onSubmit, onCancel, submitt
               </span>
               <h1 style={{ fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: '1.5rem', color: '#1C2A28', margin: 0 }}>Quotation Builder</h1>
             </div>
-            <div className="flex gap-2.5">
+            <div className="flex gap-2.5 flex-wrap">
+              <button
+                onClick={() => setDocModal('jobsheet')}
+                className="px-4 py-2.5 text-xs uppercase tracking-wide rounded-[2px]"
+                style={{ fontFamily: "'IBM Plex Mono', monospace", border: '1px solid #1C2A28', color: '#1C2A28', background: 'none' }}
+              >View Jobsheet</button>
+              <button
+                onClick={() => setDocModal('summary')}
+                className="px-4 py-2.5 text-xs uppercase tracking-wide rounded-[2px]"
+                style={{ fontFamily: "'IBM Plex Mono', monospace", border: '1px solid #1C2A28', color: '#1C2A28', background: 'none' }}
+              >View Summary Sheet</button>
+              <button
+                onClick={() => setDocModal('invoice')}
+                className="px-4 py-2.5 text-xs uppercase tracking-wide rounded-[2px]"
+                style={{ fontFamily: "'IBM Plex Mono', monospace", border: '1px solid #1C2A28', color: '#1C2A28', background: 'none' }}
+              >View Invoice</button>
               <button
                 onClick={onCancel}
                 className="px-4 py-2.5 text-xs uppercase tracking-wide rounded-[2px]"
@@ -325,6 +344,22 @@ export default function QuotationBuilder({ fromName, onSubmit, onCancel, submitt
         onClose={() => setTaskSheetOpen(false)}
         onSave={saveTaskSheet}
         initial={taskSheetData}
+      />
+
+      <JobsheetModal
+        open={docModal === 'jobsheet'}
+        onClose={() => setDocModal(null)}
+        onNavigate={(which) => setDocModal(which)}
+      />
+      <SummarySheetModal
+        open={docModal === 'summary'}
+        onClose={() => setDocModal(null)}
+        onNavigate={(which) => setDocModal(which)}
+      />
+      <InvoiceModal
+        open={docModal === 'invoice'}
+        onClose={() => setDocModal(null)}
+        onNavigate={(which) => setDocModal(which)}
       />
 
       <style>{`@keyframes qb-shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-3px);} 75%{transform:translateX(3px);} }`}</style>
