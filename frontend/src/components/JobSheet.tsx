@@ -2,16 +2,17 @@ import { useState, useRef } from 'react'
 import type { JobSheetData, JobSheetParticipantRow as ParticipantRow, JobSheetFixedRow as FixedRow, JobSheetAccRow as AccRow } from '@/lib/types'
 export type { JobSheetData }
 
-// ── Tokens ────────────────────────────────────────────────────────────────────
+// ── Tokens — monochrome serif facsimile palette, matching the partner-
+// facing JobsheetModal template (black borders/text on white, no fills). ──
 const C = {
-  navy: '#173B73', navyDark: '#102a54',
-  green: '#3E7D3E', greenDark: '#2F6B37',
-  blueLight: '#E4EEF7', blueMid: '#5B95BE',
-  orange: '#E07B39', orangeLight: '#FDF3E3',
-  purple: '#6B4A7A', purpleLight: '#EFE3F2',
-  teal: '#3F8F6F', tealLight: '#E4F3ED',
-  line: '#B9C7DA', ink: '#16233F', muted: '#6B7686',
-  paper: '#FFFFFF', bgPage: '#EDF1F6',
+  navy: '#1C2A28', navyDark: '#0F1817',
+  green: '#1C2A28', greenDark: '#1C2A28',
+  blueLight: '#FFFFFF', blueMid: '#1C2A28',
+  orange: '#1C2A28', orangeLight: '#FFFFFF',
+  purple: '#1C2A28', purpleLight: '#FFFFFF',
+  teal: '#1C2A28', tealLight: '#FFFFFF',
+  line: '#1C2A28', ink: '#1C2A28', muted: '#5C5C5C',
+  paper: '#FFFFFF', bgPage: '#EDEBE3',
 }
 
 function mkId() { return Math.random().toString(36).slice(2, 10) }
@@ -53,7 +54,7 @@ function CellInput({ value, onChange, placeholder, style = {} }: { value: string
       onBlur={() => setFocused(false)}
       placeholder={placeholder}
       style={{
-        fontFamily: "'Segoe UI', Arial, sans-serif",
+        fontFamily: "Georgia, 'Times New Roman', serif",
         fontSize: 12.5,
         color: C.ink,
         border: 'none',
@@ -189,7 +190,7 @@ export default function JobSheet({ defaultSite = '', defaultDate = '', defaultTi
   const acc1Keys: (keyof AccRow)[] = ['c', 'e', 'xtra', 'rewrd', 'transport', 'material', 'other', 'adminfee']
 
   return (
-    <div style={{ background: C.bgPage, padding: '0 0 40px', fontFamily: "'Segoe UI', Arial, sans-serif", color: C.ink }}>
+    <div style={{ background: C.bgPage, padding: '0 0 40px', fontFamily: "Georgia, 'Times New Roman', serif", color: C.ink }}>
 
       {/* Print-only reset */}
       <style>{`
@@ -200,13 +201,13 @@ export default function JobSheet({ defaultSite = '', defaultDate = '', defaultTi
       `}</style>
 
       {/* Sheet */}
-      <div ref={sheetRef} style={{ maxWidth: 1080, margin: '0 auto', background: C.paper, border: `3px solid ${C.navy}`, borderRadius: 6, overflow: 'hidden', opacity: readOnly ? 0.92 : 1, pointerEvents: readOnly ? 'none' : 'auto' }}>
+      <div ref={sheetRef} style={{ maxWidth: 1080, margin: '0 auto', background: C.paper, border: `1px solid ${C.navy}`, borderRadius: 0, overflow: 'hidden', opacity: readOnly ? 0.92 : 1, pointerEvents: readOnly ? 'none' : 'auto' }}>
 
         {/* Header */}
         <div style={{ textAlign: 'center', padding: '18px 22px 14px', borderBottom: `2px solid ${C.navy}` }}>
-          <h1 style={{ margin: 0, fontSize: 40, fontWeight: 900, color: C.navy, letterSpacing: 1 }}>OPHELP</h1>
+          <h1 style={{ margin: 0, fontSize: 34, fontWeight: 900, color: C.navy, letterSpacing: 1 }}>OPHELP</h1>
           <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>Version 200725</div>
-          <div style={{ margin: '12px auto 0', maxWidth: 520, border: `3px double ${C.navy}`, borderRadius: 3, padding: '6px 10px', fontWeight: 800, fontSize: 17, color: C.greenDark }}>
+          <div style={{ margin: '12px auto 0', maxWidth: 520, border: `3px double ${C.navy}`, borderRadius: 0, padding: '6px 10px', fontWeight: 800, fontSize: 17, color: C.navy }}>
             OPHELP Data Capturer
           </div>
           <div style={{ fontSize: 20, fontWeight: 900, color: C.navy, marginTop: 12, letterSpacing: 1 }}>JOBSHEET</div>
@@ -366,10 +367,10 @@ export default function JobSheet({ defaultSite = '', defaultDate = '', defaultTi
         </table>
 
         {/* Add row control */}
-        <div className="no-print" style={{ padding: '8px 14px', background: '#F2F5F9', borderBottom: `2px solid ${C.navy}` }}>
+        <div className="no-print" style={{ padding: '8px 14px', background: '#F5F3EC', borderBottom: `2px solid ${C.navy}` }}>
           <button onClick={addRow}
-            style={{ border: `1.5px dashed ${C.navy}`, background: '#fff', color: C.navy, fontWeight: 700, fontSize: 12, padding: '6px 12px', borderRadius: 5, cursor: 'pointer', fontFamily: 'inherit' }}
-            onMouseEnter={e => (e.currentTarget.style.background = C.blueLight)}
+            style={{ border: `1px dashed ${C.navy}`, background: '#fff', color: C.navy, fontWeight: 700, fontSize: 12, padding: '6px 12px', borderRadius: 0, cursor: 'pointer', fontFamily: 'inherit' }}
+            onMouseEnter={e => (e.currentTarget.style.background = '#EDEBE3')}
             onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
           >+ Add participant row</button>
         </div>
@@ -415,10 +416,10 @@ export default function JobSheet({ defaultSite = '', defaultDate = '', defaultTi
         <div style={{ display: 'flex', borderBottom: `1px solid ${C.line}` }}>
           <div style={{ flex: 1, background: C.orangeLight, padding: '10px 16px' }}>
             {[{ label: 'Area:', value: area, set: setArea }, { label: 'Task:', value: task, set: setTask }].map((f, i) => (
-              <div key={f.label} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: i === 0 ? 14 : 0, fontWeight: 700, fontSize: 13.5, color: '#8A4E15' }}>
+              <div key={f.label} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: i === 0 ? 14 : 0, fontWeight: 700, fontSize: 13.5, color: C.ink }}>
                 <label style={{ whiteSpace: 'nowrap' }}>{f.label}</label>
                 <input value={f.value} onChange={e => f.set(e.target.value)}
-                  style={{ flex: 1, background: 'transparent', border: 'none', borderBottom: `1.5px solid #D9A56A`, outline: 'none', fontFamily: 'inherit', fontSize: 13, color: C.ink, padding: '2px 4px' }}
+                  style={{ flex: 1, background: 'transparent', border: 'none', borderBottom: `1.5px solid ${C.line}`, outline: 'none', fontFamily: 'inherit', fontSize: 13, color: C.ink, padding: '2px 4px' }}
                 />
               </div>
             ))}
@@ -457,7 +458,7 @@ export default function JobSheet({ defaultSite = '', defaultDate = '', defaultTi
           <thead>
             <tr>
               {['', 'Issued', 'Returned', 'Used', 'Others', 'Total', 'Client'].map((h, i) => (
-                <th key={i} style={{ border: `1px solid ${C.line}`, padding: '7px 8px', textAlign: 'center', fontSize: 12, background: '#F7E3C4', color: '#8A4E15', fontWeight: 700 }}>{h}</th>
+                <th key={i} style={{ border: `1px solid ${C.line}`, padding: '7px 8px', textAlign: 'center', fontSize: 12, background: '#fff', color: C.ink, fontWeight: 700 }}>{h}</th>
               ))}
             </tr>
           </thead>
@@ -484,10 +485,10 @@ export default function JobSheet({ defaultSite = '', defaultDate = '', defaultTi
 
       {/* Footer actions */}
       <div className="no-print" style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, padding: '16px 4px 0', maxWidth: 1080, margin: '0 auto' }}>
-        {!readOnly && <button onClick={clearForm} style={{ border: '2px solid #B23A3A', background: '#fff', color: '#B23A3A', borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>Clear form</button>}
-        <button onClick={printSheet} style={{ border: `2px solid ${C.navy}`, background: '#fff', color: C.navy, borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>Print</button>
-        <button onClick={exportData} style={{ border: `2px solid ${C.navy}`, background: '#fff', color: C.navy, borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>Export JSON</button>
-        {!readOnly && onSave && <button onClick={saveSheet} style={{ background: C.navy, color: '#fff', border: 'none', borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}>Save Jobsheet</button>}
+        {!readOnly && <button onClick={clearForm} style={{ border: '1px solid #B23A3A', background: '#fff', color: '#B23A3A', borderRadius: 0, padding: '10px 18px', fontWeight: 700, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.4, cursor: 'pointer', fontFamily: 'inherit' }}>Clear form</button>}
+        <button onClick={printSheet} style={{ border: `1px solid ${C.navy}`, background: '#fff', color: C.navy, borderRadius: 0, padding: '10px 18px', fontWeight: 700, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.4, cursor: 'pointer', fontFamily: 'inherit' }}>Print</button>
+        <button onClick={exportData} style={{ border: `1px solid ${C.navy}`, background: '#fff', color: C.navy, borderRadius: 0, padding: '10px 18px', fontWeight: 700, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.4, cursor: 'pointer', fontFamily: 'inherit' }}>Export JSON</button>
+        {!readOnly && onSave && <button onClick={saveSheet} style={{ background: C.navy, color: '#fff', border: `1px solid ${C.navy}`, borderRadius: 0, padding: '10px 18px', fontWeight: 700, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.4, cursor: 'pointer', fontFamily: 'inherit' }}>Save Jobsheet</button>}
         {footerExtra}
       </div>
     </div>
@@ -518,7 +519,7 @@ function AccTable({ label, accName, bgRow, cols, keys, acc, setAcc }: {
 }) {
   const bg = bgRow === 'acc1' ? C.blueLight : C.tealLight
   const nameColor = bgRow === 'acc1' ? C.navy : C.greenDark
-  const lineColor = '#B9C7DA'
+  const lineColor = C.line
   const td: React.CSSProperties = { border: `1px solid ${lineColor}`, textAlign: 'center', verticalAlign: 'middle', padding: 2 }
   return (
     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -550,12 +551,12 @@ function ConsumeRow({ tag, fields, total, client, last }: {
   client: { label: string; content: React.ReactNode }
   last: boolean
 }) {
-  const lineColor = '#B9C7DA'
+  const lineColor = C.line
   const borderBottom = last ? `3px solid ${C.navy}` : `1px solid ${lineColor}`
   const td: React.CSSProperties = { border: `1px solid ${lineColor}`, padding: '7px 8px', textAlign: 'center', fontSize: 12, verticalAlign: 'top', borderBottom }
   return (
     <tr>
-      <td style={{ ...td, background: C.orangeLight, fontWeight: 800, color: '#8A4E15', textAlign: 'left', width: '9%' }}>{tag}</td>
+      <td style={{ ...td, background: C.orangeLight, fontWeight: 800, color: C.ink, textAlign: 'left', width: '9%' }}>{tag}</td>
       {fields.map((f, i) => (
         <td key={i} style={{ ...td, width: '12%' }}>
           {f.label && <span style={{ fontSize: 10.5, color: C.muted, display: 'block', marginBottom: 2 }}>{f.label}:</span>}

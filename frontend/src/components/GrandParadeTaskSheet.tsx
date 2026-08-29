@@ -2,14 +2,15 @@ import { useState, useEffect, useCallback } from 'react'
 import type { TaskSheetData, TaskSheetRatedTask } from '@/lib/types'
 export type { TaskSheetData }
 
-// ── Design tokens ─────────────────────────────────────────────────────────────
+// ── Design tokens — cream/serif letterhead palette, matching the
+// partner-facing TaskSheetModal template used in the Quotation Builder. ──
 const C = {
-  navy: '#173B73', navyDark: '#102a54', green: '#3E7D3E', greenDark: '#2F6B37',
-  greenLight: '#E7F0E4', blueLight: '#E4EEF7', blueMid: '#5B95BE',
-  orange: '#E07B39', orangeLight: '#FDF3E3',
-  purple: '#6B4A7A', purpleLight: '#EFE3F2',
-  teal: '#3F8F6F', tealLight: '#E4F3ED',
-  line: '#B9C7DA', paper: '#FFFFFF', ink: '#16233F', muted: '#6B7686',
+  navy: '#1C2A28', navyDark: '#1C2A28', green: '#1C2A28', greenDark: '#1C2A28',
+  greenLight: '#EFEBDF', blueLight: '#FBF9F3', blueMid: '#A97D2C',
+  orange: '#7C5A1E', orangeLight: '#EFEBDF',
+  purple: '#48605B', purpleLight: '#EFEBDF',
+  teal: '#48605B', tealLight: '#EFEBDF',
+  line: '#CFC7AF', paper: '#FFFFFF', ink: '#1C2A28', muted: '#48605B',
 }
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -34,7 +35,7 @@ export function blankState(): SheetState {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function CellInput({ value, onChange, placeholder, textarea, height }: { value: string; onChange: (v: string) => void; placeholder?: string; textarea?: boolean; height?: number }) {
   const baseStyle: React.CSSProperties = {
-    fontFamily: "'Segoe UI', Arial, sans-serif", fontSize: 12.5, color: C.ink, border: 'none',
+    fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12.5, color: C.ink, border: 'none',
     background: 'transparent', width: '100%', outline: 'none', padding: '4px 5px', resize: 'none',
     lineHeight: 1.4, height: textarea ? (height ?? 56) : undefined,
   }
@@ -101,7 +102,7 @@ export default function GrandParadeTaskSheet({ initialData, onSave, readOnly = f
   }
 
   // Shared styles
-  const sheetBorder: React.CSSProperties = { border: `3px solid ${C.navy}`, borderRadius: 6, overflow: 'hidden', background: C.paper }
+  const sheetBorder: React.CSSProperties = { border: `1px solid ${C.navy}`, borderRadius: 0, overflow: 'hidden', background: C.paper }
   const thStyle = (bg: string): React.CSSProperties => ({ background: bg, color: '#fff', fontSize: 11.5, fontWeight: 800, padding: '8px 5px', textAlign: 'center', border: `1px solid ${C.line}` })
   const tdTask: React.CSSProperties = { border: `1px solid ${C.line}`, padding: '9px 10px', fontSize: 13, fontWeight: 600, lineHeight: 1.35, verticalAlign: 'top', width: '34%' }
   const tdRate: React.CSSProperties = { border: `1px solid ${C.line}`, textAlign: 'center', verticalAlign: 'middle', padding: '10px 0', width: '7%' }
@@ -109,7 +110,7 @@ export default function GrandParadeTaskSheet({ initialData, onSave, readOnly = f
   const tdNum: React.CSSProperties = { border: `1px solid ${C.line}`, textAlign: 'center', verticalAlign: 'middle', width: '11%' }
 
   return (
-    <div style={{ background: '#EDF1F6', padding: '20px 8px 60px', fontFamily: "'Segoe UI', Arial, sans-serif", color: C.ink }}>
+    <div style={{ background: '#EFEBDF', padding: '20px 8px 60px', fontFamily: "'IBM Plex Sans', sans-serif", color: C.ink }}>
       {/* Sheet */}
       <div style={{ maxWidth: 1100, margin: '0 auto', ...sheetBorder, opacity: readOnly ? 0.92 : 1, pointerEvents: readOnly ? 'none' : 'auto' }}>
 
@@ -119,12 +120,12 @@ export default function GrandParadeTaskSheet({ initialData, onSave, readOnly = f
             <div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 6 }}>
                 <label style={{ fontWeight: 800, color: C.navy, fontSize: 14, whiteSpace: 'nowrap' }}>Shift Title:</label>
-                <span style={{ fontWeight: 800, fontStyle: 'italic', fontSize: 17, color: C.ink, borderBottom: `1px solid ${C.line}`, padding: '2px 6px', minWidth: 220 }}>GRAND PARADE</span>
+                <span style={{ fontWeight: 700, fontStyle: 'italic', fontSize: 17, fontFamily: "'Fraunces', serif", color: C.ink, borderBottom: `1px solid ${C.line}`, padding: '2px 6px', minWidth: 220 }}>GRAND PARADE</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
                 <label style={{ fontWeight: 800, color: C.navy, fontSize: 14, whiteSpace: 'nowrap' }}>Shift Time:</label>
                 <input value={s.meta.shifttime} onChange={e => setMeta('shifttime', e.target.value)}
-                  style={{ fontWeight: 700, fontSize: 13.5, border: 'none', borderBottom: `1px solid ${C.line}`, background: 'transparent', outline: 'none', padding: '4px 5px', minWidth: 320, flex: 1, fontFamily: "'Segoe UI', Arial, sans-serif", color: C.ink }} />
+                  style={{ fontWeight: 700, fontSize: 13.5, border: 'none', borderBottom: `1px solid ${C.line}`, background: 'transparent', outline: 'none', padding: '4px 5px', minWidth: 320, flex: 1, fontFamily: "'IBM Plex Sans', sans-serif", color: C.ink }} />
               </div>
             </div>
             <div style={{ fontSize: 13, fontWeight: 700, color: C.greenDark, whiteSpace: 'nowrap' }}>Version 260806</div>
@@ -143,14 +144,14 @@ export default function GrandParadeTaskSheet({ initialData, onSave, readOnly = f
               <label style={{ fontWeight: 700, fontSize: 13, color: C.navy, whiteSpace: 'nowrap' }}>{cell.label}</label>
               <input type={(cell as { type?: string }).type ?? 'text'} value={s.meta[cell.field]} onChange={e => setMeta(cell.field, e.target.value)}
                 placeholder={(cell as { placeholder?: string }).placeholder}
-                style={{ fontWeight: 700, fontSize: 12.5, border: 'none', borderBottom: `1px solid ${C.line}`, background: 'transparent', outline: 'none', padding: '3px 5px', flex: 1, fontFamily: "'Segoe UI', Arial, sans-serif", color: C.ink }} />
+                style={{ fontWeight: 700, fontSize: 12.5, border: 'none', borderBottom: `1px solid ${C.line}`, background: 'transparent', outline: 'none', padding: '3px 5px', flex: 1, fontFamily: "'IBM Plex Sans', sans-serif", color: C.ink }} />
             </div>
           ))}
         </div>
 
         {/* Objectives / Instructions */}
         <div style={{ borderBottom: `3px solid ${C.navy}`, padding: '14px 18px' }}>
-          <h3 style={{ margin: '0 0 6px', fontSize: 14, textDecoration: 'underline', color: C.greenDark, fontWeight: 800 }}>OBJECTIVES of the Shift</h3>
+          <h3 style={{ margin: '0 0 6px', fontSize: 15, fontFamily: "'Fraunces', serif", fontWeight: 600, color: C.ink }}>OBJECTIVES of the Shift</h3>
           <ol style={{ margin: '0 0 4px', paddingLeft: 22 }}>
             {[
               'Training in leading a team on a mission',
@@ -159,7 +160,7 @@ export default function GrandParadeTaskSheet({ initialData, onSave, readOnly = f
               'Training in proper reporting and training in taking leadership initiative',
             ].map((item, i) => <li key={i} style={{ fontWeight: 700, fontSize: 13.5, marginBottom: 3, lineHeight: 1.35 }}>{item}</li>)}
           </ol>
-          <h3 style={{ margin: '14px 0 6px', fontSize: 14, textDecoration: 'underline', color: C.teal, fontWeight: 800 }}>GENERAL INSTRUCTIONS for the shift</h3>
+          <h3 style={{ margin: '14px 0 6px', fontSize: 15, fontFamily: "'Fraunces', serif", fontWeight: 600, color: C.ink }}>GENERAL INSTRUCTIONS for the shift</h3>
           <ol style={{ margin: '0 0 4px', paddingLeft: 22 }}>
             <li style={{ fontWeight: 700, fontSize: 13.5, marginBottom: 3, lineHeight: 1.35 }}>Prepare for the shift, the day before.</li>
             <li style={{ fontWeight: 700, fontSize: 13.5, marginBottom: 3, lineHeight: 1.35 }}>Report as leader for the shift at the Shift Leader roll-call at the Depot and get all the equipment for the shift, using the required <u style={{ fontStyle: 'italic' }}>Shift Slip</u></li>
@@ -197,11 +198,11 @@ export default function GrandParadeTaskSheet({ initialData, onSave, readOnly = f
                 </td>
                 <td style={tdNum}>
                   <input value={s.tasks[i].bags} onChange={e => setTask(i, 'bags', e.target.value)}
-                    style={{ textAlign: 'center', fontWeight: 700, padding: '14px 5px', border: 'none', background: 'transparent', outline: 'none', width: '100%', fontFamily: "'Segoe UI', Arial, sans-serif", fontSize: 12.5 }} />
+                    style={{ textAlign: 'center', fontWeight: 700, padding: '14px 5px', border: 'none', background: 'transparent', outline: 'none', width: '100%', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12.5 }} />
                 </td>
                 <td style={tdNum}>
                   <input value={s.tasks[i].minutes} onChange={e => setTask(i, 'minutes', e.target.value)}
-                    style={{ textAlign: 'center', fontWeight: 700, padding: '14px 5px', border: 'none', background: 'transparent', outline: 'none', width: '100%', fontFamily: "'Segoe UI', Arial, sans-serif", fontSize: 12.5 }} />
+                    style={{ textAlign: 'center', fontWeight: 700, padding: '14px 5px', border: 'none', background: 'transparent', outline: 'none', width: '100%', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12.5 }} />
                 </td>
               </tr>
             ))}
@@ -243,15 +244,15 @@ export default function GrandParadeTaskSheet({ initialData, onSave, readOnly = f
               <td style={{ border: `1px solid ${C.line}`, padding: '7px 10px', fontSize: 12, textAlign: 'right', fontWeight: 700, width: '22%', verticalAlign: 'middle' }}>Total Number of<br /><b>Gloves</b> used</td>
               <td style={{ border: `1px solid ${C.line}`, padding: '3px', width: '6%', verticalAlign: 'middle' }}>
                 <input value={s.materials.glovesUsed} onChange={e => setMat('glovesUsed', e.target.value)}
-                  style={{ textAlign: 'center', fontWeight: 800, border: 'none', background: 'transparent', outline: 'none', width: '100%', padding: '7px 4px', fontFamily: "'Segoe UI', Arial, sans-serif", fontSize: 12.5 }} />
+                  style={{ textAlign: 'center', fontWeight: 800, border: 'none', background: 'transparent', outline: 'none', width: '100%', padding: '7px 4px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12.5 }} />
               </td>
               <td style={{ border: `1px solid ${C.line}`, padding: '7px 10px', fontSize: 12, textAlign: 'right', fontWeight: 700, width: '26%', verticalAlign: 'middle' }}>Total number of <b>bags</b> used</td>
               <td style={{ border: `1px solid ${C.line}`, padding: '3px', width: '6%', verticalAlign: 'middle' }}>
                 <input value={s.materials.bagsUsed} onChange={e => setMat('bagsUsed', e.target.value)}
-                  style={{ textAlign: 'center', fontWeight: 800, border: 'none', background: 'transparent', outline: 'none', width: '100%', padding: '7px 4px', fontFamily: "'Segoe UI', Arial, sans-serif", fontSize: 12.5 }} />
+                  style={{ textAlign: 'center', fontWeight: 800, border: 'none', background: 'transparent', outline: 'none', width: '100%', padding: '7px 4px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12.5 }} />
               </td>
-              <td style={{ border: `1px solid ${C.line}`, padding: '3px', width: '6%', background: '#DADFE6', verticalAlign: 'middle' }}>
-                <input disabled placeholder="auto" style={{ textAlign: 'center', color: C.muted, border: 'none', background: 'transparent', outline: 'none', width: '100%', padding: '7px 4px', fontFamily: "'Segoe UI', Arial, sans-serif", fontSize: 12.5 }} />
+              <td style={{ border: `1px solid ${C.line}`, padding: '3px', width: '6%', background: '#F5F3EA', verticalAlign: 'middle' }}>
+                <input disabled placeholder="auto" style={{ textAlign: 'center', color: C.muted, border: 'none', background: 'transparent', outline: 'none', width: '100%', padding: '7px 4px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12.5 }} />
               </td>
             </tr>
             <tr style={{ background: C.blueLight }}>
@@ -259,17 +260,17 @@ export default function GrandParadeTaskSheet({ initialData, onSave, readOnly = f
                 <span style={{ fontWeight: 800, color: C.navy }}>Materials</span> used (specify type)<br />
                 <input value={s.materials.materialsType} onChange={e => setMat('materialsType', e.target.value)}
                   placeholder="Type of material..."
-                  style={{ border: 'none', borderBottom: `1px solid ${C.line}`, background: 'transparent', outline: 'none', width: '100%', padding: '3px 5px', fontFamily: "'Segoe UI', Arial, sans-serif", fontSize: 12.5, color: C.ink }} />
+                  style={{ border: 'none', borderBottom: `1px solid ${C.line}`, background: 'transparent', outline: 'none', width: '100%', padding: '3px 5px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12.5, color: C.ink }} />
               </td>
               <td style={{ border: `1px solid ${C.line}`, padding: '7px 10px', textAlign: 'right', fontWeight: 700, fontSize: 12, verticalAlign: 'middle' }}>Quantity</td>
               <td style={{ border: `1px solid ${C.line}`, padding: '3px', verticalAlign: 'middle' }}>
                 <input value={s.materials.materialsQty} onChange={e => setMat('materialsQty', e.target.value)}
-                  style={{ textAlign: 'center', fontWeight: 800, border: 'none', background: 'transparent', outline: 'none', width: '100%', padding: '7px 4px', fontFamily: "'Segoe UI', Arial, sans-serif", fontSize: 12.5 }} />
+                  style={{ textAlign: 'center', fontWeight: 800, border: 'none', background: 'transparent', outline: 'none', width: '100%', padding: '7px 4px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12.5 }} />
               </td>
               <td style={{ border: `1px solid ${C.line}`, padding: '7px 10px', textAlign: 'right', fontWeight: 700, fontSize: 12, verticalAlign: 'middle' }}>Total of <b>minutes</b> on the job</td>
               <td colSpan={2} style={{ border: `1px solid ${C.line}`, padding: '3px', verticalAlign: 'middle' }}>
                 <input value={s.materials.minutesTotal} onChange={e => setMat('minutesTotal', e.target.value)}
-                  style={{ textAlign: 'center', fontWeight: 800, border: 'none', background: 'transparent', outline: 'none', width: '100%', padding: '7px 4px', fontFamily: "'Segoe UI', Arial, sans-serif", fontSize: 12.5 }} />
+                  style={{ textAlign: 'center', fontWeight: 800, border: 'none', background: 'transparent', outline: 'none', width: '100%', padding: '7px 4px', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12.5 }} />
               </td>
             </tr>
           </tbody>
@@ -278,7 +279,7 @@ export default function GrandParadeTaskSheet({ initialData, onSave, readOnly = f
         {/* Bottom block */}
         <div style={{ display: 'flex' }}>
           <div style={{ flex: 1, background: C.orangeLight, padding: '12px 16px', borderRight: `2px solid ${C.navy}` }}>
-            <div style={{ fontWeight: 800, color: '#8A4E15', fontSize: 13, marginBottom: 8 }}>Usual set of Materials for this shift:</div>
+            <div style={{ fontWeight: 800, color: C.orange, fontSize: 13, marginBottom: 8 }}>Usual set of Materials for this shift:</div>
             <ul style={{ margin: 0, paddingLeft: 18 }}>
               {['4 x Gloves', '2 x Foremen Bibs', '2 x Worker Bibs + 2 bibs for recruits', '10 x COCT blue Bags', '1 x Scoop & 1 x Broom'].map(item => (
                 <li key={item} style={{ fontWeight: 700, fontSize: 13, marginBottom: 4, color: C.ink }}>{item}</li>
@@ -289,23 +290,23 @@ export default function GrandParadeTaskSheet({ initialData, onSave, readOnly = f
             <div style={{ fontWeight: 800, color: C.purple, fontSize: 13, marginBottom: 8 }}>Special Instructions for the shift (including a written report on them here):</div>
             <textarea value={s.specialInstructions} onChange={e => setS(prev => ({ ...prev, specialInstructions: e.target.value }))}
               placeholder="Write special instructions or report here..."
-              style={{ height: 110, width: '100%', background: '#fff', border: `1px solid #D9C4E0`, borderRadius: 4, padding: 8, fontFamily: "'Segoe UI', Arial, sans-serif", fontSize: 12.5, color: C.ink, resize: 'none', outline: 'none' }} />
+              style={{ height: 110, width: '100%', background: '#fff', border: `1px solid ${C.line}`, borderRadius: 4, padding: 8, fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 12.5, color: C.ink, resize: 'none', outline: 'none' }} />
           </div>
         </div>
       </div>
 
       {/* Footer actions */}
       <div className="no-print" style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, padding: '16px 4px 0', maxWidth: 1100, margin: '0 auto' }}>
-        {!readOnly && <button onClick={resetForm} style={{ background: '#fff', color: '#B23A3A', border: '2px solid #B23A3A', borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+        {!readOnly && <button onClick={resetForm} style={{ background: '#fff', color: '#B23A3A', border: '1px solid #B23A3A', borderRadius: 0, padding: '10px 18px', fontWeight: 700, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.4, cursor: 'pointer' }}>
           Clear form
         </button>}
-        <button onClick={() => window.print()} style={{ background: '#fff', color: C.navy, border: `2px solid ${C.navy}`, borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+        <button onClick={() => window.print()} style={{ background: '#fff', color: C.navy, border: `1px solid ${C.navy}`, borderRadius: 0, padding: '10px 18px', fontWeight: 700, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.4, cursor: 'pointer' }}>
           Print
         </button>
-        <button onClick={() => exportJSON(s)} style={{ background: '#fff', color: C.navy, border: `2px solid ${C.navy}`, borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+        <button onClick={() => exportJSON(s)} style={{ background: '#fff', color: C.navy, border: `1px solid ${C.navy}`, borderRadius: 0, padding: '10px 18px', fontWeight: 700, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.4, cursor: 'pointer' }}>
           Export JSON
         </button>
-        {!readOnly && onSave && <button onClick={() => onSave(s)} style={{ background: C.navy, color: '#fff', border: 'none', borderRadius: 6, padding: '10px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+        {!readOnly && onSave && <button onClick={() => onSave(s)} style={{ background: C.navy, color: '#fff', border: `1px solid ${C.navy}`, borderRadius: 0, padding: '10px 18px', fontWeight: 700, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.4, cursor: 'pointer' }}>
           Save Task Sheet
         </button>}
         {footerExtra}
