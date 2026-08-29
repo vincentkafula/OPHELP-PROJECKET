@@ -10,7 +10,7 @@ import {
   PayrollPeriods, PayrollRoster, PayrollEntries, PayrollCorrections,
   PaymentAuthorisations, WeeklyRegisters, OasysChecks, DepotSchedules, Quotations, Invoices,
   Jobsheets, MonthlyInvoices, QuotationRequests, ScheduledJobs, TeamBookings, TaskSheets,
-  SummarySheets,
+  SummarySheets, RosterStates,
   now, uid,
 } from './db'
 import type {
@@ -21,7 +21,7 @@ import type {
   PayrollCorrection, PaymentAuthorisation, WeeklyRegister, OasysCheck,
   DepotSchedule, Quotation, QuotationLineItem, Invoice, InvoiceLineItem, Jobsheet, JobSheetData, JobSheetAccRow, MonthlyInvoice,
   QuotationRequest, ScheduledJob, TeamBooking, TeamBookingReplacement, TaskSheet, TaskSheetData,
-  SummarySheet, SummarySheetData,
+  SummarySheet, SummarySheetData, RosterState,
 } from './types'
 
 // ── Participants ──────────────────────────────────────────────────────────────
@@ -1126,5 +1126,17 @@ export const SummarySheetApi = {
   },
   delete(id: string): ApiResult {
     return SummarySheets.delete(id) ? { success: true } : { success: false, error: 'Summary sheet not found' }
+  },
+}
+
+// ── Shift Roster — a single shared document (id 'festive-week-01') holding
+// the names typed into each role and the status chips toggled per shift. ──
+const ROSTER_ID = 'festive-week-01'
+export const RosterApi = {
+  get(): RosterState {
+    return RosterStates.findById(ROSTER_ID) ?? { id: ROSTER_ID, names: {}, status: {}, updatedAt: now() }
+  },
+  save(names: RosterState['names'], status: RosterState['status']): void {
+    RosterStates.upsert({ id: ROSTER_ID, names, status, updatedAt: now() })
   },
 }

@@ -817,6 +817,17 @@ export interface SummarySheet {
   createdAt: string
 }
 
+// ── Shift Roster — City Depot weekly shift-staffing board. A single shared
+// document holds who's named against each role, and status flags per shift
+// (Confirmed/Reported/SMS/Help), synced across every Day Admin / Operation
+// Office viewer. See RosterBoard.tsx. ─────────────────────────────────────
+export interface RosterState {
+  id: string
+  names: Record<string, Record<string, string>>
+  status: Record<string, Record<string, boolean>>
+  updatedAt: string
+}
+
 // ── Auth ──────────────────────────────────────────────────────────────────────
 export interface AuthToken {
   token: string

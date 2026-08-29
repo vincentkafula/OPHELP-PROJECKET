@@ -24,7 +24,7 @@ import type {
   Notification, Message, PayrollPeriod, PayrollRosterEntry, PayrollEntry,
   PayrollCorrection, PaymentAuthorisation, WeeklyRegister, OasysCheck,
   DepotSchedule, Quotation, Invoice, Jobsheet, MonthlyInvoice,
-  QuotationRequest, ScheduledJob, TeamBooking, TaskSheet, SummarySheet,
+  QuotationRequest, ScheduledJob, TeamBooking, TaskSheet, SummarySheet, RosterState,
 } from './types'
 
 // -- Helpers ------------------------------------------------------------
@@ -83,6 +83,7 @@ const ENDPOINTS: Record<string, string> = {
   team_bookings: 'team-bookings',
   task_sheets: 'task-sheets',
   summary_sheets: 'summary-sheets',
+  roster_state: 'roster-state',
 }
 
 // -- In-memory cache, hydrated once by bootstrap() ------------------------
@@ -250,6 +251,7 @@ export const ScheduledJobs = new Collection<ScheduledJob>('ophelp_scheduled_jobs
 export const TeamBookings = new Collection<TeamBooking>('ophelp_team_bookings', 'team_bookings')
 export const TaskSheets = new Collection<TaskSheet>('ophelp_task_sheets', 'task_sheets')
 export const SummarySheets = new Collection<SummarySheet>('ophelp_summary_sheets', 'summary_sheets')
+export const RosterStates = new Collection<RosterState>('ophelp_roster_state', 'roster_state')
 
 /**
  * The original app called this synchronously at module load to seed

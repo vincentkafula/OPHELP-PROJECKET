@@ -21,10 +21,10 @@ import QuotationsPanel from './QuotationsPanel'
 import InvoicesPanel from './InvoicesPanel'
 import JobsheetsPanel from './JobsheetsPanel'
 import SummarySheetsPanel from './SummarySheetsPanel'
+import RosterBoard from './RosterBoard'
 import MonthlyInvoicePanel from './MonthlyInvoicePanel'
 import QuotationRequestPanel from './QuotationRequestPanel'
 import RequestApprovalPanel from './RequestApprovalPanel'
-import SchedulingPanel from './SchedulingPanel'
 import TeamBookingPanel from './TeamBookingPanel'
 import RollCallPanel from './RollCallPanel'
 import DocumentLibraryPanel from './DocumentLibraryPanel'
@@ -74,6 +74,7 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '📢', label: 'Roll Call' }, { icon: '📚', label: 'Document Library' },
     { icon: '🏛️', label: 'Task Sheet' }, { icon: '📋', label: 'Jobsheet' },
     { icon: '🧮', label: 'Summary Sheet' }, { icon: '🧾', label: 'Invoices' },
+    { icon: '🗓️', label: 'Roster' },
   ],
   operation_office: [
     { icon: '🏠', label: 'Overview' }, { icon: '🏗️', label: 'Sites' },
@@ -86,7 +87,7 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '🧾', label: 'Invoices' },
     { icon: '💵', label: 'Jobsheet Review' }, { icon: '📒', label: 'OpHelp Ledger' },
     { icon: '📅', label: 'Monthly Invoices' },
-    { icon: '📝', label: 'Quotation Approvals' }, { icon: '🗓️', label: 'Scheduling' },
+    { icon: '📝', label: 'Quotation Approvals' }, { icon: '🗓️', label: 'Roster' },
     { icon: '🧮', label: 'Summary Sheet' },
   ],
   operation_management: [
@@ -1167,8 +1168,6 @@ function DayAdminDashboard({ user, activeIdx }: { user: AuthUser; activeIdx: num
   const [participants] = useDbData(() => ParticipantApi.list())
   const [todayShifts] = useDbData(() => ShiftApi.list({ date: today }))
   const [sites] = useDbData(() => SiteApi.active())
-  const [createModal, setCreateModal] = useState(false)
-  const [form, setForm] = useState({ participantId: '', siteId: '', task: '', startTime: '07:00', endTime: '11:00', date: today })
 
   const activeParticipants = participants.filter(p => p.status === 'active')
   const getName = (id: string) => { const p = participants.find(x => x.id === id); return p ? `${p.firstName} ${p.lastName}` : id }
@@ -1183,40 +1182,21 @@ function DayAdminDashboard({ user, activeIdx }: { user: AuthUser; activeIdx: num
   if (activeIdx === 11) return <JobsheetsPanel mode="view" currentUserName={user.name} />
   if (activeIdx === 12) return <SummarySheetsPanel mode="day_admin" currentUserName={user.name} />
   if (activeIdx === 13) return <InvoicesPanel />
-
-  function createShift() {
-    if (!form.participantId || !form.siteId || !form.task) return
-    const site = sites.find(s => s.id === form.siteId)
-    ShiftApi.create({ participantId: form.participantId, siteId: form.siteId, date: form.date, startTime: form.startTime, endTime: form.endTime, task: form.task, foremanId: site?.foremanId ?? '', status: 'scheduled', hoursWorked: 4, createdAt: new Date().toISOString() })
-    setCreateModal(false)
-    setForm({ participantId: '', siteId: '', task: '', startTime: '07:00', endTime: '11:00', date: today })
-  }
+  if (activeIdx === 14) return <RosterBoard />
 
   if (activeIdx === 1) return (
-    <>
-      <SectionCard title="Today's Attendance" action={<Btn onClick={() => setCreateModal(true)} variant="primary" size="sm">+ Schedule Shift</Btn>}>
-        <DataTable
-          columns={[
-            { key: 'participantId', header: 'Participant', render: s => getName(s.participantId), sortable: true },
-            { key: 'startTime', header: 'Start' }, { key: 'endTime', header: 'End' },
-            { key: 'task', header: 'Task' },
-            { key: 'status', header: 'Status', render: s => <ShiftStatusBadge status={s.status} /> },
-          ]}
-          data={todayShifts} searchable searchFn={(s, q) => `${getName(s.participantId)} ${s.task}`.toLowerCase().includes(q)}
-          emptyMessage="No shifts today." pageSize={15}
-        />
-      </SectionCard>
-      <Modal open={createModal} onClose={() => setCreateModal(false)} title="Schedule Shift"
-        footer={<><Btn onClick={() => setCreateModal(false)} variant="ghost">Cancel</Btn><Btn onClick={createShift} variant="primary">Create Shift</Btn></>}>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="col-span-2"><Select label="Participant" required value={form.participantId} onChange={e => setForm(f => ({ ...f, participantId: e.target.value }))} options={activeParticipants.map(p => ({ value: p.id, label: `${p.firstName} ${p.lastName}` }))} placeholder="Select participant…" /></div>
-          <div className="col-span-2"><Select label="Site" required value={form.siteId} onChange={e => setForm(f => ({ ...f, siteId: e.target.value }))} options={sites.map(s => ({ value: s.id, label: s.name }))} placeholder="Select site…" /></div>
-          <Input label="Date" type="date" required value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} />
-          <Input label="Start Time" type="time" required value={form.startTime} onChange={e => setForm(f => ({ ...f, startTime: e.target.value }))} />
-          <div className="col-span-2"><Input label="Task Description" required value={form.task} onChange={e => setForm(f => ({ ...f, task: e.target.value }))} placeholder="e.g. Street cleaning" /></div>
-        </div>
-      </Modal>
-    </>
+    <SectionCard title="Today's Attendance">
+      <DataTable
+        columns={[
+          { key: 'participantId', header: 'Participant', render: s => getName(s.participantId), sortable: true },
+          { key: 'startTime', header: 'Start' }, { key: 'endTime', header: 'End' },
+          { key: 'task', header: 'Task' },
+          { key: 'status', header: 'Status', render: s => <ShiftStatusBadge status={s.status} /> },
+        ]}
+        data={todayShifts} searchable searchFn={(s, q) => `${getName(s.participantId)} ${s.task}`.toLowerCase().includes(q)}
+        emptyMessage="No shifts today." pageSize={15}
+      />
+    </SectionCard>
   )
 
   if (activeIdx === 2) return <ParticipantsPanel color="#00838F" />
@@ -1257,7 +1237,7 @@ function DayAdminDashboard({ user, activeIdx }: { user: AuthUser; activeIdx: num
         <StatCard label="Active Sites" value={sites.length} color="#00838F" />
         <StatCard label="Completed Today" value={todayShifts.filter(s => s.status === 'completed' || s.status === 'approved').length} color="#00838F" />
       </div>
-      <SectionCard title="Today's Attendance" action={<Btn onClick={() => setCreateModal(true)} variant="primary" size="sm">+ Schedule Shift</Btn>}>
+      <SectionCard title="Today's Attendance">
         <DataTable columns={[
           { key: 'participantId', header: 'Participant', render: s => getName(s.participantId), sortable: true },
           { key: 'startTime', header: 'Start' }, { key: 'endTime', header: 'End' },
@@ -1273,16 +1253,6 @@ function DayAdminDashboard({ user, activeIdx }: { user: AuthUser; activeIdx: num
           { key: 'status', header: 'Status', render: p => <Badge label={p.status} variant={p.status === 'active' ? 'green' : 'gray'} dot /> },
         ]} data={participants} searchable searchFn={(p, q) => `${p.firstName} ${p.lastName} ${p.idNumber} ${p.suburb}`.toLowerCase().includes(q)} pageSize={10} />
       </SectionCard>
-      <Modal open={createModal} onClose={() => setCreateModal(false)} title="Schedule Shift"
-        footer={<><Btn onClick={() => setCreateModal(false)} variant="ghost">Cancel</Btn><Btn onClick={createShift} variant="primary">Create Shift</Btn></>}>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="col-span-2"><Select label="Participant" required value={form.participantId} onChange={e => setForm(f => ({ ...f, participantId: e.target.value }))} options={activeParticipants.map(p => ({ value: p.id, label: `${p.firstName} ${p.lastName}` }))} placeholder="Select participant…" /></div>
-          <div className="col-span-2"><Select label="Site" required value={form.siteId} onChange={e => setForm(f => ({ ...f, siteId: e.target.value }))} options={sites.map(s => ({ value: s.id, label: s.name }))} placeholder="Select site…" /></div>
-          <Input label="Date" type="date" required value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} />
-          <Input label="Start Time" type="time" required value={form.startTime} onChange={e => setForm(f => ({ ...f, startTime: e.target.value }))} />
-          <div className="col-span-2"><Input label="Task Description" required value={form.task} onChange={e => setForm(f => ({ ...f, task: e.target.value }))} placeholder="e.g. Pothole repair" /></div>
-        </div>
-      </Modal>
     </div>
   )
 }
@@ -1311,7 +1281,7 @@ function OperationOfficeDashboard({ user, activeIdx }: { user: AuthUser; activeI
   if (activeIdx === 16) return <OASys />
   if (activeIdx === 17) return <MonthlyInvoicePanel mode="office" currentUserName={user.name} />
   if (activeIdx === 18) return <RequestApprovalPanel stage="office" currentUserName={user.name} />
-  if (activeIdx === 19) return <SchedulingPanel currentUserName={user.name} />
+  if (activeIdx === 19) return <RosterBoard />
   if (activeIdx === 20) return <SummarySheetsPanel mode="office" currentUserName={user.name} />
 
   if (activeIdx === 1) return <SitesMgmtPanel color="#1565C0" />
