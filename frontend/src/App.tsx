@@ -98,6 +98,46 @@ function getDashboardCards() {
   ]
 }
 
+// ── Hero slides ───────────────────────────────────────────────────────────────
+const HERO_SLIDES = [
+  {
+    eyebrow: 'OPHELP Voucher System — Now Live',
+    title: 'Restoring Dignity',
+    em: 'Through Honest Work',
+    desc: 'The OPHELP Voucher System empowers participants to earn income through approved work opportunities. After completing a four-hour shift, earnings are loaded securely onto an OPHELP Card — usable at supported ATMs and participating partner shops.',
+    img: 'https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?w=1600&h=900&fit=crop&auto=format',
+    primary: { label: 'Get Started', to: 'ophelp' },
+    secondary: { label: 'View Work Opportunities', to: 'features' },
+  },
+  {
+    eyebrow: 'Street Outreach & Emergency Relief',
+    title: 'Reaching the',
+    em: 'Destitute & Desperate',
+    desc: 'Reaching out to those living on the streets and in desperate circumstances, providing practical help and pointing to hope.',
+    img: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1600&h=900&fit=crop&auto=format',
+    primary: { label: 'Meet Our Ministries', to: 'ministries' },
+    secondary: { label: 'About Straatwerk', to: 'about' },
+  },
+  {
+    eyebrow: 'Prostitution Prevention & Restoration',
+    title: 'Walking Toward',
+    em: 'Freedom & Healing',
+    desc: 'Walking alongside women to find freedom and healing, offering support, skills training, and a path to a restored life.',
+    img: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1600&h=900&fit=crop&auto=format',
+    primary: { label: 'Meet Our Ministries', to: 'ministries' },
+    secondary: { label: 'About Straatwerk', to: 'about' },
+  },
+  {
+    eyebrow: 'Make a Difference',
+    title: 'Your Giving',
+    em: 'Changes Lives',
+    desc: 'Every donation directly supports the people Straatwerk serves. Your generosity makes honest work and real hope possible.',
+    img: 'https://images.unsplash.com/photo-1526958097901-5e6d742d3371?w=1600&h=900&fit=crop&auto=format',
+    primary: { label: 'Donate Now', to: 'donate' },
+    secondary: { label: 'Get in Touch', to: 'contact' },
+  },
+]
+
 // ── Ministries ────────────────────────────────────────────────────────────────
 const MINISTRIES = [
   {
@@ -203,6 +243,8 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(null)
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
   const [formSent, setFormSent] = useState(false)
+  const [heroSlide, setHeroSlide] = useState(0)
+  const heroTimer = useRef<ReturnType<typeof setInterval> | null>(null)
 
   // Hydrate the in-memory data cache from the backend once on load, then
   // restore any existing session (JWT persisted in sessionStorage).
@@ -221,6 +263,15 @@ export default function App() {
     window.addEventListener('scroll', fn)
     return () => window.removeEventListener('scroll', fn)
   }, [])
+
+  // Hero carousel — auto-advance every 7s, restarting whenever the slide
+  // changes (including manual nav, so a click doesn't fight the timer).
+  useEffect(() => {
+    heroTimer.current = setInterval(() => setHeroSlide(i => (i + 1) % HERO_SLIDES.length), 7000)
+    return () => { if (heroTimer.current) clearInterval(heroTimer.current) }
+  }, [heroSlide])
+
+  const goToHeroSlide = (i: number) => setHeroSlide(((i % HERO_SLIDES.length) + HERO_SLIDES.length) % HERO_SLIDES.length)
 
   const handleLogin = (user: AuthUser) => {
     setCurrentUser(user)
@@ -360,41 +411,60 @@ export default function App() {
         </div>
       </header>
 
-      {/* ── HERO ───────────────────────────────────────────────────────────── */}
-      <section id="home" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
-        <img
-          src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?w=1600&h=900&fit=crop&auto=format"
-          alt="Volunteers working with community participants"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-        />
-        <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, rgba(27,94,32,0.88) 0%, rgba(21,101,192,0.6) 100%)` }} />
+      {/* ── HERO — sliding carousel ────────────────────────────────────────── */}
+      <style>{`
+        @keyframes heroContentIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+        .hero-slide-content { animation: heroContentIn 0.6s ease both; }
+        .hero-nav-arrow { transition: background 0.18s ease, transform 0.18s ease; }
+        .hero-nav-arrow:hover { background: rgba(255,255,255,0.28) !important; }
+        .hero-dot { transition: width 0.25s ease, background 0.25s ease; }
+      `}</style>
+      <section id="home" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}
+        onMouseEnter={() => { if (heroTimer.current) clearInterval(heroTimer.current) }}
+        onMouseLeave={() => { heroTimer.current = setInterval(() => setHeroSlide(i => (i + 1) % HERO_SLIDES.length), 7000) }}
+      >
+        {/* Stacked, cross-fading background images */}
+        {HERO_SLIDES.map((slide, i) => (
+          <img
+            key={slide.img}
+            src={slide.img}
+            alt=""
+            style={{
+              position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover',
+              opacity: i === heroSlide ? 1 : 0,
+              transform: i === heroSlide ? 'scale(1.03)' : 'scale(1)',
+              transition: 'opacity 1.1s ease, transform 7s ease',
+            }}
+          />
+        ))}
+        <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, rgba(61,10,18,0.88) 0%, rgba(161,120,47,0.45) 100%)` }} />
 
         <div style={{ position: 'relative', zIndex: 2, maxWidth: 1280, margin: '0 auto', padding: '120px 5% 80px', width: '100%' }}>
-          <div style={{ maxWidth: 700 }}>
+          <div key={heroSlide} className="hero-slide-content" style={{ maxWidth: 700 }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, backgroundColor: 'rgba(192,148,63,0.2)', border: '1px solid rgba(192,148,63,0.5)', borderRadius: 999, padding: '6px 16px', marginBottom: 32 }}>
               <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: C.gold, display: 'inline-block' }} />
-              <span style={{ color: C.gold, fontSize: 13, fontWeight: 600, letterSpacing: '0.08em' }}>OPHELP Voucher System — Now Live</span>
+              <span style={{ color: C.gold, fontSize: 13, fontWeight: 600, letterSpacing: '0.08em' }}>{HERO_SLIDES[heroSlide].eyebrow}</span>
             </div>
             <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(36px, 5.5vw, 72px)', fontWeight: 600, color: '#fff', lineHeight: 1.1, marginBottom: 24, letterSpacing: '-0.01em' }}>
-              Restoring Dignity<br />
-              <em style={{ fontStyle: 'italic', color: '#e6c98a' }}>Through Honest Work</em>
+              {HERO_SLIDES[heroSlide].title}<br />
+              <em style={{ fontStyle: 'italic', color: '#e6c98a' }}>{HERO_SLIDES[heroSlide].em}</em>
             </h1>
             <p style={{ fontSize: 'clamp(15px, 1.8vw, 18px)', lineHeight: 1.75, color: 'rgba(255,255,255,0.85)', marginBottom: 40, maxWidth: 580 }}>
-              The OPHELP Voucher System empowers participants to earn income through approved work opportunities. After completing a four-hour shift, earnings are loaded securely onto an OPHELP Card — usable at supported ATMs and participating partner shops.
+              {HERO_SLIDES[heroSlide].desc}
             </p>
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
               <button
-                onClick={() => scrollTo('ophelp')}
+                onClick={() => scrollTo(HERO_SLIDES[heroSlide].primary.to)}
                 style={{ ...btnPrimary, fontSize: 15, padding: '15px 36px', boxShadow: '0 4px 20px rgba(107,21,34,0.4)' }}
                 onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
                 onMouseLeave={e => (e.currentTarget.style.transform = 'translateY(0)')}
-              >Get Started</button>
+              >{HERO_SLIDES[heroSlide].primary.label}</button>
               <button
-                onClick={() => scrollTo('features')}
+                onClick={() => scrollTo(HERO_SLIDES[heroSlide].secondary.to)}
                 style={{ ...btnOutline }}
                 onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.15)')}
                 onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
-              >View Work Opportunities</button>
+              >{HERO_SLIDES[heroSlide].secondary.label}</button>
             </div>
           </div>
 
@@ -407,6 +477,33 @@ export default function App() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Slide arrows */}
+        <button
+          aria-label="Previous slide"
+          onClick={() => goToHeroSlide(heroSlide - 1)}
+          className="hero-nav-arrow"
+          style={{ position: 'absolute', top: '50%', left: 20, transform: 'translateY(-50%)', zIndex: 3, width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.14)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.28)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 18 }}
+        >‹</button>
+        <button
+          aria-label="Next slide"
+          onClick={() => goToHeroSlide(heroSlide + 1)}
+          className="hero-nav-arrow"
+          style={{ position: 'absolute', top: '50%', right: 20, transform: 'translateY(-50%)', zIndex: 3, width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.14)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.28)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 18 }}
+        >›</button>
+
+        {/* Slide dots */}
+        <div style={{ position: 'absolute', bottom: 88, left: '50%', transform: 'translateX(-50%)', zIndex: 3, display: 'flex', gap: 8 }}>
+          {HERO_SLIDES.map((_, i) => (
+            <button
+              key={i}
+              aria-label={`Go to slide ${i + 1}`}
+              onClick={() => goToHeroSlide(i)}
+              className="hero-dot"
+              style={{ width: i === heroSlide ? 22 : 7, height: 7, borderRadius: 4, background: i === heroSlide ? C.gold : 'rgba(255,255,255,0.4)', border: 'none', cursor: 'pointer', padding: 0 }}
+            />
+          ))}
         </div>
 
         {/* Scroll arrow */}
