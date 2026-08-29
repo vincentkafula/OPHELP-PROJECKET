@@ -72,7 +72,7 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '📢', label: 'Roll Call' }, { icon: '📚', label: 'Document Library' },
     { icon: '🏛️', label: 'Task Sheet' }, { icon: '📋', label: 'Jobsheet' },
     { icon: '🧮', label: 'Summary Sheet' }, { icon: '🧾', label: 'Invoices' },
-    { icon: '🗓️', label: 'Roster' },
+    { icon: '🗓️', label: 'Shift Deployment Schedule' },
   ],
   operation_office: [
     { icon: '🏠', label: 'Overview' }, { icon: '🏗️', label: 'Sites' },
@@ -84,7 +84,7 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '🧾', label: 'Invoices' },
     { icon: '💵', label: 'Jobsheet Review' }, { icon: '📒', label: 'OpHelp Ledger' },
     { icon: '📅', label: 'Monthly Invoices' },
-    { icon: '📝', label: 'Quotation Approvals' }, { icon: '🗓️', label: 'Roster' },
+    { icon: '📝', label: 'Quotation Approvals' }, { icon: '🗓️', label: 'Shift Deployment Schedule' },
     { icon: '🧮', label: 'Summary Sheet' },
   ],
   operation_management: [

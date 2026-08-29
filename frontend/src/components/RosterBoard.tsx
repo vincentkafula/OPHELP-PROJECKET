@@ -163,10 +163,10 @@ export default function RosterBoard() {
             <div>
               <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, letterSpacing: '.14em', textTransform: 'uppercase', color: '#5B584E', display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
                 <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#F5B324', boxShadow: '0 0 0 3px rgba(245,179,36,0.22)', display: 'inline-block' }} />
-                City Depot &nbsp;·&nbsp; Shift Roster &nbsp;·&nbsp; Week 01
+                City Depot &nbsp;·&nbsp; Shift Deployment Schedule &nbsp;·&nbsp; Week 01
               </div>
               <h1 style={{ fontFamily: "'Oswald', sans-serif", fontWeight: 700, fontSize: 'clamp(26px,4.6vw,40px)', letterSpacing: '.01em', textTransform: 'uppercase', margin: '0 0 6px', lineHeight: 1.02 }}>
-                Festive Week <span style={{ color: '#D98A3D' }}>Roster</span>
+                Shift Deployment <span style={{ color: '#D98A3D' }}>Schedule</span>
               </h1>
               <p style={{ fontSize: 13.5, color: '#5B584E', maxWidth: '56ch', lineHeight: 1.5, margin: 0 }}>
                 Thursday 27 December 2018 to Wednesday 2 January 2019. <b style={{ color: '#1B1B18', fontWeight: 600 }}>Dawn Patrol rolls at 05:00</b> most mornings and the board runs through to last Access Control at 18:30 — each block is tinted to the CBD sky colour at that hour.
@@ -174,7 +174,7 @@ export default function RosterBoard() {
             </div>
             <div className="sync-badge" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, letterSpacing: '.05em', textTransform: 'uppercase', color: '#5B584E', border: '1px solid #C2B99E', background: '#F8F5EC', padding: '6px 10px', display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap' }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: syncMode === 'saved' ? '#3E6B4F' : syncMode === 'saving' ? '#F5B324' : '#B23A3A', display: 'inline-block', animation: syncMode === 'saving' ? 'pulse 1s infinite' : undefined }} />
-              {syncMode === 'saved' ? 'Saved to shared roster' : syncMode === 'saving' ? 'Saving…' : 'Could not save'}
+              {syncMode === 'saved' ? 'Saved to shared schedule' : syncMode === 'saving' ? 'Saving…' : 'Could not save'}
             </div>
           </div>
 
@@ -319,7 +319,7 @@ export default function RosterBoard() {
         </section>
 
         <footer style={{ marginTop: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap', fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#5B584E', letterSpacing: '.02em' }}>
-          <span>Names and statuses are shared with everyone viewing this roster.</span>
+          <span>Names and statuses are shared with everyone viewing this schedule.</span>
           <button className="print-btn" type="button" onClick={() => window.print()}>Print this day</button>
         </footer>
       </div>
