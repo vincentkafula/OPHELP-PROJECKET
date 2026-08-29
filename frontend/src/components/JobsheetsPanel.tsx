@@ -49,8 +49,10 @@ function Btn({ onClick, children, variant = 'ghost' }: { onClick: () => void; ch
 interface JobsheetsPanelProps {
   /** 'foreman': only Jobsheets Day Admin has issued to this person, no
    * creation. 'office': every Jobsheet, for review/confirm — also no
-   * creation, Jobsheets always originate from the Document Library. */
-  mode: 'foreman' | 'office'
+   * creation, Jobsheets always originate from the Document Library.
+   * 'view': every Jobsheet, read-only tracking (Day Admin) — confirming
+   * a Jobsheet is Operation Office's job, not Day Admin's. */
+  mode: 'foreman' | 'office' | 'view'
   currentUserName: string
 }
 
@@ -70,9 +72,11 @@ export default function JobsheetsPanel({ mode, currentUserName }: JobsheetsPanel
 
   const totalInvoiceValue = jobsheets.filter(j => j.status === 'confirmed').reduce((s, j) => s + deriveJobsheetTotals(j.data).invoiceAmount, 0)
 
+  const title = mode === 'foreman' ? 'My Jobsheets' : mode === 'office' ? 'Jobsheet Review' : 'Jobsheets'
+
   return (
     <div className="space-y-6">
-      <h2 className="text-lg font-semibold text-gray-800">{mode === 'foreman' ? 'My Jobsheets' : 'Jobsheet Review'}</h2>
+      <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label={mode === 'foreman' ? 'Issued To Me' : 'Total Jobsheets'} value={jobsheets.length} />
@@ -123,7 +127,7 @@ export default function JobsheetsPanel({ mode, currentUserName }: JobsheetsPanel
             </div>
             <JobSheet
               initialData={open.data}
-              readOnly={open.status === 'confirmed'}
+              readOnly={open.status === 'confirmed' || mode === 'view'}
               onSave={mode === 'foreman' && open.status === 'draft' ? handleSave : undefined}
               footerExtra={<>
                 {mode === 'foreman' && open.status === 'draft' && <Btn onClick={() => submit(open.id)} variant="primary">Submit to Operation Office</Btn>}

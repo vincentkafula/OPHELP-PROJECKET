@@ -37,12 +37,21 @@ function Btn({ onClick, children, variant = 'ghost' }: { onClick: () => void; ch
   return <button onClick={onClick} className={`${cls} px-3 py-1.5 text-xs rounded-lg font-medium transition-colors`}>{children}</button>
 }
 
+interface TaskSheetsPanelProps {
+  /** 'foreman' (default): only Task Sheets Day Admin has issued to this
+   * person appear here; a foreman cannot create their own.
+   * 'review': every Task Sheet, for Operation Management / Day Admin to
+   * track — read-only, no submit action (that's the foreman's job). */
+  mode?: 'foreman' | 'review'
+  currentUserName: string
+}
+
 /** Foreman's real Grand Parade Task Sheet — only ones Day Admin has
  * issued to this person via the Document Library appear here; a foreman
  * cannot create their own. */
-export default function TaskSheetsPanel({ currentUserName }: { currentUserName: string }) {
+export default function TaskSheetsPanel({ mode = 'foreman', currentUserName }: TaskSheetsPanelProps) {
   const all = useLive(() => TaskSheetApi.list())
-  const mine = all.filter(t => t.issuedTo === currentUserName)
+  const mine = mode === 'foreman' ? all.filter(t => t.issuedTo === currentUserName) : all
 
   const [openId, setOpenId] = useState<string | null>(null)
   const open = openId ? mine.find(t => t.id === openId) : null
@@ -54,10 +63,10 @@ export default function TaskSheetsPanel({ currentUserName }: { currentUserName: 
 
   return (
     <div className="space-y-6">
-      <h2 className="text-lg font-semibold text-gray-800">Grand Parade Task Sheets</h2>
+      <h2 className="text-lg font-semibold text-gray-800">{mode === 'foreman' ? 'Grand Parade Task Sheets' : 'Task Sheets'}</h2>
 
       <div className="grid grid-cols-2 gap-4">
-        <StatCard label="Issued To Me" value={mine.length} />
+        <StatCard label={mode === 'foreman' ? 'Issued To Me' : 'Total Task Sheets'} value={mine.length} />
         <StatCard label="Submitted" value={mine.filter(t => t.status === 'submitted').length} color="#2E7D32" />
       </div>
 
@@ -66,19 +75,20 @@ export default function TaskSheetsPanel({ currentUserName }: { currentUserName: 
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <div className="text-5xl mb-3">🏛️</div>
             <p className="font-semibold text-gray-600">No Task Sheets yet</p>
-            <p className="text-sm text-gray-400 mt-1">Day Admin issues a Task Sheet to you from the Document Library.</p>
+            <p className="text-sm text-gray-400 mt-1">Day Admin issues a Task Sheet to a foreman from the Document Library.</p>
           </div>
         ) : (
           <DataTable columns={[
             { key: 'date', header: 'Date', render: (t: TaskSheet) => t.data.meta.date || '—', sortable: true },
             { key: 'senior', header: 'Senior Leader', render: (t: TaskSheet) => t.data.meta.senior || '—' },
             { key: 'junior', header: 'Junior Leader', render: (t: TaskSheet) => t.data.meta.junior || '—' },
+            ...(mode === 'review' ? [{ key: 'issuedTo', header: 'Issued To', render: (t: TaskSheet) => t.issuedTo || '—' }] : []),
             { key: 'status', header: 'Status', render: (t: TaskSheet) => <Badge label={STATUS_LABELS[t.status]} variant={STATUS_VARIANTS[t.status]} dot /> },
           ]} data={mine} pageSize={10}
             actions={(t: TaskSheet) => (
               <div className="flex gap-1">
                 <Btn onClick={() => setOpenId(t.id)}>Open</Btn>
-                {t.status === 'draft' && <Btn onClick={() => submit(t.id)} variant="primary">Submit</Btn>}
+                {mode === 'foreman' && t.status === 'draft' && <Btn onClick={() => submit(t.id)} variant="primary">Submit</Btn>}
               </div>
             )} />
         )}
@@ -93,9 +103,9 @@ export default function TaskSheetsPanel({ currentUserName }: { currentUserName: 
             </div>
             <GrandParadeTaskSheet
               initialData={open.data}
-              readOnly={open.status === 'submitted'}
-              onSave={open.status === 'draft' ? handleSave : undefined}
-              footerExtra={open.status === 'draft' && <Btn onClick={() => submit(open.id)} variant="primary">Submit</Btn>}
+              readOnly={mode !== 'foreman' || open.status === 'submitted'}
+              onSave={mode === 'foreman' && open.status === 'draft' ? handleSave : undefined}
+              footerExtra={mode === 'foreman' && open.status === 'draft' && <Btn onClick={() => submit(open.id)} variant="primary">Submit</Btn>}
             />
           </div>
         </div>

@@ -68,6 +68,7 @@ const ENTITY_ROUTES = {
   'scheduled-jobs': 'scheduled_jobs',
   'team-bookings': 'team_bookings',
   'task-sheets': 'task_sheets',
+  'summary-sheets': 'summary_sheets',
 }
 
 for (const [urlSegment, entityName] of Object.entries(ENTITY_ROUTES)) {

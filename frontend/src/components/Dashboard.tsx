@@ -20,6 +20,7 @@ import DepotSchedulesPanel from './DepotSchedulesPanel'
 import QuotationsPanel from './QuotationsPanel'
 import InvoicesPanel from './InvoicesPanel'
 import JobsheetsPanel from './JobsheetsPanel'
+import SummarySheetsPanel from './SummarySheetsPanel'
 import MonthlyInvoicePanel from './MonthlyInvoicePanel'
 import QuotationRequestPanel from './QuotationRequestPanel'
 import RequestApprovalPanel from './RequestApprovalPanel'
@@ -71,6 +72,8 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '🧾', label: 'Cash Voucher' }, { icon: '📒', label: 'Field Ledger' },
     { icon: '⚠️', label: 'Incident Log' }, { icon: '📚', label: 'Sheets Library' },
     { icon: '📢', label: 'Roll Call' }, { icon: '📚', label: 'Document Library' },
+    { icon: '🏛️', label: 'Task Sheet' }, { icon: '📋', label: 'Jobsheet' },
+    { icon: '🧮', label: 'Summary Sheet' }, { icon: '🧾', label: 'Invoices' },
   ],
   operation_office: [
     { icon: '🏠', label: 'Overview' }, { icon: '🏗️', label: 'Sites' },
@@ -84,11 +87,13 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '💵', label: 'Jobsheet Review' }, { icon: '📒', label: 'OpHelp Ledger' },
     { icon: '📅', label: 'Monthly Invoices' },
     { icon: '📝', label: 'Quotation Approvals' }, { icon: '🗓️', label: 'Scheduling' },
+    { icon: '🧮', label: 'Summary Sheet' },
   ],
   operation_management: [
     { icon: '🏠', label: 'Overview' }, { icon: '🏗️', label: 'Sites' },
     { icon: '👥', label: 'Workforce' }, { icon: '📊', label: 'Performance' },
     { icon: '⚠️', label: 'Incidents' }, { icon: '📝', label: 'Quotation Requests' },
+    { icon: '🏛️', label: 'Task Sheet' },
   ],
   ophelp_store: [
     { icon: '🏠', label: 'Overview' }, { icon: '💳', label: 'Cards' },
@@ -99,6 +104,7 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
     { icon: '🏠', label: 'Overview' }, { icon: '📁', label: 'Projects' },
     { icon: '🏗️', label: 'Sites' }, { icon: '📊', label: 'Progress' },
     { icon: '📒', label: 'OpHelp Ledger' }, { icon: '✅', label: 'Final Approvals' },
+    { icon: '🧮', label: 'Summary Sheet' }, { icon: '🧾', label: 'Invoices' },
   ],
   head_office: [
     { icon: '🏠', label: 'Overview' }, { icon: '📊', label: 'Executive KPIs' },
@@ -1173,6 +1179,10 @@ function DayAdminDashboard({ user, activeIdx }: { user: AuthUser; activeIdx: num
   if (activeIdx === 7) return <SheetsLibrary />
   if (activeIdx === 8) return <RollCallPanel currentUserName={user.name} />
   if (activeIdx === 9) return <DocumentLibraryPanel currentUserName={user.name} />
+  if (activeIdx === 10) return <TaskSheetsPanel mode="review" currentUserName={user.name} />
+  if (activeIdx === 11) return <JobsheetsPanel mode="view" currentUserName={user.name} />
+  if (activeIdx === 12) return <SummarySheetsPanel mode="day_admin" currentUserName={user.name} />
+  if (activeIdx === 13) return <InvoicesPanel />
 
   function createShift() {
     if (!form.participantId || !form.siteId || !form.task) return
@@ -1302,6 +1312,7 @@ function OperationOfficeDashboard({ user, activeIdx }: { user: AuthUser; activeI
   if (activeIdx === 17) return <MonthlyInvoicePanel mode="office" currentUserName={user.name} />
   if (activeIdx === 18) return <RequestApprovalPanel stage="office" currentUserName={user.name} />
   if (activeIdx === 19) return <SchedulingPanel currentUserName={user.name} />
+  if (activeIdx === 20) return <SummarySheetsPanel mode="office" currentUserName={user.name} />
 
   if (activeIdx === 1) return <SitesMgmtPanel color="#1565C0" />
   if (activeIdx === 2) return <ShiftsMgmtPanel userId={user.id} />
@@ -1352,6 +1363,7 @@ function OperationManagementDashboard({ user, activeIdx }: { user: AuthUser; act
   if (activeIdx === 3) return <AnalyticsPanel color="#2E7D32" />
   if (activeIdx === 4) return <IncidentsMgmtPanel userId={user.id} />
   if (activeIdx === 5) return <RequestApprovalPanel stage="management" currentUserName={user.name} />
+  if (activeIdx === 6) return <TaskSheetsPanel mode="review" currentUserName={user.name} />
 
   return (
     <div className="space-y-6">
@@ -1450,6 +1462,8 @@ function ProjectManagerDashboard({ user, activeIdx }: { user: AuthUser; activeId
   if (activeIdx === 2) return <SitesMgmtPanel color="#AD1457" />
   if (activeIdx === 4) return <OASys />
   if (activeIdx === 5) return <RequestApprovalPanel stage="manager" currentUserName={user.name} />
+  if (activeIdx === 6) return <SummarySheetsPanel mode="manager" currentUserName={user.name} />
+  if (activeIdx === 7) return <InvoicesPanel />
 
   if (activeIdx === 3) return (
     <div className="space-y-6">

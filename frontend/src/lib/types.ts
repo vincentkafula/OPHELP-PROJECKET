@@ -785,6 +785,38 @@ export interface TaskSheet {
   createdAt: string
 }
 
+// ── Summary Sheets — wraps the real City Shifts AM/PM Summary Sheet print
+// form (see SummarySheet.tsx). Day Admin fills this in directly (they are
+// the "Day Supervisor" who signs it) — unlike Jobsheet/TaskSheet, it is not
+// issued to a foreman. Operation Office confirms a submitted sheet, and it
+// is then visible read-only to the Manager. ─────────────────────────────────
+export interface SummarySheetRow { no: string; particulars: string; r: string; c: string }
+export interface SummarySheetPettyEntry { no: string; amount: string; detail: string }
+export interface SummarySheetData {
+  day: string
+  session: string
+  safeNo: string
+  bagNo: string
+  rows: SummarySheetRow[]
+  petty: SummarySheetPettyEntry[]
+  receiptTotal: { r: string; c: string }
+  dayAmount: { r: string; c: string }
+  received: string
+  submitted: string
+}
+
+export type SummarySheetStatus = 'draft' | 'submitted' | 'confirmed'
+
+export interface SummarySheet {
+  id: string
+  data: SummarySheetData
+  status: SummarySheetStatus
+  createdBy: string
+  confirmedBy?: string
+  confirmedAt?: string
+  createdAt: string
+}
+
 // ── Auth ──────────────────────────────────────────────────────────────────────
 export interface AuthToken {
   token: string

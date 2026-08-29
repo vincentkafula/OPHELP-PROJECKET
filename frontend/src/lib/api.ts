@@ -10,6 +10,7 @@ import {
   PayrollPeriods, PayrollRoster, PayrollEntries, PayrollCorrections,
   PaymentAuthorisations, WeeklyRegisters, OasysChecks, DepotSchedules, Quotations, Invoices,
   Jobsheets, MonthlyInvoices, QuotationRequests, ScheduledJobs, TeamBookings, TaskSheets,
+  SummarySheets,
   now, uid,
 } from './db'
 import type {
@@ -20,6 +21,7 @@ import type {
   PayrollCorrection, PaymentAuthorisation, WeeklyRegister, OasysCheck,
   DepotSchedule, Quotation, QuotationLineItem, Invoice, InvoiceLineItem, Jobsheet, JobSheetData, JobSheetAccRow, MonthlyInvoice,
   QuotationRequest, ScheduledJob, TeamBooking, TeamBookingReplacement, TaskSheet, TaskSheetData,
+  SummarySheet, SummarySheetData,
 } from './types'
 
 // ── Participants ──────────────────────────────────────────────────────────────
@@ -1086,5 +1088,43 @@ export const TaskSheetApi = {
   },
   delete(id: string): ApiResult {
     return TaskSheets.delete(id) ? { success: true } : { success: false, error: 'Task sheet not found' }
+  },
+}
+
+// ── Summary Sheets — wraps the real City Shifts AM/PM Summary Sheet print
+// form (see SummarySheet.tsx). Day Admin fills it in directly, Operation
+// Office confirms a submitted sheet, and Manager sees it read-only. ────────
+export const SummarySheetApi = {
+  list(): SummarySheet[] { return SummarySheets.all().sort((a, b) => b.createdAt.localeCompare(a.createdAt)) },
+  get(id: string): SummarySheet | undefined { return SummarySheets.findById(id) },
+  byCreator(createdBy: string): SummarySheet[] { return SummarySheets.where(s => s.createdBy === createdBy) },
+  byStatus(status: SummarySheet['status']): SummarySheet[] { return SummarySheets.where(s => s.status === status) },
+
+  /** Day Admin creates a Summary Sheet directly — unlike Jobsheet/TaskSheet
+   * there's no "issue to a foreman" step, Day Admin is the Day Supervisor
+   * who fills it in themselves. */
+  create(input: { data: SummarySheetData; createdBy: string }): ApiResult<SummarySheet> {
+    const s = SummarySheets.insert({ ...input, status: 'draft', createdAt: now() })
+    return { success: true, data: s }
+  },
+  saveData(id: string, data: SummarySheetData): ApiResult<SummarySheet> {
+    const s = SummarySheets.update(id, { data })
+    return s ? { success: true, data: s } : { success: false, error: 'Summary sheet not found' }
+  },
+  submit(id: string): ApiResult<SummarySheet> {
+    const s = SummarySheets.update(id, { status: 'submitted' })
+    return s ? { success: true, data: s } : { success: false, error: 'Summary sheet not found' }
+  },
+  /** Operation Office confirms a submitted Summary Sheet, after which it's
+   * visible read-only to the Manager. */
+  confirm(id: string, confirmedBy: string): ApiResult<SummarySheet> {
+    const s = SummarySheets.findById(id)
+    if (!s) return { success: false, error: 'Summary sheet not found' }
+    if (s.status !== 'submitted') return { success: false, error: 'Only submitted Summary Sheets can be confirmed' }
+    const updated = SummarySheets.update(id, { status: 'confirmed', confirmedBy, confirmedAt: now() })
+    return updated ? { success: true, data: updated } : { success: false, error: 'Could not confirm Summary Sheet' }
+  },
+  delete(id: string): ApiResult {
+    return SummarySheets.delete(id) ? { success: true } : { success: false, error: 'Summary sheet not found' }
   },
 }
