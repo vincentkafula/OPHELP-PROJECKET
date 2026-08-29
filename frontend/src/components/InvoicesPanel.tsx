@@ -4,6 +4,7 @@ import { dbBus } from '@/lib/events'
 import { DataTable } from './shared/DataTable'
 import { Modal } from './shared/Modal'
 import { Badge } from './shared/Badge'
+import InvoiceDocument from './InvoiceDocument'
 import type { Invoice } from '@/lib/types'
 
 function useLive<T>(loader: () => T): T {
@@ -112,58 +113,7 @@ export default function InvoicesPanel({ clientFilter }: InvoicesPanelProps) {
 
       <Modal open={!!detail} onClose={() => setDetail(null)} title={detail ? `Invoice ${detail.documentNo}` : ''} size="lg"
         footer={<Btn onClick={() => setDetail(null)}>Close</Btn>}>
-        {detail && (
-          <div className="space-y-4 text-sm">
-            <div className="grid grid-cols-2 gap-3">
-              <div><span className="text-gray-500">Date</span><div className="font-medium">{fmtDate(detail.date)}</div></div>
-              <div><span className="text-gray-500">Account</span><div className="font-medium">{detail.account}</div></div>
-              <div><span className="text-gray-500">Client</span><div className="font-medium">{detail.client}</div></div>
-              <div><span className="text-gray-500">Reference</span><div>{detail.yourReference || '—'}</div></div>
-            </div>
-            <div>
-              <span className="text-gray-500 text-xs uppercase tracking-wide">Client Address</span>
-              <p>{detail.clientAddress.join(', ') || '—'}</p>
-            </div>
-            {detail.deliverTo.length > 0 && (
-              <div>
-                <span className="text-gray-500 text-xs uppercase tracking-wide">Deliver To</span>
-                <p>{detail.deliverTo.join(', ')}</p>
-              </div>
-            )}
-
-            <div className="overflow-x-auto border border-gray-100 rounded-lg">
-              <table className="w-full text-xs">
-                <thead className="bg-gray-50 text-gray-500">
-                  <tr>
-                    <th className="text-left px-3 py-2">Code</th>
-                    <th className="text-left px-3 py-2">Description</th>
-                    <th className="text-right px-3 py-2">Tax</th>
-                    <th className="text-right px-3 py-2">Nett Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {detail.lineItems.map((li, i) => (
-                    <tr key={i} className="border-t border-gray-100">
-                      <td className="px-3 py-2 text-gray-400">{li.code}</td>
-                      <td className="px-3 py-2">{li.description}</td>
-                      <td className="text-right px-3 py-2">{fmtMoney(li.tax)}</td>
-                      <td className="text-right px-3 py-2 font-medium">{fmtMoney(li.nettPrice)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <div className="space-y-1 border-t border-gray-100 pt-3">
-              <div className="flex justify-between"><span className="text-gray-500">Sub Total</span><span>{fmtMoney(detail.subtotal)}</span></div>
-              <div className="flex justify-between"><span className="text-gray-500">Discount ({detail.discountPct}%)</span><span>{fmtMoney(detail.discountAmount)}</span></div>
-              <div className="flex justify-between"><span className="text-gray-500">Amount Excl Tax</span><span>{fmtMoney(detail.amountExclTax)}</span></div>
-              <div className="flex justify-between"><span className="text-gray-500">Tax</span><span>{fmtMoney(detail.tax)}</span></div>
-              <div className="flex justify-between font-bold text-base pt-1"><span>Total ({detail.taxType})</span><span>{fmtMoney(detail.total)}</span></div>
-            </div>
-            {detail.sourceFile && <p className="text-xs text-gray-400">Source: {detail.sourceFile}</p>}
-          </div>
-        )}
+        {detail && <InvoiceDocument invoice={detail} />}
       </Modal>
     </div>
   )
