@@ -5,8 +5,6 @@ import JobSheet from './JobSheet'
 import TaskSheetsPanel from './TaskSheetsPanel'
 import OASys from './OASys'
 import CityDepotShiftSlip from './CityDepotShiftSlip'
-import SchoolDeploymentSchedule from './SchoolDeploymentSchedule'
-import PreSchoolDeploymentSchedule from './PreSchoolDeploymentSchedule'
 import CashVoucher from './CashVoucher'
 import LeaveDaysRegister from './LeaveDaysRegister'
 import FieldOperationsLedger from './FieldOperationsLedger'
@@ -79,8 +77,7 @@ const SIDEBAR_ITEMS: Record<UserRole, { icon: string; label: string }[]> = {
   operation_office: [
     { icon: '🏠', label: 'Overview' }, { icon: '🏗️', label: 'Sites' },
     { icon: '📦', label: 'Operations' }, { icon: '📊', label: 'Analytics' },
-    { icon: '📒', label: 'OASys' }, { icon: '📅', label: 'School Deployment' },
-    { icon: '🏫', label: 'Pre-School Deploy' }, { icon: '🗓️', label: 'Leave Register' },
+    { icon: '📒', label: 'OASys' }, { icon: '🗓️', label: 'Leave Register' },
     { icon: '💰', label: 'Payroll' }, { icon: '🧾', label: 'Payment Authorisations' },
     { icon: '📋', label: 'Weekly Registers' }, { icon: '🔍', label: 'OASys Reconciliation' },
     { icon: '🗓️', label: 'Depot Schedules' }, { icon: '📐', label: 'Quotations' },
@@ -1267,22 +1264,20 @@ function OperationOfficeDashboard({ user, activeIdx }: { user: AuthUser; activeI
   const [kpis] = useDbData(() => ReportApi.kpiScores())
 
   if (activeIdx === 4) return <OASys />
-  if (activeIdx === 5) return <SchoolDeploymentSchedule />
-  if (activeIdx === 6) return <PreSchoolDeploymentSchedule />
-  if (activeIdx === 7) return <LeaveDaysRegister />
-  if (activeIdx === 8) return <PayrollPanel />
-  if (activeIdx === 9) return <PaymentAuthorisationsPanel />
-  if (activeIdx === 10) return <WeeklyRegistersPanel />
-  if (activeIdx === 11) return <OasysChecksPanel />
-  if (activeIdx === 12) return <DepotSchedulesPanel />
-  if (activeIdx === 13) return <QuotationsPanel />
-  if (activeIdx === 14) return <InvoicesPanel />
-  if (activeIdx === 15) return <JobsheetsPanel mode="office" currentUserName={user.name} />
-  if (activeIdx === 16) return <OASys />
-  if (activeIdx === 17) return <MonthlyInvoicePanel mode="office" currentUserName={user.name} />
-  if (activeIdx === 18) return <RequestApprovalPanel stage="office" currentUserName={user.name} />
-  if (activeIdx === 19) return <RosterBoard />
-  if (activeIdx === 20) return <SummarySheetsPanel mode="office" currentUserName={user.name} />
+  if (activeIdx === 5) return <LeaveDaysRegister />
+  if (activeIdx === 6) return <PayrollPanel />
+  if (activeIdx === 7) return <PaymentAuthorisationsPanel />
+  if (activeIdx === 8) return <WeeklyRegistersPanel />
+  if (activeIdx === 9) return <OasysChecksPanel />
+  if (activeIdx === 10) return <DepotSchedulesPanel />
+  if (activeIdx === 11) return <QuotationsPanel />
+  if (activeIdx === 12) return <InvoicesPanel />
+  if (activeIdx === 13) return <JobsheetsPanel mode="office" currentUserName={user.name} />
+  if (activeIdx === 14) return <OASys />
+  if (activeIdx === 15) return <MonthlyInvoicePanel mode="office" currentUserName={user.name} />
+  if (activeIdx === 16) return <RequestApprovalPanel stage="office" currentUserName={user.name} />
+  if (activeIdx === 17) return <RosterBoard />
+  if (activeIdx === 18) return <SummarySheetsPanel mode="office" currentUserName={user.name} />
 
   if (activeIdx === 1) return <SitesMgmtPanel color="#1565C0" />
   if (activeIdx === 2) return <ShiftsMgmtPanel userId={user.id} />
