@@ -7,18 +7,18 @@ import { bootstrap } from '@/lib/db'
 import { AuthService } from '@/lib/auth'
 import { ReportApi } from '@/lib/api'
 
-// ── Colours ──────────────────────────────────────────────────────────────────
+// ── Colours — maroon/gold letterhead palette ─────────────────────────────────
 const C = {
-  green: '#2E7D32',
-  greenLight: '#43A047',
-  greenDark: '#1B5E20',
-  blue: '#1565C0',
-  gold: '#F9A825',
-  bg: '#F5F7FA',
-  white: '#FFFFFF',
-  text: '#1F2937',
-  textMuted: '#6B7280',
-  success: '#4CAF50',
+  green: '#6B1522',
+  greenLight: '#821B2B',
+  greenDark: '#3D0A12',
+  blue: '#A1782F',
+  gold: '#C0943F',
+  bg: '#F6F1E6',
+  white: '#FFFDF9',
+  text: '#211A15',
+  textMuted: '#6D6055',
+  success: '#5C7A52',
   danger: '#E53935',
 }
 
@@ -133,28 +133,27 @@ const GALLERY = [
 // ── Shared styles ─────────────────────────────────────────────────────────────
 const card: React.CSSProperties = {
   backgroundColor: C.white,
-  borderRadius: 16,
-  boxShadow: '0 2px 16px rgba(0,0,0,0.07)',
+  borderRadius: 14,
+  boxShadow: '0 1px 3px rgba(61,10,18,0.06)',
   overflow: 'hidden',
 }
 
 const sectionPad: React.CSSProperties = { padding: '80px 5%' }
 
 const sectionLabel: React.CSSProperties = {
-  display: 'inline-block',
-  backgroundColor: 'rgba(46,125,50,0.1)',
-  color: C.green,
-  fontSize: 12,
-  fontWeight: 600,
-  letterSpacing: '0.12em',
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 10,
+  fontSize: 11.5,
+  fontWeight: 700,
+  letterSpacing: '0.16em',
   textTransform: 'uppercase',
-  padding: '4px 14px',
-  borderRadius: 999,
+  color: C.blue,
   marginBottom: 16,
 }
 
 const h2Style: React.CSSProperties = {
-  fontFamily: "'Lora', serif",
+  fontFamily: "'Fraunces', serif",
   fontSize: 'clamp(28px, 3.5vw, 44px)',
   fontWeight: 600,
   color: C.text,
@@ -169,12 +168,13 @@ const btnPrimary: React.CSSProperties = {
   fontWeight: 600,
   fontSize: 15,
   padding: '14px 32px',
-  borderRadius: 12,
+  borderRadius: 8,
   border: 'none',
   cursor: 'pointer',
   textDecoration: 'none',
   transition: 'background 0.2s, transform 0.15s',
-  fontFamily: "'Poppins', sans-serif",
+  fontFamily: "'Inter', sans-serif",
+  boxShadow: '0 1px 2px rgba(61,10,18,0.15)',
 }
 
 const btnOutline: React.CSSProperties = {
@@ -184,12 +184,12 @@ const btnOutline: React.CSSProperties = {
   fontWeight: 600,
   fontSize: 15,
   padding: '13px 28px',
-  borderRadius: 12,
-  border: '2px solid rgba(255,255,255,0.7)',
+  borderRadius: 8,
+  border: '1.4px solid rgba(255,255,255,0.7)',
   cursor: 'pointer',
   textDecoration: 'none',
   transition: 'background 0.2s, transform 0.15s',
-  fontFamily: "'Poppins', sans-serif",
+  fontFamily: "'Inter', sans-serif",
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -236,7 +236,7 @@ export default function App() {
     return (
       <div style={{
         minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        flexDirection: 'column', gap: 16, backgroundColor: C.bg, fontFamily: "'Poppins', sans-serif",
+        flexDirection: 'column', gap: 16, backgroundColor: C.bg, fontFamily: "'Inter', sans-serif",
       }}>
         <img src={opHelpLogo} alt="Straatwerk logo" style={{ width: 56, height: 56, objectFit: 'contain' }} />
         <div style={{ width: 32, height: 32, borderRadius: '50%', border: `3px solid ${C.green}`, borderTopColor: 'transparent', animation: 'spin 0.8s linear infinite' }} />
@@ -256,7 +256,7 @@ export default function App() {
   }
 
   return (
-    <div style={{ fontFamily: "'Poppins', sans-serif", backgroundColor: C.bg, color: C.text }}>
+    <div style={{ fontFamily: "'Inter', sans-serif", backgroundColor: C.bg, color: C.text }}>
 
       {/* ── NAVIGATION ─────────────────────────────────────────────────────── */}
       <header style={{
@@ -279,7 +279,7 @@ export default function App() {
               <button
                 key={link}
                 onClick={() => scrollTo(link.toLowerCase())}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 500, color: scrolled ? C.text : 'rgba(255,255,255,0.9)', padding: '6px 12px', borderRadius: 8, fontFamily: "'Poppins', sans-serif", transition: 'color 0.2s' }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 500, color: scrolled ? C.text : 'rgba(255,255,255,0.9)', padding: '6px 12px', borderRadius: 8, fontFamily: "'Inter', sans-serif", transition: 'color 0.2s' }}
                 onMouseEnter={e => (e.currentTarget.style.color = C.green)}
                 onMouseLeave={e => (e.currentTarget.style.color = scrolled ? C.text : 'rgba(255,255,255,0.9)')}
               >{link}</button>
@@ -292,7 +292,7 @@ export default function App() {
               onMouseLeave={() => setOphelpOpen(false)}
             >
               <button
-                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 500, color: ophelpOpen ? C.green : (scrolled ? C.text : 'rgba(255,255,255,0.9)'), padding: '6px 12px', borderRadius: 8, fontFamily: "'Poppins', sans-serif", transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: 4 }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 500, color: ophelpOpen ? C.green : (scrolled ? C.text : 'rgba(255,255,255,0.9)'), padding: '6px 12px', borderRadius: 8, fontFamily: "'Inter', sans-serif", transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: 4 }}
               >
                 OPHELP
                 <span style={{ fontSize: 10, transition: 'transform 0.2s', display: 'inline-block', transform: ophelpOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>▾</span>
@@ -332,11 +332,11 @@ export default function App() {
                       background: 'none', border: 'none', cursor: 'pointer',
                       fontSize: 13, fontWeight: 400, color: C.text,
                       padding: '10px 20px',
-                      fontFamily: "'Poppins', sans-serif",
+                      fontFamily: "'Inter', sans-serif",
                       transition: 'background 0.15s, color 0.15s',
                       borderTop: i > 0 ? '1px solid rgba(0,0,0,0.04)' : 'none',
                     }}
-                    onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(46,125,50,0.07)'; e.currentTarget.style.color = C.green }}
+                    onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(107,21,34,0.07)'; e.currentTarget.style.color = C.green }}
                     onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = C.text }}
                   >
                     {item}
@@ -352,7 +352,7 @@ export default function App() {
             >What OPHELP Offers</button>
             <button
               onClick={() => setLoginOpen(true)}
-              style={{ background: 'none', border: `2px solid ${scrolled ? C.green : 'rgba(255,255,255,0.7)'}`, color: scrolled ? C.green : '#fff', padding: '7px 20px', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', marginLeft: 4, fontFamily: "'Poppins', sans-serif", transition: 'all 0.2s' }}
+              style={{ background: 'none', border: `2px solid ${scrolled ? C.green : 'rgba(255,255,255,0.7)'}`, color: scrolled ? C.green : '#fff', padding: '7px 20px', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', marginLeft: 4, fontFamily: "'Inter', sans-serif", transition: 'all 0.2s' }}
               onMouseEnter={e => { e.currentTarget.style.backgroundColor = C.green; e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = C.green }}
               onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = scrolled ? C.green : '#fff'; e.currentTarget.style.borderColor = scrolled ? C.green : 'rgba(255,255,255,0.7)' }}
             >Sign In</button>
@@ -371,13 +371,13 @@ export default function App() {
 
         <div style={{ position: 'relative', zIndex: 2, maxWidth: 1280, margin: '0 auto', padding: '120px 5% 80px', width: '100%' }}>
           <div style={{ maxWidth: 700 }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, backgroundColor: 'rgba(249,168,37,0.2)', border: '1px solid rgba(249,168,37,0.5)', borderRadius: 999, padding: '6px 16px', marginBottom: 32 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, backgroundColor: 'rgba(192,148,63,0.2)', border: '1px solid rgba(192,148,63,0.5)', borderRadius: 999, padding: '6px 16px', marginBottom: 32 }}>
               <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: C.gold, display: 'inline-block' }} />
               <span style={{ color: C.gold, fontSize: 13, fontWeight: 600, letterSpacing: '0.08em' }}>OPHELP Voucher System — Now Live</span>
             </div>
-            <h1 style={{ fontFamily: "'Lora', serif", fontSize: 'clamp(36px, 5.5vw, 72px)', fontWeight: 600, color: '#fff', lineHeight: 1.1, marginBottom: 24, letterSpacing: '-0.01em' }}>
+            <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(36px, 5.5vw, 72px)', fontWeight: 600, color: '#fff', lineHeight: 1.1, marginBottom: 24, letterSpacing: '-0.01em' }}>
               Restoring Dignity<br />
-              <em style={{ fontStyle: 'italic', color: '#a5d6a7' }}>Through Honest Work</em>
+              <em style={{ fontStyle: 'italic', color: '#e6c98a' }}>Through Honest Work</em>
             </h1>
             <p style={{ fontSize: 'clamp(15px, 1.8vw, 18px)', lineHeight: 1.75, color: 'rgba(255,255,255,0.85)', marginBottom: 40, maxWidth: 580 }}>
               The OPHELP Voucher System empowers participants to earn income through approved work opportunities. After completing a four-hour shift, earnings are loaded securely onto an OPHELP Card — usable at supported ATMs and participating partner shops.
@@ -385,7 +385,7 @@ export default function App() {
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
               <button
                 onClick={() => scrollTo('ophelp')}
-                style={{ ...btnPrimary, fontSize: 15, padding: '15px 36px', boxShadow: '0 4px 20px rgba(46,125,50,0.4)' }}
+                style={{ ...btnPrimary, fontSize: 15, padding: '15px 36px', boxShadow: '0 4px 20px rgba(107,21,34,0.4)' }}
                 onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
                 onMouseLeave={e => (e.currentTarget.style.transform = 'translateY(0)')}
               >Get Started</button>
@@ -402,7 +402,7 @@ export default function App() {
           <div style={{ display: 'flex', gap: 16, marginTop: 64, flexWrap: 'wrap' }}>
             {STATS.map(s => (
               <div key={s.label} style={{ backgroundColor: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 14, padding: '16px 24px', minWidth: 150 }}>
-                <div style={{ fontFamily: "'Lora', serif", fontSize: 28, fontWeight: 600, color: '#fff' }}>{s.value}</div>
+                <div style={{ fontFamily: "'Fraunces', serif", fontSize: 28, fontWeight: 600, color: '#fff' }}>{s.value}</div>
                 <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', marginTop: 2 }}>{s.label}</div>
               </div>
             ))}
@@ -429,8 +429,8 @@ export default function App() {
               <p style={{ fontSize: 15, lineHeight: 1.8, color: C.textMuted, marginBottom: 32 }}>
                 Today, Straatwerk is focused on serving people in distress and demonstrating Christ's love through practical outreach — providing training, honest work, and restoration to hundreds of participants each year.
               </p>
-              <div style={{ padding: '16px 20px', backgroundColor: 'rgba(46,125,50,0.07)', borderLeft: `4px solid ${C.green}`, borderRadius: '0 8px 8px 0' }}>
-                <p style={{ margin: 0, fontFamily: "'Lora', serif", fontStyle: 'italic', color: C.text, fontSize: 15, lineHeight: 1.7 }}>
+              <div style={{ padding: '16px 20px', backgroundColor: 'rgba(107,21,34,0.07)', borderLeft: `4px solid ${C.green}`, borderRadius: '0 8px 8px 0' }}>
+                <p style={{ margin: 0, fontFamily: "'Fraunces', serif", fontStyle: 'italic', color: C.text, fontSize: 15, lineHeight: 1.7 }}>
                   "Speak up for those who cannot speak for themselves, for the rights of all who are destitute." — Proverbs 31:8–9
                 </p>
               </div>
@@ -448,12 +448,12 @@ export default function App() {
                 style={{ width: '100%', borderRadius: 20, objectFit: 'cover', height: 400 }}
               />
               {/* Floating stat card */}
-              <div style={{ position: 'absolute', bottom: -20, left: -20, backgroundColor: C.green, borderRadius: 16, padding: '20px 28px', boxShadow: '0 8px 32px rgba(46,125,50,0.35)' }}>
-                <div style={{ fontFamily: "'Lora', serif", fontSize: 36, fontWeight: 600, color: '#fff' }}>60+</div>
+              <div style={{ position: 'absolute', bottom: -20, left: -20, backgroundColor: C.green, borderRadius: 16, padding: '20px 28px', boxShadow: '0 8px 32px rgba(107,21,34,0.35)' }}>
+                <div style={{ fontFamily: "'Fraunces', serif", fontSize: 36, fontWeight: 600, color: '#fff' }}>60+</div>
                 <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)' }}>Years of Ministry</div>
               </div>
-              <div style={{ position: 'absolute', top: -16, right: -16, backgroundColor: C.gold, borderRadius: 16, padding: '16px 24px', boxShadow: '0 8px 24px rgba(249,168,37,0.35)' }}>
-                <div style={{ fontFamily: "'Lora', serif", fontSize: 28, fontWeight: 600, color: C.text }}>650+</div>
+              <div style={{ position: 'absolute', top: -16, right: -16, backgroundColor: C.gold, borderRadius: 16, padding: '16px 24px', boxShadow: '0 8px 24px rgba(192,148,63,0.35)' }}>
+                <div style={{ fontFamily: "'Fraunces', serif", fontSize: 28, fontWeight: 600, color: C.text }}>650+</div>
                 <div style={{ fontSize: 12, color: 'rgba(31,41,55,0.75)' }}>Participants</div>
               </div>
             </div>
@@ -481,7 +481,7 @@ export default function App() {
                   onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 2px 16px rgba(0,0,0,0.07)' }}
                 >
                   <div style={{ fontSize: 40, marginBottom: 16 }}>{m.icon}</div>
-                  <h3 style={{ fontFamily: "'Lora', serif", fontSize: 18, fontWeight: 600, marginBottom: 10, color: C.text }}>{m.title}</h3>
+                  <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 18, fontWeight: 600, marginBottom: 10, color: C.text }}>{m.title}</h3>
                   <p style={{ fontSize: 14, lineHeight: 1.7, color: C.textMuted, margin: 0 }}>{m.desc}</p>
                 </div>
               </Fade>
@@ -496,7 +496,7 @@ export default function App() {
         <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <Fade>
             <div style={{ textAlign: 'center', marginBottom: 64 }}>
-              <span style={{ ...sectionLabel, backgroundColor: 'rgba(249,168,37,0.2)', color: C.gold }}>OPHELP Programme</span>
+              <span style={{ ...sectionLabel, color: C.gold }}>OPHELP Programme</span>
               <h2 style={{ ...h2Style, color: '#fff', textAlign: 'center' }}>How OPHELP Works</h2>
               <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 15, maxWidth: 520, margin: '0 auto' }}>
                 A simple, transparent workflow that ensures every participant is paid fairly for their contribution.
@@ -549,7 +549,7 @@ export default function App() {
                   onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-3px)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 10px 28px rgba(0,0,0,0.1)' }}
                   onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 2px 16px rgba(0,0,0,0.07)' }}
                 >
-                  <div style={{ width: 52, height: 52, borderRadius: 14, backgroundColor: 'rgba(46,125,50,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>
+                  <div style={{ width: 52, height: 52, borderRadius: 14, backgroundColor: 'rgba(107,21,34,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>
                     {f.icon}
                   </div>
                   <div>
@@ -591,18 +591,18 @@ export default function App() {
             </div>
           </Fade>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 3, backgroundColor: '#e5e7eb', borderRadius: '0 0 16px 16px', overflow: 'hidden' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 3, backgroundColor: '#E6DCC9', borderRadius: '0 0 16px 16px', overflow: 'hidden' }}>
             {getDashboardCards().map((d, i) => (
               <Fade key={d.label} delay={i * 40}>
                 <div style={{ backgroundColor: C.white, padding: '24px', transition: 'background 0.15s' }}
-                  onMouseEnter={e => ((e.currentTarget as HTMLDivElement).style.backgroundColor = '#f9fafb')}
+                  onMouseEnter={e => ((e.currentTarget as HTMLDivElement).style.backgroundColor = '#FAF6EC')}
                   onMouseLeave={e => ((e.currentTarget as HTMLDivElement).style.backgroundColor = C.white)}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
                     <div style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: `${d.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>{d.icon}</div>
                     <span style={{ fontSize: 10, color: C.textMuted, backgroundColor: C.bg, padding: '3px 8px', borderRadius: 6 }}>{d.trend}</span>
                   </div>
-                  <div style={{ fontFamily: "'Lora', serif", fontSize: 28, fontWeight: 600, color: d.color, marginBottom: 4 }}>{d.value}</div>
+                  <div style={{ fontFamily: "'Fraunces', serif", fontSize: 28, fontWeight: 600, color: d.color, marginBottom: 4 }}>{d.value}</div>
                   <div style={{ fontSize: 12, color: C.textMuted }}>{d.label}</div>
                 </div>
               </Fade>
@@ -637,7 +637,7 @@ export default function App() {
                     <div style={{ position: 'absolute', top: 16, left: 16, width: 40, height: 40, borderRadius: 10, backgroundColor: C.green, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>{m.icon}</div>
                   </div>
                   <div style={{ padding: '24px 24px 28px' }}>
-                    <h3 style={{ fontFamily: "'Lora', serif", fontSize: 17, fontWeight: 600, marginBottom: 10, color: C.text, lineHeight: 1.3 }}>{m.title}</h3>
+                    <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 17, fontWeight: 600, marginBottom: 10, color: C.text, lineHeight: 1.3 }}>{m.title}</h3>
                     <p style={{ fontSize: 14, lineHeight: 1.7, color: C.textMuted, margin: '0 0 16px' }}>{m.desc}</p>
                     <span style={{ fontSize: 13, fontWeight: 600, color: C.green }}>Learn More →</span>
                   </div>
@@ -656,7 +656,7 @@ export default function App() {
         <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 64, alignItems: 'center' }}>
           <Fade>
             <div>
-              <span style={{ ...sectionLabel, backgroundColor: 'rgba(249,168,37,0.2)', color: C.gold }}>Make a Difference</span>
+              <span style={{ ...sectionLabel, color: C.gold }}>Make a Difference</span>
               <h2 style={{ ...h2Style, color: '#fff' }}>Your Giving<br /><em style={{ fontStyle: 'italic' }}>Changes Lives</em></h2>
               <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 15, lineHeight: 1.8, marginBottom: 32 }}>
                 Every donation directly supports the people Straatwerk serves. Your generosity makes honest work and real hope possible.
@@ -675,7 +675,7 @@ export default function App() {
                 ))}
               </ul>
               <button
-                style={{ backgroundColor: C.gold, color: C.text, fontWeight: 700, fontSize: 16, padding: '16px 40px', borderRadius: 12, border: 'none', cursor: 'pointer', boxShadow: '0 4px 20px rgba(249,168,37,0.4)', fontFamily: "'Poppins', sans-serif", transition: 'transform 0.15s, opacity 0.2s' }}
+                style={{ backgroundColor: C.gold, color: C.text, fontWeight: 700, fontSize: 16, padding: '16px 40px', borderRadius: 12, border: 'none', cursor: 'pointer', boxShadow: '0 4px 20px rgba(192,148,63,0.4)', fontFamily: "'Inter', sans-serif", transition: 'transform 0.15s, opacity 0.2s' }}
                 onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
                 onMouseLeave={e => (e.currentTarget.style.transform = 'translateY(0)')}
               >Donate Now ❤️</button>
@@ -694,7 +694,7 @@ export default function App() {
                   onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.backgroundColor = 'rgba(255,255,255,0.2)'; (e.currentTarget as HTMLDivElement).style.borderColor = C.gold }}
                   onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.backgroundColor = 'rgba(255,255,255,0.1)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.2)' }}
                 >
-                  <div style={{ fontFamily: "'Lora', serif", fontSize: 26, fontWeight: 600, color: C.gold }}>{opt.amount}</div>
+                  <div style={{ fontFamily: "'Fraunces', serif", fontSize: 26, fontWeight: 600, color: C.gold }}>{opt.amount}</div>
                   <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.75)', marginTop: 4 }}>{opt.label}</div>
                 </div>
               ))}
@@ -730,7 +730,7 @@ export default function App() {
                   }}
                 >
                   <img src={g.img} alt={g.caption} style={{ width: '100%', display: 'block', transition: 'transform 0.4s ease', filter: 'brightness(0.9)' }} />
-                  <div className="cap" style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(46,125,50,0.6)', display: 'flex', alignItems: 'flex-end', padding: 16, opacity: 0, transition: 'opacity 0.3s' }}>
+                  <div className="cap" style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(107,21,34,0.6)', display: 'flex', alignItems: 'flex-end', padding: 16, opacity: 0, transition: 'opacity 0.3s' }}>
                     <span style={{ color: '#fff', fontWeight: 600, fontSize: 14 }}>{g.caption}</span>
                   </div>
                 </div>
@@ -755,8 +755,8 @@ export default function App() {
                 { icon: '✉️', label: 'Email', value: 'info@straatwerk.co.za' },
                 { icon: '🏢', label: 'NPO Number', value: '012-345 NPO' },
               ].map(item => (
-                <div key={item.label} style={{ display: 'flex', gap: 16, alignItems: 'center', paddingBottom: 20, marginBottom: 20, borderBottom: '1px solid #F3F4F6' }}>
-                  <div style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: 'rgba(46,125,50,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>{item.icon}</div>
+                <div key={item.label} style={{ display: 'flex', gap: 16, alignItems: 'center', paddingBottom: 20, marginBottom: 20, borderBottom: '1px solid #EFE8DA' }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: 'rgba(107,21,34,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>{item.icon}</div>
                   <div>
                     <div style={{ fontSize: 11, color: C.textMuted, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 2 }}>{item.label}</div>
                     <div style={{ fontSize: 15, fontWeight: 500, color: C.text }}>{item.value}</div>
@@ -778,8 +778,8 @@ export default function App() {
           <Fade delay={120}>
             {formSent ? (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', minHeight: 400, textAlign: 'center' }}>
-                <div style={{ width: 72, height: 72, borderRadius: '50%', backgroundColor: 'rgba(76,175,80,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32, marginBottom: 24 }}>✅</div>
-                <h3 style={{ fontFamily: "'Lora', serif", fontSize: 26, fontWeight: 600, marginBottom: 12, color: C.green }}>Message Sent!</h3>
+                <div style={{ width: 72, height: 72, borderRadius: '50%', backgroundColor: 'rgba(92,122,82,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32, marginBottom: 24 }}>✅</div>
+                <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 26, fontWeight: 600, marginBottom: 12, color: C.green }}>Message Sent!</h3>
                 <p style={{ color: C.textMuted, fontSize: 15, lineHeight: 1.7 }}>Thank you for reaching out. We'll get back to you within one business day.</p>
               </div>
             ) : (
@@ -795,9 +795,9 @@ export default function App() {
                       id={f.id} type={f.type} placeholder={f.placeholder} required
                       value={formData[f.id as keyof typeof formData]}
                       onChange={e => setFormData(p => ({ ...p, [f.id]: e.target.value }))}
-                      style={{ width: '100%', padding: '12px 16px', borderRadius: 10, border: '2px solid #E5E7EB', fontSize: 14, fontFamily: "'Poppins', sans-serif", color: C.text, outline: 'none', transition: 'border-color 0.2s', backgroundColor: C.bg }}
+                      style={{ width: '100%', padding: '12px 16px', borderRadius: 10, border: '2px solid #E6DCC9', fontSize: 14, fontFamily: "'Inter', sans-serif", color: C.text, outline: 'none', transition: 'border-color 0.2s', backgroundColor: C.bg }}
                       onFocus={e => (e.target.style.borderColor = C.green)}
-                      onBlur={e => (e.target.style.borderColor = '#E5E7EB')}
+                      onBlur={e => (e.target.style.borderColor = '#E6DCC9')}
                     />
                   </div>
                 ))}
@@ -807,14 +807,14 @@ export default function App() {
                     id="message" rows={5} placeholder="Your message..." required
                     value={formData.message}
                     onChange={e => setFormData(p => ({ ...p, message: e.target.value }))}
-                    style={{ width: '100%', padding: '12px 16px', borderRadius: 10, border: '2px solid #E5E7EB', fontSize: 14, fontFamily: "'Poppins', sans-serif", color: C.text, outline: 'none', resize: 'vertical', transition: 'border-color 0.2s', backgroundColor: C.bg }}
+                    style={{ width: '100%', padding: '12px 16px', borderRadius: 10, border: '2px solid #E6DCC9', fontSize: 14, fontFamily: "'Inter', sans-serif", color: C.text, outline: 'none', resize: 'vertical', transition: 'border-color 0.2s', backgroundColor: C.bg }}
                     onFocus={e => (e.target.style.borderColor = C.green)}
-                    onBlur={e => (e.target.style.borderColor = '#E5E7EB')}
+                    onBlur={e => (e.target.style.borderColor = '#E6DCC9')}
                   />
                 </div>
                 <button
                   type="submit"
-                  style={{ ...btnPrimary, alignSelf: 'flex-start', padding: '14px 36px', fontSize: 15, boxShadow: '0 4px 16px rgba(46,125,50,0.3)' }}
+                  style={{ ...btnPrimary, alignSelf: 'flex-start', padding: '14px 36px', fontSize: 15, boxShadow: '0 4px 16px rgba(107,21,34,0.3)' }}
                   onMouseEnter={e => (e.currentTarget.style.backgroundColor = C.greenLight)}
                   onMouseLeave={e => (e.currentTarget.style.backgroundColor = C.green)}
                 >Send Message</button>
@@ -825,19 +825,19 @@ export default function App() {
       </section>
 
       {/* ── FOOTER ───────────────────────────────────────────────────────────── */}
-      <footer style={{ backgroundColor: '#111827', color: '#D1D5DB', paddingTop: 64, paddingBottom: 0 }}>
+      <footer style={{ backgroundColor: '#3D0A12', color: '#C9B79A', paddingTop: 64, paddingBottom: 0 }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 5%' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 48, paddingBottom: 48 }}>
             {/* Brand */}
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
                 <img src={opHelpLogo} alt="Straatwerk logo" style={{ width: 52, height: 52, objectFit: 'contain' }} />
-                <div style={{ fontSize: 10, color: '#6B7280', letterSpacing: '0.1em', textTransform: 'uppercase' }}>OPHELP System</div>
+                <div style={{ fontSize: 10, color: '#8A7B6B', letterSpacing: '0.1em', textTransform: 'uppercase' }}>OPHELP System</div>
               </div>
-              <p style={{ fontSize: 13, lineHeight: 1.75, color: '#9CA3AF', marginBottom: 16 }}>
+              <p style={{ fontSize: 13, lineHeight: 1.75, color: '#A6998C', marginBottom: 16 }}>
                 Restoring dignity through honest work since the late 1960s. Registered NPO and Public Benefit Organisation.
               </p>
-              <div style={{ fontSize: 12, color: '#6B7280' }}>NPO Number: 012-345 NPO</div>
+              <div style={{ fontSize: 12, color: '#8A7B6B' }}>NPO Number: 012-345 NPO</div>
             </div>
 
             {/* Links */}
@@ -849,9 +849,9 @@ export default function App() {
                 <h4 style={{ color: '#fff', fontSize: 14, fontWeight: 600, marginBottom: 20, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{col.heading}</h4>
                 <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {col.links.map(link => (
-                    <li key={link}><a href="#" style={{ color: '#9CA3AF', fontSize: 13, textDecoration: 'none', transition: 'color 0.2s' }}
-                      onMouseEnter={e => (e.currentTarget.style.color = '#a5d6a7')}
-                      onMouseLeave={e => (e.currentTarget.style.color = '#9CA3AF')}
+                    <li key={link}><a href="#" style={{ color: '#A6998C', fontSize: 13, textDecoration: 'none', transition: 'color 0.2s' }}
+                      onMouseEnter={e => (e.currentTarget.style.color = '#e6c98a')}
+                      onMouseLeave={e => (e.currentTarget.style.color = '#A6998C')}
                     >{link}</a></li>
                   ))}
                 </ul>
@@ -861,23 +861,23 @@ export default function App() {
             {/* Contact */}
             <div>
               <h4 style={{ color: '#fff', fontSize: 14, fontWeight: 600, marginBottom: 20, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Contact</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, fontSize: 13, color: '#9CA3AF' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, fontSize: 13, color: '#A6998C' }}>
                 <span>📞 +27 21 555 0100</span>
                 <span>✉️ info@straatwerk.co.za</span>
               </div>
               <h4 style={{ color: '#fff', fontSize: 14, fontWeight: 600, margin: '28px 0 14px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Follow Us</h4>
               <div style={{ display: 'flex', gap: 12 }}>
                 {['Facebook', 'Instagram', 'Twitter'].map(s => (
-                  <a key={s} href="#" style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, color: '#9CA3AF', textDecoration: 'none', transition: 'background 0.2s, color 0.2s' }}
+                  <a key={s} href="#" style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, color: '#A6998C', textDecoration: 'none', transition: 'background 0.2s, color 0.2s' }}
                     onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = C.green; (e.currentTarget as HTMLAnchorElement).style.color = '#fff' }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'rgba(255,255,255,0.07)'; (e.currentTarget as HTMLAnchorElement).style.color = '#9CA3AF' }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'rgba(255,255,255,0.07)'; (e.currentTarget as HTMLAnchorElement).style.color = '#A6998C' }}
                   >{s[0]}</a>
                 ))}
               </div>
             </div>
           </div>
 
-          <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', padding: '24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, fontSize: 12, color: '#6B7280' }}>
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', padding: '24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, fontSize: 12, color: '#8A7B6B' }}>
             <span>© {new Date().getFullYear()} Straatwerk. All rights reserved. Registered NPO.</span>
             <span style={{ color: C.green }}>Built with ❤️ for the OPHELP Programme</span>
           </div>
@@ -901,16 +901,16 @@ export default function App() {
             <div style={{ background: `linear-gradient(135deg, ${C.greenDark} 0%, ${C.blue} 100%)`, padding: '40px 48px 36px', borderRadius: '20px 20px 0 0', position: 'relative' }}>
               <button
                 onClick={() => setOffersOpen(false)}
-                style={{ position: 'absolute', top: 20, right: 20, background: 'rgba(255,255,255,0.15)', border: 'none', color: '#fff', width: 36, height: 36, borderRadius: '50%', fontSize: 18, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Poppins', sans-serif" }}
+                style={{ position: 'absolute', top: 20, right: 20, background: 'rgba(255,255,255,0.15)', border: 'none', color: '#fff', width: 36, height: 36, borderRadius: '50%', fontSize: 18, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Inter', sans-serif" }}
               >×</button>
               <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
                 <img src={opHelpLogo} alt="Straatwerk logo" style={{ width: 56, height: 56, objectFit: 'contain' }} />
                 <div>
                   <div style={{ fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', marginBottom: 4 }}>STRAATWERK</div>
-                  <h2 style={{ fontFamily: "'Lora', serif", fontSize: 26, fontWeight: 600, color: '#fff', margin: 0 }}>OPHELP Projekte</h2>
+                  <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 26, fontWeight: 600, color: '#fff', margin: 0 }}>OPHELP Projekte</h2>
                 </div>
               </div>
-              <div style={{ display: 'inline-block', backgroundColor: 'rgba(249,168,37,0.25)', border: '1px solid rgba(249,168,37,0.5)', borderRadius: 999, padding: '5px 16px' }}>
+              <div style={{ display: 'inline-block', backgroundColor: 'rgba(192,148,63,0.25)', border: '1px solid rgba(192,148,63,0.5)', borderRadius: 999, padding: '5px 16px' }}>
                 <span style={{ color: C.gold, fontSize: 13, fontWeight: 600 }}>Offering Our Services</span>
               </div>
             </div>
@@ -931,19 +931,19 @@ export default function App() {
               </div>
 
               {/* Agreement callout */}
-              <div style={{ backgroundColor: 'rgba(46,125,50,0.07)', border: `2px solid ${C.green}`, borderRadius: 14, padding: '20px 24px', marginBottom: 36, display: 'flex', alignItems: 'center', gap: 16 }}>
+              <div style={{ backgroundColor: 'rgba(107,21,34,0.07)', border: `2px solid ${C.green}`, borderRadius: 14, padding: '20px 24px', marginBottom: 36, display: 'flex', alignItems: 'center', gap: 16 }}>
                 <div style={{ fontSize: 28, flexShrink: 0 }}>🤝</div>
-                <p style={{ fontSize: 15, fontWeight: 600, color: C.green, margin: 0, fontFamily: "'Lora', serif", fontStyle: 'italic' }}>
+                <p style={{ fontSize: 15, fontWeight: 600, color: C.green, margin: 0, fontFamily: "'Fraunces', serif", fontStyle: 'italic' }}>
                   "Let us agree to do so."
                 </p>
               </div>
 
               {/* Divider */}
-              <div style={{ borderTop: `1px solid #E5E7EB`, margin: '32px 0' }} />
+              <div style={{ borderTop: `1px solid #E6DCC9`, margin: '32px 0' }} />
 
               {/* Analogy section */}
               <div>
-                <h3 style={{ fontFamily: "'Lora', serif", fontSize: 20, fontWeight: 600, color: C.text, marginBottom: 16 }}>
+                <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 20, fontWeight: 600, color: C.text, marginBottom: 16 }}>
                   An Analogy to Help Understand This Plan
                 </h3>
                 <p style={{ fontSize: 15, lineHeight: 1.85, color: C.textMuted, marginBottom: 20 }}>
@@ -978,7 +978,7 @@ export default function App() {
               <div style={{ marginTop: 36, display: 'flex', gap: 12, justifyContent: 'flex-end', flexWrap: 'wrap' }}>
                 <button
                   onClick={() => setOffersOpen(false)}
-                  style={{ padding: '12px 28px', borderRadius: 10, border: `2px solid #E5E7EB`, background: 'none', fontSize: 14, fontWeight: 600, cursor: 'pointer', color: C.textMuted, fontFamily: "'Poppins', sans-serif" }}
+                  style={{ padding: '12px 28px', borderRadius: 10, border: `2px solid #E6DCC9`, background: 'none', fontSize: 14, fontWeight: 600, cursor: 'pointer', color: C.textMuted, fontFamily: "'Inter', sans-serif" }}
                 >Close</button>
                 <button
                   onClick={() => { setOffersOpen(false); scrollTo('ophelp') }}

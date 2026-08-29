@@ -28,14 +28,14 @@ const DEMO_HINTS = [
 ]
 
 const C = {
-  green: '#2E7D32',
-  greenLight: '#43A047',
-  greenDark: '#1B5E20',
-  blue: '#1565C0',
-  gold: '#F9A825',
-  text: '#1F2937',
-  textMuted: '#6B7280',
-  bg: '#F5F7FA',
+  green: '#6B1522',
+  greenLight: '#821B2B',
+  greenDark: '#3D0A12',
+  blue: '#A1782F',
+  gold: '#C0943F',
+  text: '#211A15',
+  textMuted: '#6D6055',
+  bg: '#F6F1E6',
   danger: '#E53935',
 }
 
@@ -82,7 +82,7 @@ export default function LoginModal({ onLogin, onClose }: Props) {
         <div style={{ background: `linear-gradient(135deg, ${C.greenDark} 0%, ${C.blue} 100%)`, padding: '36px 40px 28px', position: 'relative', textAlign: 'center' }}>
           <button onClick={onClose} style={{ position: 'absolute', top: 16, right: 16, background: 'rgba(255,255,255,0.15)', border: 'none', color: '#fff', width: 32, height: 32, borderRadius: '50%', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'inherit' }}>×</button>
           <img src={opHelpLogo} alt="Straatwerk" style={{ width: 64, height: 64, objectFit: 'contain', marginBottom: 12 }} />
-          <h2 style={{ fontFamily: "'Lora', serif", fontSize: 22, fontWeight: 600, color: '#fff', margin: '0 0 4px' }}>Welcome Back</h2>
+          <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 22, fontWeight: 600, color: '#fff', margin: '0 0 4px' }}>Welcome Back</h2>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 13, margin: 0 }}>Sign in to your OPHELP dashboard</p>
         </div>
 
@@ -100,9 +100,9 @@ export default function LoginModal({ onLogin, onClose }: Props) {
             <input
               type="email" value={email} onChange={e => setEmail(e.target.value)} required
               placeholder="your@ophelp.org"
-              style={{ width: '100%', padding: '12px 16px', borderRadius: 10, border: '2px solid #E5E7EB', fontSize: 14, fontFamily: "'Poppins', sans-serif", color: C.text, outline: 'none', transition: 'border-color 0.2s', backgroundColor: C.bg, boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: '12px 16px', borderRadius: 10, border: '2px solid #E6DCC9', fontSize: 14, fontFamily: "'Inter', sans-serif", color: C.text, outline: 'none', transition: 'border-color 0.2s', backgroundColor: C.bg, boxSizing: 'border-box' }}
               onFocus={e => (e.target.style.borderColor = C.green)}
-              onBlur={e => (e.target.style.borderColor = '#E5E7EB')}
+              onBlur={e => (e.target.style.borderColor = '#E6DCC9')}
             />
           </div>
 
@@ -112,9 +112,9 @@ export default function LoginModal({ onLogin, onClose }: Props) {
               <input
                 type={showPassword ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} required
                 placeholder="Enter your password"
-                style={{ width: '100%', padding: '12px 44px 12px 16px', borderRadius: 10, border: '2px solid #E5E7EB', fontSize: 14, fontFamily: "'Poppins', sans-serif", color: C.text, outline: 'none', transition: 'border-color 0.2s', backgroundColor: C.bg, boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: '12px 44px 12px 16px', borderRadius: 10, border: '2px solid #E6DCC9', fontSize: 14, fontFamily: "'Inter', sans-serif", color: C.text, outline: 'none', transition: 'border-color 0.2s', backgroundColor: C.bg, boxSizing: 'border-box' }}
                 onFocus={e => (e.target.style.borderColor = C.green)}
-                onBlur={e => (e.target.style.borderColor = '#E5E7EB')}
+                onBlur={e => (e.target.style.borderColor = '#E6DCC9')}
               />
               <button type="button" onClick={() => setShowPassword(p => !p)} style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: C.textMuted, fontSize: 16 }}>
                 {showPassword ? '🙈' : '👁️'}
@@ -128,7 +128,7 @@ export default function LoginModal({ onLogin, onClose }: Props) {
 
           <button
             type="submit" disabled={loading}
-            style={{ width: '100%', padding: '14px', backgroundColor: loading ? C.greenLight : C.green, color: '#fff', border: 'none', borderRadius: 12, fontSize: 15, fontWeight: 600, cursor: loading ? 'wait' : 'pointer', fontFamily: "'Poppins', sans-serif", transition: 'background 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+            style={{ width: '100%', padding: '14px', backgroundColor: loading ? C.greenLight : C.green, color: '#fff', border: 'none', borderRadius: 12, fontSize: 15, fontWeight: 600, cursor: loading ? 'wait' : 'pointer', fontFamily: "'Inter', sans-serif", transition: 'background 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
           >
             {loading ? (
               <><span style={{ display: 'inline-block', width: 16, height: 16, border: '2px solid rgba(255,255,255,0.4)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} /> Signing in...</>
